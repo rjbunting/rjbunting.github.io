@@ -3,16 +3,16 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
 import { getCollection } from "astro:content";
 
 export async function get(context) {
-  const blog = await getCollection("blog");
+  const news = await getCollection("news");
   return rss({
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     site: import.meta.env.SITE,
-    items: blog.map((post) => ({
-      title: post.data.title,
-      pubDate: post.data.pubDate,
-      description: post.data.description,
-      link: `/blog/${post.slug}/`,
+    items: news.map((post) => ({
+      title: newspost.data.title,
+      pubDate: newspost.data.pubDate,
+      description: newspost.data.description,
+      link: `/news/${newspost.slug}/`,
     })),
   });
 }
