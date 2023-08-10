@@ -7,7 +7,7 @@ const researchposts = (await getCollection("research")).sort((a, b) => b.data.pu
 
 const researchlast_posts = researchposts.slice(0, 2);
 
-const newsposts = (await getCollection("news")).sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+const newsposts = (await getCollection("news")).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const newslast_posts = newsposts.slice(0, 2);
 ---
@@ -15,14 +15,17 @@ const newslast_posts = newsposts.slice(0, 2);
 <BaseLayout sideBarActiveItemID="home">
   <div class="pb-12 mt-5">
     <div class="text-5xl font-bold">Dr. Rhys J. Bunting</div>
-    <div class="text-2xl py-3 font-style: italic"> Applying interdisciplinary methods to solve key questions in chemistry</div>
+    <div class="text-2xl py-3 font-style: italic">Computational Chemist</div>
     <div class="py-2">
       <text class="text-lg text-align: justify-center">
-          My research career
+        I apply methods and take inspiration from different fields to tackle key issues within the field of chemistry.
+        I have worked and continue to work within the boundaries of chemistry, chemical engineering, physics, and data science.
+        I am particularly interested in the fields of energy, catalysis, and C-H activation.
+        I combine a variety of methods, such as <em>ab initio</em> electronic structure methods, molecular dynamics, and machine learning to solve these issues.
       </text>
     </div>
     <div class="mt-8">
-      <a class="btn" href="mailto:rhys.j.bunting@gmail.com" target="_blank"> Questions? Just ask!</a>
+      <a class="btn" href="mailto:rhys.j.bunting@gmail.com" target="_blank">Any questions? Just ask!</a>
     </div>
   </div>
 
