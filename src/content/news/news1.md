@@ -6,8 +6,7 @@ heroImage: "/classroom.png"
 badge: "New"
 ---
 
-<p>A new ECTS credited course will begin at IST Austria in Fall 2 for the 2023 academic year.
-It is titled "An Introduction to Computational Chemistry" and I am the coordinator.</p>
+<p>I am giving a new ECTS accredited course at IST Austria in Fall 2 for the 2023 academic year, titled "An Introduction to Computational Chemistry".</p>
 
 <p>Computational methods are used throughout all fields of chemistry.
 From organic, inorganic, physical, and bio chemistry, a plethora of methods are used to explain experimental results and sometimes even to make discoveries preceding experimental verification.
@@ -15,15 +14,16 @@ This course will provide a strong foundation for experimentalists and theoretici
 
 <p>This course will consider:</p>
 <ul>
-<li>Why computers</li>
+<li>Computing and why we use computers</li>
 <li>Empirical methods</li>
 <li>Semi-empirical methods</li>
 <li>Quantum chemical methods</li>
-<li>Density Functional theory</li>
+<li>Density functional theory</li>
 <li>Machine learning methods</li>
 <li>Molecular modelling</li>
-<li>Kinetics and chemical Reactions</li>
-<li>Periodic systems -Surface Chemistry</li>
+<li>Kinetics and chemical reactions</li>
+<li>Periodic systems</li>
+<li>Surface chemistry</li>
 <li>Molecular dynamics</li>
 <li>Biochemical systems</li>
 </ul>
