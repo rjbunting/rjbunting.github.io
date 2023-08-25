@@ -1,7 +1,7 @@
 ---
 title: "Machine Learning in Action"
 description: "Exploiting machine learning to accelerate chemical research"
-pubDate: "Sep 10 2022"
+pubDate: "Aug 14 2023"
 heroImage: "/machinelearning.jpg"
 ---
 
