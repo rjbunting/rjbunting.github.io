@@ -1,3 +1,143 @@
 .time-line-container>div:last-child .education__time>.education__line {
     display: none;
 }
+
+/* Typography and spacing improvements */
+:root {
+  /* System font stack to avoid external font requests */
+  --body-font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  --heading-font: Georgia, 'Times New Roman', Times, serif;
+  --measure: 66ch; /* optimal measure for readability */
+
+  /* Default color tokens (concrete fallbacks). These ensure the stylesheet has usable values
+     before DaisyUI injects theme tokens like --bc and --b1. */
+  --base-content: rgb(17 24 39 / 0.95);
+  --base-100: #ffffff;
+  --primary: #2563EB;
+  --code-color: #111827;
+}
+
+/* If DaisyUI provides its theme tokens (e.g. --bc, --b1, --p, --nc), prefer those values.
+   The var(..., fallback) usage ensures a concrete fallback remains for static analysis. */
+:root, [data-theme] {
+  --base-content: hsl(var(--bc, 215 28% 17%) / 1);
+  --base-100: hsl(var(--b1, 0 0% 100%) / 1);
+  --primary: hsl(var(--p, 259 96% 91%) / 1);
+  --code-color: hsl(var(--nc, 212 19% 87%) / 1);
+}
+
+html {
+  font-family: var(--body-font);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  line-height: 1.68;
+  /* Use theme-aware text color so text remains visible in light and dark themes */
+  color: var(--base-content, rgb(17 24 39 / 0.95));
+  background-color: var(--base-100, #ffffff);
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: var(--heading-font);
+  color: inherit;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-top: 0.85em;
+  margin-bottom: 0.35em;
+}
+
+h1 { font-size: clamp(1.8rem, 2.4vw, 2.8rem); }
+h2 { font-size: clamp(1.4rem, 1.8vw, 1.8rem); }
+h3 { font-size: clamp(1.125rem, 1.2vw, 1.25rem); }
+
+/* Prose/content area: comfortable measure and spacing */
+.prose, article, .article, .post-content {
+  max-width: var(--measure);
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1rem;
+  line-height: 1.78;
+  color: inherit;
+}
+
+.prose img, .post-content img { border-radius: 8px; }
+.prose p { margin-bottom: 1rem; }
+.prose ul, .prose ol { margin-left: 1.25rem; margin-bottom: 1rem; }
+
+/* Increase space around major sections */
+main > * + * { margin-top: 1.25rem; }
+.section { margin-top: 2rem; margin-bottom: 2rem; }
+
+/* Tighter CV and lists spacing */
+.list-compact li { margin-bottom: 0.25rem; }
+
+/* Buttons and badges: slightly larger touch targets */
+.btn { padding-left: 0.85rem; padding-right: 0.85rem; padding-top: 0.45rem; padding-bottom: 0.45rem; }
+.badge { padding: 0.25rem 0.5rem; font-weight: 600; }
+
+/* Sidebar adjustments for spacing */
+.drawer-side aside { padding-left: 0.5rem; padding-right: 0.5rem; }
+
+/* Ensure UI text elements use theme-aware content color for contrast */
+.btn, .badge, .menu a, .navbar a, .social-icons a, .card-title, .prose, .post-content, main, aside {
+  color: var(--base-content, rgb(17 24 39 / 0.95));
+}
+
+/* Ensure core text elements follow the active DaisyUI theme color */
+:where(body, main, aside, header, footer, article, .prose, .post-content, .card-body, .card-title, h1, h2, h3, h4, h5, h6, p, li, a, .menu a, .btn, .badge, .navbar, .footer) {
+  color: var(--base-content, rgb(17 24 39 / 0.95));
+}
+
+/* Preserve contrast for headings explicitly if some themes set different scales */
+h1, h2, h3, h4, h5, h6 { color: var(--base-content, inherit); }
+
+/* Ensure code blocks and inline code remain readable */
+code, pre, .code { color: var(--code-color, var(--base-content, #111827)); }
+
+/* Avoid overriding SVG brand colors; allow icons to keep original fills unless they use currentColor */
+/* If you want icons to adapt to the theme, add `fill="currentColor"` to their SVG paths. */
+
+/* Links: use theme primary color but ensure sufficient contrast */
+a {
+  color: var(--primary, #2563EB);
+}
+
+/* Make sure small muted text uses base-content with reduced opacity for readability */
+.text-muted, .muted {
+  color: color-mix(in srgb, var(--base-content, #111827) 70%, transparent);
+}
+
+/* Keep earlier micro-interaction CSS */
+.reveal {
+  transition-property: opacity, transform;
+  transition-duration: 480ms;
+  transition-timing-function: cubic-bezier(.2,.9,.2,1);
+  will-change: opacity, transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transition: none !important; }
+  * { scroll-behavior: auto !important; }
+}
+
+.card, .rounded-lg { transition: transform 240ms cubic-bezier(.2,.9,.2,1), box-shadow 240ms ease; }
+.card:hover, .rounded-lg:hover { transform: translateY(-4px) scale(1.02); }
+
+.btn, .btn-ghost, .btn-primary { transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease; }
+.btn:active { transform: translateY(1px) scale(0.995); }
+
+.avatar img, .avatar .w-32 img { transition: transform 240ms cubic-bezier(.2,.9,.2,1); }
+.avatar:hover img { transform: scale(1.03) translateY(-2px); }
+
+.social-icons a { transition: transform 200ms ease, opacity 200ms ease; }
+.social-icons a:hover { transform: translateY(-4px) scale(1.06); opacity: 0.95; }
+
+.menu a { transition: transform 160ms ease, background-color 160ms ease; }
+.menu a:hover { transform: translateX(4px); }
+
+:focus { outline: 3px solid rgba(59,130,246,0.15); outline-offset: 2px; }
+
+.card:focus-within, .rounded-lg:focus-within { box-shadow: 0 8px 24px rgba(16,24,40,0.06); transform: translateY(-4px) scale(1.01); }

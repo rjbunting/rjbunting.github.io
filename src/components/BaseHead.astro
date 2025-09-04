@@ -19,6 +19,9 @@ const { title, description, image = '/social_img.png', structuredData } = Astro.
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
 
+<!-- Fonts: using system font stack to avoid external requests -->
+<!-- Using system UI stack for body and serif stack for headings - no external fonts loaded -->
+
 <!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />

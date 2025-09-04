@@ -15,12 +15,15 @@ const { image, title = SITE_TITLE, description = SITE_DESCRIPTION, includeSideba
     <BaseHead title={title} description={description} image={image} />
   </head>
   <body>
+    <!-- Skip link for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only z-50 fixed top-2 left-2 bg-base-100 px-3 py-1 rounded">Skip to content</a>
+
     <div class="bg-base-100 drawer lg:drawer-open">
-      <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+      <input id="my-drawer" type="checkbox" class="drawer-toggle" aria-label="Toggle sidebar" />
       <div class="drawer-content bg-base-100">
         <Header title={SITE_TITLE} />
         <div class="md:flex md:justify-center">
-          <main class="p-6 pt-10 lg:max-w-[900px] max-w-[100vw]">
+          <main id="main-content" tabindex="-1" class="p-6 pt-10 lg:max-w-[900px] max-w-[100vw]">
             <slot />
           </main>
         </div>
@@ -28,5 +31,7 @@ const { image, title = SITE_TITLE, description = SITE_DESCRIPTION, includeSideba
       </div>
       {includeSidebar && <SideBar sideBarActiveItemID={sideBarActiveItemID} />}
     </div>
+
+    <script src="/js/ui.js" defer></script>
   </body>
 </html>

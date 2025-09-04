@@ -4,39 +4,186 @@ import HorizontalCard from "../components/HorizontalCard.astro";
 ---
 
 <BaseLayout title="Publications" sideBarActiveItemID="publications">
+  <!-- Structured data for key publications -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ScholarlyArticle",
+        "headline": "Nuclear quantum effects of metal surface-mediated C–H activation",
+        "author": [
+          {"@type":"Person","name":"RJ Bunting"},
+          {"@type":"Person","name":"Sam Shepherd"},
+          {"@type":"Person","name":"N Rampal"},
+          {"@type":"Person","name":"S Akhade"},
+          {"@type":"Person","name":"DM Wilkins"},
+          {"@type":"Person","name":"TA Pham"}
+        ],
+        "publisher": {"@type":"Organization","name":"Physical Chemistry Chemical Physics"},
+        "url": "https://pubs.acs.org/doi/full/10.1021/acscatal.3c03893",
+        "image": "/nqe.gif",
+        "description": "Nuclear quantum effects of metal surface-mediated C–H activation"
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "headline": "Microkinetic Modeling with Size-Dependent and Adsorbate–Adsorbate Interactions for the Direct Synthesis of H2O2 over Pd Nanoparticles",
+        "author": [
+          {"@type":"Person","name":"J Zhao"},
+          {"@type":"Person","name":"Z Yao"},
+          {"@type":"Person","name":"RJ Bunting"},
+          {"@type":"Person","name":"P Hu"},
+          {"@type":"Person","name":"J Wang"}
+        ],
+        "publisher": {"@type":"Organization","name":"ACS Catalysis"},
+        "url": "https://pubs.acs.org/doi/full/10.1021/acscatal.3c03893",
+        "image": "/h2o2.jpeg",
+        "description": "Microkinetic modeling for the direct synthesis of H2O2 over Pd nanoparticles"
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "headline": "The effects of polymorphism and lithium intercalation on the hydrogen evolution reaction for the basal planes of MoS2",
+        "author": [
+          {"@type":"Person","name":"RJ Bunting"},
+          {"@type":"Person","name":"NM Caffrey"}
+        ],
+        "publisher": {"@type":"Organization","name":"Journal of Chemical Physics"},
+        "url": "https://pubs.aip.org/aip/jcp/article/159/14/144703/2915702/The-effects-of-polymorphism-and-lithium",
+        "image": "/mos2.jpeg",
+        "description": "Effects of polymorphism and lithium intercalation on the hydrogen evolution reaction for MoS2 basal planes"
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "headline": "Reactivity of Single-Atom Alloy Nanoparticles: Modeling the Dehydrogenation of Propane",
+        "author": [
+          {"@type":"Person","name":"RJ Bunting"},
+          {"@type":"Person","name":"F Wodaczek"},
+          {"@type":"Person","name":"T Torabi"},
+          {"@type":"Person","name":"B Cheng"}
+        ],
+        "publisher": {"@type":"Organization","name":"Journal of the American Chemical Society"},
+        "url": "https://doi.org/10.1021/jacs.3c04030",
+        "image": "/reactivity.gif",
+        "description": "Modeling the dehydrogenation of propane on single-atom alloy nanoparticles"
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "headline": "Understanding and tackling the activity and selectivity issues for methane to methanol using single atom alloys",
+        "author": [
+          {"@type":"Person","name":"RJ Bunting"},
+          {"@type":"Person","name":"PS Rice"},
+          {"@type":"Person","name":"Z Yao"},
+          {"@type":"Person","name":"J Thompson"},
+          {"@type":"Person","name":"P Hu"}
+        ],
+        "publisher": {"@type":"Organization","name":"Chemical Communications"},
+        "url": "https://doi.org/10.1039/D2CC03183C",
+        "image": "/understanding.gif",
+        "description": "Activity and selectivity issues for methane to methanol using single atom alloys"
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "headline": "Quantitative Insights into the Reaction Mechanism for the Direct Synthesis of H2O2 over Transition Metals: Coverage-Dependent Microkinetic Modeling",
+        "author": [
+          {"@type":"Person","name":"Z Yao"},
+          {"@type":"Person","name":"J Zhao"},
+          {"@type":"Person","name":"RJ Bunting"},
+          {"@type":"Person","name":"C Zhao"},
+          {"@type":"Person","name":"P Hu"},
+          {"@type":"Person","name":"J Wang"}
+        ],
+        "publisher": {"@type":"Organization","name":"ACS Catalysis"},
+        "url": "https://doi.org/10.1021/acscatal.0c04125",
+        "image": "/quantitative.gif",
+        "description": "Coverage-dependent microkinetic modeling for H2O2 direct synthesis"
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "headline": "Investigating the innate selectivity issues of methane to methanol: consideration of an aqueous environment",
+        "author": [
+          {"@type":"Person","name":"RJ Bunting"},
+          {"@type":"Person","name":"PS Rice"},
+          {"@type":"Person","name":"J Thompson"},
+          {"@type":"Person","name":"P Hu"}
+        ],
+        "publisher": {"@type":"Organization","name":"Chemical Science"},
+        "url": "https://doi.org/10.1039/D0SC05402J",
+        "image": "/investigating.gif",
+        "description": "Selectivity issues of methane to methanol in an aqueous environment"
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "headline": "The mechanism and ligand effects of single atom rhodium supported on ZSM-5 for the selective oxidation of methane to methanol",
+        "author": [
+          {"@type":"Person","name":"RJ Bunting"},
+          {"@type":"Person","name":"J Thompson"},
+          {"@type":"Person","name":"P Hu"}
+        ],
+        "publisher": {"@type":"Organization","name":"Physical Chemistry Chemical Physics"},
+        "url": "https://doi.org/10.1039/D0CP01284J",
+        "image": "/the.gif",
+        "description": "Mechanism and ligand effects of single atom rhodium on ZSM-5 for selective methane oxidation"
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "headline": "Amorphous Surface PdOx and Its Activity toward Methane Combustion",
+        "author": [
+          {"@type":"Person","name":"RJ Bunting"},
+          {"@type":"Person","name":"X Cheng"},
+          {"@type":"Person","name":"J Thompson"},
+          {"@type":"Person","name":"P Hu"}
+        ],
+        "publisher": {"@type":"Organization","name":"ACS Catalysis"},
+        "url": "https://doi.org/10.1021/acscatal.9b01942",
+        "image": "/amorphous.gif",
+        "description": "Amorphous Surface PdOx and its activity toward methane combustion"
+      }
+    ]
+  }
+  </script>
+
   <div>
-    <div class="text-3xl w-full font-bold mb-5">Publications</div>
+    <div class="text-3xl w-full font-bold mb-2">Publications</div>
+    <div class="mb-6">
+      <input id="search-input" class="input input-bordered w-full max-w-md" type="search" placeholder="Search publications (title, authors, tag...)" aria-label="Search publications" />
+    </div>
   </div>
 
+    <HorizontalCard
+            title=""
+            img="/nqe.gif"
+            authors="RJ Bunting, Sam Shepherd, N Rampal, S Akhade, DM Wilkins*, and TA Pham*"
+            desc="Physical Chemistry Chemical Physics"
+            badge="NEW"
+            url="https://pubs.acs.org/doi/full/10.1021/acscatal.3c03893"
+    ><p>Nuclear quantum effects of metal surface-mediated C–H activation</p>
+    </HorizontalCard>
   <HorizontalCard
       title=""
       img="/h2o2.jpeg"
       authors="J Zhao, Z Yao*, RJ Bunting, P Hu*, and J Wang*"
       desc="ACS Catalysis"
-      badge="NEW"
       url="https://pubs.acs.org/doi/full/10.1021/acscatal.3c03893"
   ><p>Microkinetic Modeling with Size-Dependent and Adsorbate–Adsorbate Interactions for the Direct Synthesis of H<sub>2</sub>O<sub>2</sub> over Pd Nanoparticles</p>
   </HorizontalCard>
-  <div class="divider my-0"></div>
+
   <HorizontalCard
       title=""
       img="/mos2.jpeg"
       authors="RJ Bunting, NM Caffrey*"
       desc="Journal of Chemical Physics"
-      badge="NEW"
       url="https://pubs.aip.org/aip/jcp/article/159/14/144703/2915702/The-effects-of-polymorphism-and-lithium"
   ><p>The effects of polymorphism and lithium intercalation on the hydrogen evolution reaction for the basal planes of MoS<sub>2</sub></p>
   </HorizontalCard>
-  <div class="divider my-0"></div>
+
   <HorizontalCard
     title="Reactivity of Single-Atom Alloy Nanoparticles: Modeling the Dehydrogenation of Propane"
     img="/reactivity.gif"
     authors="RJ Bunting*, F Wodaczek, T Torabi, B Cheng"
     desc="Journal of the American Chemical Society"
-    badge="NEW"
     url="https://doi.org/10.1021/jacs.3c04030"
   />
-  <div class="divider my-0"></div>
+
   <HorizontalCard
     title="Understanding and tackling the activity and selectivity issues for methane to methanol using single atom alloys"
     img="/understanding.gif"
@@ -44,7 +191,7 @@ import HorizontalCard from "../components/HorizontalCard.astro";
     desc="Chemical Communications"
     url="https://doi.org/10.1039/D2CC03183C"
   />
-  <div class="divider my-0"></div>
+
   <HorizontalCard
       title=""
       img="/quantitative.gif"
@@ -53,7 +200,7 @@ import HorizontalCard from "../components/HorizontalCard.astro";
       url="https://doi.org/10.1021/acscatal.0c04125"
   ><p>Quantitative Insights into the Reaction Mechanism for the Direct Synthesis of H<sub>2</sub>O<sub>2</sub> over Transition Metals: Coverage-Dependent Microkinetic Modeling</p>
   </HorizontalCard>
-  <div class="divider my-0"></div>
+
   <HorizontalCard
     title="Investigating the innate selectivity issues of methane to methanol: consideration of an aqueous environment"
     img="/investigating.gif"
@@ -61,7 +208,7 @@ import HorizontalCard from "../components/HorizontalCard.astro";
     desc="Chemical Science"
     url="https://doi.org/10.1039/D0SC05402J"
   />
-  <div class="divider my-0"></div>
+
   <HorizontalCard
     title="The mechanism and ligand effects of single atom rhodium supported on ZSM-5 for the selective oxidation of methane to methanol"
     img="/the.gif"
@@ -69,7 +216,7 @@ import HorizontalCard from "../components/HorizontalCard.astro";
     desc="Physical Chemistry Chemical Physics"
     url="https://doi.org/10.1039/D0CP01284J"
   />
-  <div class="divider my-0"></div>
+
   <HorizontalCard
       title=""
       img="/amorphous.gif"

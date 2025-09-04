@@ -1,6 +1,7 @@
 ---
 import SideBarFooter from "./SideBarFooter.astro";
 import SideBarMenu from "./SideBarMenu.astro";
+import ImageOptim from "./ImageOptim.astro";
 const { sideBarActiveItemID } = Astro.props;
 ---
 
@@ -10,8 +11,8 @@ const { sideBarActiveItemID } = Astro.props;
     <div class="w-fit mx-auto mt-5 mb-6">
       <a href="/">
         <div class="avatar transition ease-in-out hover:scale-[102%] block m-auto">
-          <div class="w-[8.5rem]">
-            <img class="mask mask-circle rounded-full w-full h-full object-cover" src="/profile.png" alt="Profile image" width="300" height="300" />
+          <div class="w-[8.5rem] aspect-square overflow-hidden">
+            <ImageOptim src="/profile.png" alt="Profile image" class="mask mask-circle rounded-full w-full h-full object-cover" width="300" height="300" />
           </div>
         </div>
       </a>

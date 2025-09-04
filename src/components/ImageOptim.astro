@@ -1,0 +1,37 @@
+---
+// ImageOptim.astro
+// Props:
+// - src: either a string path (e.g. '/image.png') or an imported module from src/assets
+// - alt, class, sizes, width, height, loading
+import { getImage } from 'astro:assets';
+const { src, alt = '', class: cls = '', sizes, width, height, loading = 'lazy' } = Astro.props;
+let imgSrc = src;
+let srcset = undefined;
+let imgType = 'string';
+try {
+  // If src is an object (imported), attempt to optimize
+  if (src && typeof src === 'object' && 'default' in src) {
+    imgType = 'module';
+  }
+} catch (e) {
+  imgType = 'string';
+}
+if (imgType === 'module') {
+  try {
+    const image = getImage({ src: src, widths: [400, 800, 1200], formats: ['webp','avif','png'] });
+    imgSrc = image?.src ?? src;
+    // build simple srcset from returned sources if available
+    if (image && image.sources && image.sources.length) {
+      const primary = image.sources[0];
+      if (primary && primary.srcset) srcset = primary.srcset;
+    }
+  } catch (e) {
+    // fallback to module default
+    imgSrc = src?.default ?? src;
+  }
+}
+---
+{imgSrc && (
+  <img src={imgSrc} alt={alt} class={cls} sizes={sizes} width={width} height={height} loading={loading} srcset={srcset} />
+)}
+
