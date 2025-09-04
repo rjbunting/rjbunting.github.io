@@ -7,9 +7,10 @@ export interface Props {
 	title: string;
 	description: string;
 	image?: string;
+	structuredData?: string;
 }
 
-const { title, description, image = '/social_img.png' } = Astro.props;
+const { title, description, image = '/social_img.png', structuredData } = Astro.props;
 ---
 
 <!-- Global Metadata -->
@@ -36,3 +37,5 @@ const { title, description, image = '/social_img.png' } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+{structuredData && <script type="application/ld+json">{structuredData}</script>}

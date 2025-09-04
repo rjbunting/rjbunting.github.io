@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+Sitemap: https://rjbunting.github.io/sitemap.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://rjbunting.github.io/</loc>
+  </url>
+  <url>
+    <loc>https://rjbunting.github.io/cv</loc>
+  </url>
+  <url>
+    <loc>https://rjbunting.github.io/publications</loc>
+  </url>
+  <url>
+    <loc>https://rjbunting.github.io/teaching</loc>
+  </url>
+  <url>
+    <loc>https://rjbunting.github.io/news</loc>
+  </url>
+  <url>
+    <loc>https://rjbunting.github.io/research</loc>
+  </url>
+</urlset>
+

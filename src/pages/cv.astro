@@ -4,33 +4,32 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
 ---
 
 <BaseLayout title="CV" sideBarActiveItemID="cv">
-  <!--<div class="mb-5">-->
-  <!--  <div class="text-3xl w-full font-bold">Profile</div>-->
-  <!--</div>-->
+  <div class="mb-4 flex items-center gap-3">
+    <a
+      href="https://1drv.ms/b/c/1b9126a929670101/EeH5WR0wonZAnZuWl_CPOyEBLjbBQDPTg2JH5Ax6-4yL0A?e=cJ9cpf"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition-colors font-semibold text-base"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+      </svg>
+      Download Full CV (PDF)
+    </a>
+  </div>
 
-  <!--<div class="mb-10 text-justify">-->
-  <!--  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna-->
-  <!--  aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis-->
-  <!--  aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat-->
-  <!--  cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.-->
-  <!--</div>-->
-
-  <div class="mb-5">
+  <div class="mb-4">
     <div class="text-3xl w-full font-bold">Professional Appointments</div>
   </div>
 
-  <div class="time-line-container grid gap-4 mb-10">
+  <div class="time-line-container grid gap-2 mb-6">
     <TimeLineElement
         title="Lawrence Livermore National Lab | Mar24-*"
-        subtitle="Postdoctoral Researcher | Under the supervision of Quantum Simulations Group Deputy Group Leader Tuan Anh Pham"
+        subtitle="Postdoctoral Researcher | Under the supervision of Quantum Simulations Group Leader Tuan Anh Pham"
     />
     <TimeLineElement
-      title="Insitute of Science and Technology Austria | Feb23-Feb24"
-      subtitle="Postdoctoral Researcher | Under the supervision of Asst. Prof. Maria Ibáñez"
-    />
-    <TimeLineElement
-        title="Insitute of Science and Technology Austria | Nov21-Jan23 "
-        subtitle="Postdoctoral Researcher | Under the supervision of Asst. Prof. Bingqing Cheng"
+      title="Insitute of Science and Technology Austria | Nov21-Feb24"
+      subtitle="Postdoctoral Researcher | Under the supervision of Asst. Prof. Bingqing Cheng and Asst. Prof. Maria Ibáñez"
     />
     <TimeLineElement
         title="University College Dublin | Sep20-Aug21 "
@@ -38,11 +37,11 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
     />
   </div>
 
-  <div class="mb-5">
+  <div class="mb-4">
     <div class="text-3xl w-full font-bold">Education</div>
   </div>
 
-  <div class="time-line-container mb-10">
+  <div class="time-line-container mb-6">
     <TimeLineElement
       title="Queen's University Belfast | Oct17-Aug20"
       subtitle="Doctor of Philosophy | Under the supervision of Prof. Peijun Hu and Assoc. Prof. Jillian Thompson"
@@ -55,53 +54,61 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
     </TimeLineElement>
   </div>
 
-  <div class="mb-5">
+  <div class="mb-4">
     <div class="text-3xl w-full font-bold">Conferences</div>
   </div>
 
-  <ul class="list-disc mx-6 mb-10 grid gap-2">
-    <!--<li>-->
-    <!--  <a href="#" target="_blank">Irish Universities Chemistry Research Colloquium</a>-->
-    <!--</li>-->
+  <ul class="list-disc mx-6 mb-3 grid gap-1 text-base">
     <li>
-    <a>70th Irish Universities Chemistry Research Colloquium</a>
-    </li>
-    <li>
-      <a>6th UK Catalysis Conference</a>
+      <a>70th Irish Universities Chemistry Research Colloquium</a>
     </li>
   </ul>
 
-  <div class="mb-5">
+  <div class="mb-1 mt-4 text-xl font-semibold">Speaker</div>
+  <ul class="list-disc mx-6 mb-3 grid gap-1 text-base">
+    <li>
+      <a>6th UK Catalysis Conference</a>
+    </li>
+    <li>
+      <a>NREL Sustainable Aviation Fuel Meet 2024</a>
+    </li>
+  </ul>
+
+  <div class="mb-1 text-xl font-semibold">Chair and Speaker</div>
+  <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
+    <li>
+      <a>24th American Conference on Crystal Growth and Epitaxy</a>
+    </li>
+  </ul>
+
+  <div class="mb-4">
     <div class="text-3xl w-full font-bold">Invited Talks</div>
   </div>
 
-  <ul class="list-disc mx-6 mb-10 grid gap-2">
+  <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
     <li>
       <a>Dublin Universities Condensed Matter Group</a>
     </li>
     <li>
       <a>Cambridge University Soft Matter Group</a>
     </li>
-    <li>
-      <a>Zheijiang University of Technology</a>
-    </li>
   </ul>
 
-  <div class="mb-5">
+  <div class="mb-4">
     <div class="text-3xl w-full font-bold">Memberships</div>
   </div>
 
-  <ul class="list-disc mx-6 mb-10 grid gap-2">
+  <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
     <li>
       <a>Royal Society of Chemistry</a>
     </li>
   </ul>
 
-  <div class="mb-5">
+  <div class="mb-4">
     <div class="text-3xl w-full font-bold">Teaching</div>
   </div>
 
-  <ul class="list-disc mx-6 mb-10 grid gap-2">
+  <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
     <li>
       <a href="https://rjbunting.github.io/teaching/" target="_blank">Course Lead - An Introduction to Computational Chemistry</a>
     </li>
@@ -119,13 +126,15 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
     </li>
   </ul>
 
-  <div class="mb-5">
+  <div class="mb-4">
     <div class="text-3xl w-full font-bold">Refereeing</div>
   </div>
-  <ul class="list-disc md:columns-1 columns-1 mx-6">
-    <li>Journal of Chemical Physics</li>
+  <ul class="list-disc md:columns-1 columns-1 mx-6 text-base mb-2 gap-1">
     <li>Journal of the American Chemical Society</li>
+    <li>Physical Review Letters</li>
     <li>Journal of Physical Chemistry Letters</li>
+    <li>Journal of Chemical Physics</li>
+    <li>Journal of Applied Physics</li>
   </ul>
 
 </BaseLayout>

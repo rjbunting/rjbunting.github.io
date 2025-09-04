@@ -4,23 +4,36 @@ import HorizontalCard from "../components/HorizontalCard.astro";
 import { getCollection } from "astro:content";
 
 const researchposts = (await getCollection("research")).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
 const researchlast_posts = researchposts.slice(0, 2);
-
 const newsposts = (await getCollection("news")).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
 const newslast_posts = newsposts.slice(0, 2);
+
+const homepageTitle = "Dr. Rhys Bunting | Computational Chemist";
+const homepageDescription = "Dr. Rhys Bunting is a computational chemist working in energy, catalysis, and C-H activation. View research, CV, publications, and teaching.";
+const homepageStructuredData = `{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Dr. Rhys Bunting",
+  "url": "https://rjbunting.github.io/",
+  "jobTitle": "Computational Chemist",
+  "sameAs": [
+    "https://scholar.google.co.uk/citations?user=oP18I8cAAAAJ&hl=en",
+    "https://github.com/rjbunting",
+    "https://www.linkedin.com/in/rhys-bunting-ab87a1217/",
+    "https://orcid.org/0000-0001-6928-074X"
+  ]
+}`;
 ---
 
-<BaseLayout sideBarActiveItemID="home">
+<BaseLayout sideBarActiveItemID="home" title={homepageTitle} description={homepageDescription} structuredData={homepageStructuredData}>
   <div class="pb-12 mt-5">
     <div class="text-5xl font-bold">Dr. Rhys J. Bunting</div>
-    <div class="text-2xl py-3 font-style: italic">Computational Chemist</div>
+    <div class="text-2xl py-3 font-style: italic">Theoretical Chemist</div>
     <div class="py-2">
       <text class="text-lg text-align: justify-center">
-        I apply methods and take inspiration from different fields to tackle key issues within the field of chemistry.
+        I apply methods and take inspiration from interdisciplinary fields to tackle key issues within chemistry.
         I have worked and continue to work within the boundaries of chemistry, chemical engineering, physics, and data science.
-        I am particularly interested in the fields of energy, catalysis, and C-H activation.
+        I am passionate about solving problems within the fields of energy, catalysis, and C-H activation.
         I combine a variety of methods, such as <em>ab initio</em> electronic structure methods, molecular dynamics, and machine learning to solve these issues.
       </text>
     </div>
