@@ -14,7 +14,6 @@ const { title, description, pubDate, updatedDate, heroImage, badge } =
   Astro.props;
 dayjs.extend(localizedFormat);
 const displayDate = dayjs(pubDate).format("ll");
-import { Image } from "@astrojs/image/components";
 ---
 
 <BaseLayout title={title} description={description} image={heroImage}>
@@ -22,15 +21,7 @@ import { Image } from "@astrojs/image/components";
     <article class="prose prose-lg max-w-[750px] prose-img:mx-auto">
       {
         heroImage && (
-        <Image
-            aspectRatio={"16:9"}
-            width={750}
-            height={422}
-            format="webp"
-            src={heroImage}
-            alt={title}
-            class="w-full mb-6"
-          />
+        <img src={heroImage} alt={title} class="w-full mb-6" style="aspect-ratio:16/9;" />
         )
       }
       <h1 class="title my-2 text-4xl font-bold">{title}</h1>
