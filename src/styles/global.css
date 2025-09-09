@@ -31,6 +31,8 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Enable smooth scrolling for in-page anchors; honored by prefers-reduced-motion rule below */
+  scroll-behavior: smooth;
 }
 
 body {

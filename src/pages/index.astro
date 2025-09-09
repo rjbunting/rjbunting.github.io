@@ -5,8 +5,6 @@ import { getCollection } from "astro:content";
 
 const researchposts = (await getCollection("research")).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const researchlast_posts = researchposts.slice(0, 2);
-const newsposts = (await getCollection("news")).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const newslast_posts = newsposts.slice(0, 2);
 
 const homepageTitle = "Dr. Rhys Bunting | Computational Chemist";
 const homepageDescription = "Dr. Rhys Bunting is a computational chemist working in energy, catalysis, and C-H activation. View research, CV, publications, and teaching.";
@@ -41,26 +39,6 @@ const homepageStructuredData = `{
       <a class="btn" href="/cv">My Curriculum Vitae</a>
     </div>
   </div>
-
-  <div>
-    <div class="text-3xl w-full font-bold mb-5 mt-10">Recent News</div>
-  </div>
-
-  {
-    newslast_posts.map((news) => (
-      <>
-        <HorizontalCard
-          title={news.data.title}
-          img={news.data.heroImage}
-          desc={news.data.description}
-          url={"/news/" + news.slug}
-          target="_self"
-          badge={news.data.badge}
-        />
-        <div class="divider my-0" />
-      </>
-    ))
-  }
 
   <div>
     <div class="text-3xl w-full font-bold mb-5 mt-10">Latest Research Themes</div>

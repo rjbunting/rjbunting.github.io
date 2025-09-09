@@ -72,6 +72,40 @@
       });
     }
 
+    // Counter animation for elements with .counter and data-target
+    try {
+      const counters = document.querySelectorAll('.counter[data-target]');
+      if (counters.length) {
+        const counterObserver = new IntersectionObserver((entries, obs) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            const raw = el.getAttribute('data-target') || '0';
+            // allow formats like "1000+" or "8"
+            const plus = raw.trim().endsWith('+') || el.getAttribute('data-plus') === 'true';
+            const target = parseInt(raw.replace(/\D/g, ''), 10) || 0;
+            const duration = parseInt(el.getAttribute('data-duration') || '1200', 10);
+            const startTime = performance.now();
+            const step = (now) => {
+              const progress = Math.min((now - startTime) / duration, 1);
+              const value = Math.floor(progress * target);
+              el.textContent = value + (plus ? '+' : '');
+              if (progress < 1) requestAnimationFrame(step);
+              else {
+                el.textContent = target + (plus ? '+' : '');
+                obs.unobserve(el);
+              }
+            };
+            requestAnimationFrame(step);
+          });
+        }, { threshold: 0.2 });
+        counters.forEach((c) => counterObserver.observe(c));
+      }
+    } catch (e) {
+      // non-fatal
+      console.warn('counter animation failed', e);
+    }
+
     // Simple publications search (elements with data-search)
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
