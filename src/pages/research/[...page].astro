@@ -3,83 +3,337 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import HorizontalCard from "../../components/HorizontalCard.astro";
 import { getCollection } from "astro:content";
 
+// Load manual scholar metrics from src/data/scholar.json
+const metricsModule = await import('../../data/scholar.json');
+const metrics = metricsModule.default ?? metricsModule;
+
 export async function getStaticPaths({ paginate }) {
   const researchposts = await getCollection("research");
   researchposts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
   return paginate(researchposts, { pageSize: 10 });
 }
 
-const { page } = Astro.props;
+const { page } = Astro.props as any;
 ---
 
-<BaseLayout title="Research Themes" sideBarActiveItemID="research" wide={true}>
-  <div class="mb-5">
-    <div class="text-3xl w-full font-bold">Research Themes</div>
-  </div>
+<BaseLayout title="Research" sideBarActiveItemID="research" wide={true}>
+  <!-- Hero / summary with research focus and compact metrics column -->
+  <section class="bg-base-200 text-base-content rounded-lg p-6 mb-0 flex flex-col md:flex-row items-start gap-6 no-hover-scale">
+    <div class="flex-1">
+      <h1 class="text-3xl w-full font-bold mb-3">Bridging Theory and Experiment</h1>
+      <p class="text-lg mb-4 opacity-95">
+        My research centres on developing new methods, implementing new models, and enhancing workflows to bridge the
+          scales between theory and experiment. Research topics focus on pressing challenges in catalysis, energy,
+          materials, and the natural world. I deepen our understanding of processes such as chemical reactions,
+          the effects of microstructure, nucleation, and degradation.
+      </p>
 
-  {
-    page.data.length === 0 ? (
-      <div class="bg-base-200 border-l-4 border-secondary w-full p-4 min-w-full">
-        <p class="font-bold">Sorry!</p>
-        <p>There are no blog posts to show at the moment. Check back later!</p>
+      <!-- Publications link removed from left column; moved to metrics column on the right -->
+    </div>
+
+    <!-- Inline metrics column inside the hero (compact and visible on md+) -->
+    <div class="w-full md:w-56 flex-shrink-0 grid grid-cols-3 md:grid-cols-1 gap-3">
+      <div class="bg-base-100 rounded-lg p-3 text-center shadow-sm cursor-pointer allow-hover">
+        <div class="text-2xl font-bold"><span class="counter" data-target={String(metrics.publications)} data-duration="900">0</span></div>
+        <div class="text-xs text-muted">Publications</div>
       </div>
-    ) : (
-      <ul>
-        {page.data.map((researchpost) => (
-          <>
-            <HorizontalCard
-              title={researchpost.data.title}
-              img={researchpost.data.heroImage}
-              desc={researchpost.data.description}
-              url={"/research/" + researchpost.slug}
-              target="_self"
-              badge={researchpost.data.badge}
-            />
-            <div class="divider my-0" />
-          </>
-        ))}
-      </ul>
-    )
-  }
+      <div class="bg-base-100 rounded-lg p-3 text-center shadow-sm cursor-pointer allow-hover">
+        <div class="text-2xl font-bold"><span class="counter" data-target={String(metrics.citations)} data-duration="1200">0</span></div>
+        <div class="text-xs text-muted">Citations</div>
+      </div>
+      <div class="bg-base-100 rounded-lg p-3 text-center shadow-sm cursor-pointer allow-hover">
+        <div class="text-2xl font-bold"><span class="counter" data-target={String(metrics.h_index)} data-duration="1000">0</span></div>
+        <div class="text-xs text-muted">h-index</div>
+      </div>
+      <div class="md:hidden text-xs text-muted mt-1 col-span-3">Metrics sourced from Google Scholar.<br/>Last updated: {metrics.lastUpdated}</div>
 
-  <div class="flex justify-between">
-    {
-      page.url.prev ? (
-        <a href={page.url.prev} class="btn btn-ghost my-10 mx-5">
-          {" "}
-          <svg
-            class="h-6 w-6 fill-current md:h-8 md:w-8"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-          >
-            <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
-          </svg>{" "}
-          Recent posts
-        </a>
-      ) : (
-        <div />
-      )
-    }
-    {
-      page.url.next ? (
-        <a href={page.url.next} class="btn btn-ghost my-10 mx-5">
-          Older Posts{" "}
-          <svg
-            class="h-6 w-6 fill-current md:h-8 md:w-8"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-          >
-            {" "}
-            <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-          </svg>
-        </a>
-      ) : (
-        <div />
-      )
-    }
-  </div>
+      <!-- Visible tag on md+ showing metrics source and last-updated time -->
+      <div class="hidden md:block text-xs text-muted mt-1 text-center">Metrics from Google Scholar<br/><span class="block">Last updated: {metrics.lastUpdated}</span></div>
+
+      <!-- Publications link placed below the metrics on the right (spans full width on small screens) -->
+      <div class="col-span-3 md:col-auto mt-2 flex justify-center md:justify-center">
+        <a href="/publications" class="btn btn-primary btn-sm w-full md:w-auto" aria-label="View publications">See publications</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- New: Models development section with interactive two-image slider -->
+  <section class="bg-base-100 rounded-lg p-6 mb-0 no-hover-scale">
+     <div class="max-w-4xl mx-auto relative">
+      <h2 class="text-2xl font-semibold mb-3">Developing and Validating Models</h2>
+      <p class="text-base mb-4 text-muted">
+        I develop computational models that capture key physics and chemistry across scales, validate them against
+        experiments, and iterate to improve robustness and predictive power. Below is an example comparison showing
+        two stages/views of a modelling workflow — slide the handle to uncover one image or the other.
+      </p>
+
+      <div class="relative w-full overflow-hidden rounded-lg shadow-md select-none allow-hover" id="comparison-slider" style="max-height:420px" aria-label="Past vs future comparison">
+
+        <!-- Past/Future buttons (overlayed on the images only) -->
+        <div id="btn-past" class="absolute top-3 left-3 z-50 cursor-pointer" role="button" tabindex="0" aria-label="Show past" style="pointer-events:auto;">
+          <div class="bg-base-200 text-sm text-base-content px-3 py-1 rounded shadow-sm border border-base-300">◀ Past</div>
+        </div>
+        <div id="btn-future" class="absolute top-3 right-3 z-50 cursor-pointer" role="button" tabindex="0" aria-label="Show future" style="pointer-events:auto;">
+          <div class="bg-base-200 text-sm text-base-content px-3 py-1 rounded shadow-sm border border-base-300">Future ▶</div>
+        </div>
+
+        <!-- Bottom image (future) - stays in place -->
+        <img src="/machinelearning.jpg" alt="Future / model prediction view" class="absolute inset-0 w-full h-full object-cover block" style="position:relative; z-index:10;" />
+
+         <!-- Past image (static) - curtain will reveal/cover it via clip-path. This image does not move. -->
+        <img id="past-img" src="/cluster.webp" alt="Past / experimental view" class="absolute inset-0 w-full h-full object-cover block" style="position:absolute; left:0; top:0; z-index:20; transform:none; object-position:left center; pointer-events:none; will-change:clip-path;" />
+        <!-- Draggable handle (divider line and rail) -->
+        <div id="handle" class="absolute top-0 h-full flex items-center justify-center z-40" style="left:50%" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-label="Reveal timeline (drag left for past, right for future)">
+          <div class="relative flex items-center justify-center h-full w-full">
+            <div class="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-black/60 shadow-md" style="filter:drop-shadow(0 1px 4px rgba(0,0,0,0.35)); opacity:0.85;"></div>
+            <div class="absolute left-1/2 -translate-x-1/2 h-full w-6 rounded bg-black/10 pointer-events-none" style="opacity:0.6;"></div>
+
+            <!-- Circular knob (visible, draggable) -->
+            <div class="divider-knob absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-base-100 border-2 border-black/10 shadow-lg flex items-center justify-center z-50 pointer-events-auto" style="touch-action:none;">
+              <!-- decorative inner indicator -->
+              <div class="opacity-70 text-sm md:text-base">‹ ›</div>
+            </div>
+          </div>
+         </div>
+
+      <script>
+        (function(){
+          const slider = document.getElementById('comparison-slider');
+          const pastImg = document.getElementById('past-img');
+          const handleEl = document.getElementById('handle');
+
+          if (!slider || !pastImg || !handleEl) return;
+
+          /** @type {HTMLElement} */
+          const past = /** @type {HTMLElement} */ (pastImg);
+          /** @type {HTMLElement} */
+          const handle = /** @type {HTMLElement} */ (handleEl);
+          // knob element inside the handle (decorative and draggable via the handle)
+          const knob = /** @type {HTMLElement | null} */ (handle.querySelector('.divider-knob'));
+
+          // internal current position (0..100). Start at 50 (50% of past visible)
+          let currentPos = 50;
+          let dragging = false;
+
+          const setPosition = (percent, { animate = false } = {}) => {
+            const clamped = Math.max(0, Math.min(100, percent));
+
+            // clamped represents how much of the past image remains visible from the left (0..100)
+            const clipRight = 100 - clamped; // percent of the right side to inset (hidden)
+
+            if (animate) {
+              past.style.transition = 'clip-path .25s ease, transform 0s';
+              handle.style.transition = 'left .25s ease';
+            } else {
+              past.style.transition = 'none';
+              handle.style.transition = 'none';
+            }
+
+            // Use clip-path to hide the right portion of the static past image (curtain effect)
+            past.style.clipPath = `inset(0 ${clipRight}% 0 0)`;
+            // Ensure the image itself has no transform applied
+            past.style.transform = 'none';
+            handle.style.left = clamped + '%';
+
+            currentPos = clamped;
+            handle.setAttribute('aria-valuenow', String(clamped));
+          };
+
+          const resolvePositionFromX = (clientX) => {
+            const rect = slider.getBoundingClientRect();
+            return ((clientX - rect.left) / rect.width) * 100;
+          };
+
+          // Pointer handlers (support mouse & touch)
+          const onPointerDown = (e) => {
+            dragging = true;
+            try { e.target.setPointerCapture && e.target.setPointerCapture(e.pointerId); } catch (err) {}
+
+            // update position immediately
+            const rel = resolvePositionFromX(e.clientX);
+            setPosition(rel);
+
+            e.preventDefault();
+          };
+
+          const onPointerMove = (e) => {
+            if (!dragging) return;
+            const rel = resolvePositionFromX(e.clientX);
+            setPosition(rel);
+          };
+
+          const onPointerUp = (e) => {
+            if (!dragging) return;
+            dragging = false;
+            try { e.target.releasePointerCapture && e.target.releasePointerCapture(e.pointerId); } catch (err) {}
+            setPosition(currentPos, { animate: true });
+          };
+
+          // Start drag from the handle or the knob. Do not start drag from clicks on the slider background.
+          handle.addEventListener('pointerdown', onPointerDown);
+           window.addEventListener('pointermove', onPointerMove);
+           window.addEventListener('pointerup', onPointerUp);
+
+           // Improve UX: prevent text selection while dragging
+           const setDraggingUi = (isDragging) => {
+             document.body.style.userSelect = isDragging ? 'none' : '';
+            // change handle cursor while dragging
+            handle.style.cursor = isDragging ? 'grabbing' : 'grab';
+            // scale the knob slightly while dragging to give feedback
+            if (knob instanceof HTMLElement) {
+              knob.style.transition = 'transform .18s ease, box-shadow .18s ease';
+              // Preserve the centering transform (translate -50%,-50%) used by Tailwind so the knob
+              // stays perfectly centered while applying a small vertical offset and scale.
+              knob.style.transform = isDragging
+                ? 'translate(-50%, -50%) translateY(-2px) scale(1.03)'
+                : 'translate(-50%, -50%) scale(1)';
+             knob.style.boxShadow = isDragging ? '0 8px 20px rgba(0,0,0,0.18)' : '0 6px 14px rgba(0,0,0,0.12)';
+           }
+           };
+           // Wrap onPointerDown / onPointerUp to update UI
+          const _onPointerDown = (e) => { setDraggingUi(true); onPointerDown(e); };
+          const _onPointerUp = (e) => { setDraggingUi(false); onPointerUp(e); };
+          // Rebind handle to wrapped handlers
+          handle.removeEventListener('pointerdown', onPointerDown);
+          handle.addEventListener('pointerdown', _onPointerDown);
+          // use wrapped up handler
+          window.removeEventListener('pointerup', onPointerUp);
+          window.addEventListener('pointerup', _onPointerUp);
+
+          // Prevent default touch-action scrolling for the handle to make dragging smoother
+          try { handle.style.touchAction = 'none'; } catch (err) {}
+
+          // keyboard accessibility
+          slider.tabIndex = 0;
+          slider.addEventListener('keydown', (e) => {
+            const step = e.shiftKey ? 10 : 5;
+            let cur = currentPos;
+            if (e.key === 'ArrowLeft') { cur -= step; setPosition(cur, { animate: true }); e.preventDefault(); }
+            if (e.key === 'ArrowRight') { cur += step; setPosition(cur, { animate: true }); e.preventDefault(); }
+            if (e.key === 'Home') { setPosition(0, { animate: true }); e.preventDefault(); }
+            if (e.key === 'End') { setPosition(100, { animate: true }); e.preventDefault(); }
+          });
+
+          // Past/Future label buttons (make clickable and keyboard accessible).
+          const btnPast = document.getElementById('btn-past');
+          const btnFuture = document.getElementById('btn-future');
+          if (btnPast) {
+            // Ensure pointerdown on the button takes priority (useful on touch and to stop the handle from intercepting)
+            btnPast.addEventListener('pointerdown', (ev) => { ev.stopPropagation(); ev.preventDefault(); setPosition(80, { animate: true }); });
+            btnPast.addEventListener('click', (ev) => { ev.stopPropagation(); setPosition(80, { animate: true }); });
+            btnPast.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); ev.stopPropagation(); setPosition(80, { animate: true }); } });
+          }
+          if (btnFuture) {
+            // Ensure pointerdown on the button takes priority
+            btnFuture.addEventListener('pointerdown', (ev) => { ev.stopPropagation(); ev.preventDefault(); setPosition(20, { animate: true }); });
+            btnFuture.addEventListener('click', (ev) => { ev.stopPropagation(); setPosition(20, { animate: true }); });
+            btnFuture.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); ev.stopPropagation(); setPosition(20, { animate: true }); } });
+          }
+
+          // initialize
+          setPosition(currentPos);
+
+          window.addEventListener('resize', () => { /* noop */ });
+        })();
+      </script>
+    <style>
+      /* Prevent the small overlay buttons from shifting on active/pressed states (override any framework defaults)
+         and remove tap highlight on mobile so elements don't appear to jump. */
+      #btn-past > div, #btn-future > div {
+        touch-action: manipulation;
+        transform: translateZ(0);
+      }
+      #btn-past > div:active, #btn-future > div:active {
+        transform: none !important;
+      }
+      /* Ensure the knob remains visually centered when inline transforms are applied */
+      .divider-knob { transform-origin: center; }
+    </style>
+    </div>
+   </div>
+
+  <!-- Research themes: highlight the first three research posts as a separate section -->
+  <section class="mb-8 reveal">
+    <h2 class="text-2xl font-bold mb-3">Research themes</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {
+        (page.data || []).slice(0, 3).map((p) => (
+          <div>
+            <HorizontalCard
+              title={p.data.title}
+              img={p.data.heroImage}
+              desc={p.data.description}
+              url={"/research/" + p.slug}
+              badge={p.data.badge}
+            />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Research list (paginated) -->
+    <section id="research-list" class="mb-8 reveal">
+      {
+        /* Render only the posts after the first three (they are shown in the Research themes section above) */
+        (page.data || []).slice(3).length === 0 ? null : (
+          <ul>
+            {(page.data || []).slice(3).map((researchpost) => (
+              <li>
+                <HorizontalCard
+                  title={researchpost.data.title}
+                  img={researchpost.data.heroImage}
+                  desc={researchpost.data.description}
+                  url={"/research/" + researchpost.slug}
+                  target="_self"
+                  badge={researchpost.data.badge}
+                  disableHover={true}
+                />
+                <div class="divider my-0" />
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </section>
+
+    <div class="flex justify-between">
+      {
+        page.url.prev ? (
+          <a href={page.url.prev} class="btn btn-ghost my-10 mx-5">
+            <svg
+              class="h-6 w-6 fill-current md:h-8 md:w-8"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
+            </svg>
+            Recent posts
+          </a>
+        ) : (
+          <div />
+        )
+      }
+      {
+        page.url.next ? (
+          <a href={page.url.next} class="btn btn-ghost my-10 mx-5">
+            Older Posts
+            <svg
+              class="h-6 w-6 fill-current md:h-8 md:w-8"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+            </svg>
+          </a>
+        ) : (
+          <div />
+        )
+      }
+    </div>
+  </section>
 </BaseLayout>

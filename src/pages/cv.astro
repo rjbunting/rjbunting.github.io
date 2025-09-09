@@ -26,15 +26,26 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
     <TimeLineElement
       title="Lawrence Livermore National Lab | Mar24-*"
       subtitle="Postdoctoral Researcher | Under the supervision of Quantum Simulations Group Leader Tuan Anh Pham"
-    />
+    >
+      <span slot="meta">I implement machine learning methods to bridge the scales of simulations from the
+          atomistic scale to the meso-scale. I also develop innovative graph-based kinetic monte carlo packages to
+      couple surface reactivity and degradation.</span>
+    </TimeLineElement>
     <TimeLineElement
       title="Insitute of Science and Technology Austria | Nov21-Feb24"
       subtitle="Postdoctoral Researcher | Under the supervision of Asst. Prof. Bingqing Cheng and Asst. Prof. Maria Ibáñez"
-    />
+    >
+      <span slot="meta">I simulated single atom alloy nanoparticles with molecular dynamics to sample the population of
+      active sites, calculating reactivity of a whole nanoparticle instead of a surface. I was the theory lead for
+      experimental-theoretical projects considering the thermoelectric properties of materials.</span>
+    </TimeLineElement>
     <TimeLineElement
       title="University College Dublin | Sep20-Aug21"
       subtitle="Postdoctoral Researcher | Under the supervision of Asst. Prof. Nuala Caffrey"
-    />
+    >
+      <span slot="meta">I used Density Functional Theory to calculate the catalytic properties of molybdenum
+          dichalcogenides and MXenes.</span>
+    </TimeLineElement>
   </div>
 
   <div class="mb-4">
@@ -45,12 +56,60 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
     <TimeLineElement
       title="Queen's University Belfast | Oct17-Aug20"
       subtitle="Doctor of Philosophy | Under the supervision of Prof. Peijun Hu and Assoc. Prof. Jillian Thompson"
-    />
+    >
+      <span slot="meta">I performed electronic structure methods, kinetic modeling, and global optimisation algorithms to describe the reactivity of surfaces.</span>
+    </TimeLineElement>
     <TimeLineElement
       title="Queen's University Belfast | Oct13-Jul17"
       subtitle="MSci Chemistry | School of Chemistry and Chemical Engineering"
     />
   </div>
+
+    <div class="mb-4">
+        <h2 class="text-3xl w-full font-bold">Teaching</h2>
+    </div>
+
+    <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
+        <li>
+            <div class="flex justify-between items-center w-full">
+                <span>Course Lead - An Introduction to Computational Chemistry</span>
+                <a href="/teaching" class="ml-2 inline-flex items-center" aria-label="Open course - An Introduction to Computational Chemistry" title="Open course - An Introduction to Computational Chemistry">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3h7v7"></path><path d="M21 3L10 14"></path><path d="M21 21H3V3"></path></svg>
+                </a>
+            </div>
+        </li>
+        <li>
+            <div class="flex justify-between items-center w-full">
+                <span>Course Lead - An Introduction to Catalysis</span>
+                <a href="/teaching" class="ml-2 inline-flex items-center" aria-label="Open course - An Introduction to Catalysis" title="Open course - An Introduction to Catalysis">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3h7v7"></path><path d="M21 3L10 14"></path><path d="M21 21H3V3"></path></svg>
+                </a>
+            </div>
+        </li>
+        <li>Workshop Coordinator - Physical Chemistry (Computational Chemistry)</li>
+        <li>Summer School Lecturer - QUB Chinese Exchange Chemistry Summer School</li>
+    </ul>
+
+    <div class="mb-4">
+        <div class="text-3xl w-full font-bold">Refereeing</div>
+    </div>
+
+    <ul class="list-disc md:columns-1 columns-1 mx-6 text-base mb-2 gap-1">
+        <li>Journal of the American Chemical Society</li>
+        <li>Physical Review Letters</li>
+        <li>Journal of Physical Chemistry Letters</li>
+        <li>Journal of Chemical Physics</li>
+        <li>Journal of Applied Physics</li>
+    </ul>
+
+    <div class="mb-4">
+        <h2 class="text-3xl w-full font-bold">Invited Talks</h2>
+    </div>
+
+    <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
+        <li>Cambridge University Soft Matter Group</li>
+        <li>Dublin Universities Condensed Matter Group</li>
+    </ul>
 
   <div class="mb-4">
     <h2 class="text-3xl w-full font-bold">Conferences</h2>
@@ -72,58 +131,11 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
   </ul>
 
   <div class="mb-4">
-    <h2 class="text-3xl w-full font-bold">Invited Talks</h2>
-  </div>
-
-  <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
-    <li>Dublin Universities Condensed Matter Group</li>
-    <li>Cambridge University Soft Matter Group</li>
-  </ul>
-
-  <div class="mb-4">
     <h2 class="text-3xl w-full font-bold">Memberships</h2>
   </div>
 
   <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
     <li>Royal Society of Chemistry</li>
-  </ul>
-
-  <div class="mb-4">
-    <h2 class="text-3xl w-full font-bold">Teaching</h2>
-  </div>
-
-  <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
-    <li>
-      <div class="flex justify-between items-center w-full">
-        <span>Course Lead - An Introduction to Computational Chemistry</span>
-        <a href="/teaching" class="ml-2 inline-flex items-center" aria-label="Open course - An Introduction to Computational Chemistry" title="Open course - An Introduction to Computational Chemistry">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3h7v7"></path><path d="M21 3L10 14"></path><path d="M21 21H3V3"></path></svg>
-        </a>
-      </div>
-    </li>
-    <li>
-      <div class="flex justify-between items-center w-full">
-        <span>Course Lead - An Introduction to Catalysis</span>
-        <a href="/teaching" class="ml-2 inline-flex items-center" aria-label="Open course - An Introduction to Catalysis" title="Open course - An Introduction to Catalysis">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3h7v7"></path><path d="M21 3L10 14"></path><path d="M21 21H3V3"></path></svg>
-        </a>
-      </div>
-    </li>
-    <li>Workshop Coordinator - Physical Chemistry (Computational Chemistry)</li>
-    <li>Summer School Lecturer - QUB Chinese Exchange Chemistry Summer School</li>
-    <h2 class="text-3xl w-full font-bold">Refereeing</h2>
-  </ul>
-
-  <div class="mb-4">
-    <div class="text-3xl w-full font-bold">Refereeing</div>
-  </div>
-
-  <ul class="list-disc md:columns-1 columns-1 mx-6 text-base mb-2 gap-1">
-    <li>Journal of the American Chemical Society</li>
-    <li>Physical Review Letters</li>
-    <li>Journal of Physical Chemistry Letters</li>
-    <li>Journal of Chemical Physics</li>
-    <li>Journal of Applied Physics</li>
   </ul>
 
 </BaseLayout>

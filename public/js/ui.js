@@ -72,6 +72,40 @@
       });
     }
 
+    // Counter animation for elements with .counter and data-target
+    try {
+      const counters = document.querySelectorAll('.counter[data-target]');
+      if (counters.length) {
+        const counterObserver = new IntersectionObserver((entries, obs) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            const raw = el.getAttribute('data-target') || '0';
+            // allow formats like "1000+" or "8"
+            const plus = raw.trim().endsWith('+') || el.getAttribute('data-plus') === 'true';
+            const target = parseInt(raw.replace(/\D/g, ''), 10) || 0;
+            const duration = parseInt(el.getAttribute('data-duration') || '1200', 10);
+            const startTime = performance.now();
+            const step = (now) => {
+              const progress = Math.min((now - startTime) / duration, 1);
+              const value = Math.floor(progress * target);
+              el.textContent = value + (plus ? '+' : '');
+              if (progress < 1) requestAnimationFrame(step);
+              else {
+                el.textContent = target + (plus ? '+' : '');
+                obs.unobserve(el);
+              }
+            };
+            requestAnimationFrame(step);
+          });
+        }, { threshold: 0.2 });
+        counters.forEach((c) => counterObserver.observe(c));
+      }
+    } catch (e) {
+      // non-fatal
+      console.warn('counter animation failed', e);
+    }
+
     // Simple publications search (elements with data-search)
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
@@ -107,6 +141,33 @@
           searchInput.blur();
         }
       });
+    }
+
+    // Disable CSS hover-scaling for elements opting out via .no-hover-scale
+    try {
+      const noHoverEls = Array.from(document.querySelectorAll('.no-hover-scale'));
+      if (noHoverEls.length) {
+        noHoverEls.forEach((el) => {
+          // ensure smooth transform transitions
+          el.style.transition = el.style.transition || 'transform .24s cubic-bezier(.2,.9,.2,1), box-shadow .24s ease';
+          const onEnter = () => {
+            // maintain the upward lift but prevent any scale > 1
+            el.style.transform = 'translateY(-4px) scale(1)';
+          };
+          const onLeave = () => {
+            // revert to default (let global focus-within rules apply if necessary)
+            el.style.transform = '';
+          };
+          el.addEventListener('pointerenter', onEnter);
+          el.addEventListener('pointerleave', onLeave);
+          // also handle focus for keyboard users
+          el.addEventListener('focusin', onEnter);
+          el.addEventListener('focusout', onLeave);
+        });
+      }
+    } catch (e) {
+      // non-fatal
+      console.warn('no-hover-scale init failed', e);
     }
 
     // Lightbox removed — no longer handling image modal here.

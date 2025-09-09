@@ -31,6 +31,8 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Enable smooth scrolling for in-page anchors; honored by prefers-reduced-motion rule below */
+  scroll-behavior: smooth;
 }
 
 body {
@@ -68,7 +70,7 @@ h3 { font-size: clamp(1.125rem, 1.2vw, 1.25rem); }
 .prose ul, .prose ol { margin-left: 1.25rem; margin-bottom: 1rem; }
 
 /* Increase space around major sections */
-main > * + * { margin-top: 1.25rem; }
+main > * + * { margin-top: 0.5rem; }
 .section { margin-top: 2rem; margin-bottom: 2rem; }
 
 /* Tighter CV and lists spacing */
@@ -125,6 +127,21 @@ a {
 
 .card, .rounded-lg { transition: transform 240ms cubic-bezier(.2,.9,.2,1), box-shadow 240ms ease; }
 .card:hover, .rounded-lg:hover { transform: translateY(-4px) scale(1.02); }
+
+/* Opt-out class: disable all hover lift/scale effects for elements that opt out */
+.no-hover-scale:hover,
+.no-hover-scale:focus-within,
+.no-hover-scale :where(.rounded-lg:hover, .card:hover, img:hover, .avatar:hover),
+.no-hover-scale :where(.rounded-lg:focus-within, .card:focus-within, img:focus-within) {
+  /* Remove any transform applied by the global hover rules */
+  transform: none !important;
+}
+
+/* Allow elements inside a .no-hover-scale container to opt back into the global hover transform
+   by adding the `allow-hover` class to them. This restores the same lift+scale used site-wide. */
+.no-hover-scale :where(.allow-hover:hover, .allow-hover:focus-within) {
+  transform: translateY(-4px) scale(1.02) !important;
+}
 
 .btn, .btn-ghost, .btn-primary { transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease; }
 .btn:active { transform: translateY(1px) scale(0.995); }

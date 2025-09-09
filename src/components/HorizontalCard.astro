@@ -1,35 +1,38 @@
 ---
-const { title, img, authors, desc, url, badge, tags, target = "_blank" } = Astro.props;
+const { title, img, authors, desc, url, badge, tags, target = "_blank", disableHover = false } = Astro.props;
+const hoverClass = disableHover ? '' : 'hover:scale-[102%]';
+const noHoverClass = disableHover ? 'no-hover-scale' : '';
 const searchText = `${title ?? ''} ${authors ?? ''} ${desc ?? ''} ${tags ? tags.join(' ') : ''}`.toLowerCase();
 ---
 
-<div class="reveal transition-opacity duration-700 ease-out opacity-0" data-search={searchText}>
+<div class="reveal transition-opacity duration-700 ease-out opacity-0 mb-0.5" data-search={searchText}>
   <div
-    class="rounded-lg bg-base-100 hover:shadow-xl transition ease-in-out hover:scale-[102%]"
+    class={`rounded-lg bg-base-100 hover:shadow-xl transition ease-in-out ${hoverClass} ${noHoverClass} p-0`}
   >
-    <a href={url} target={target}>
-      <div class="hero-content flex-col md:flex-row">
+    <a href={url} target={target} class="block no-underline">
+      <div class="hero-content items-center flex-col md:flex-row gap-3">
         {
           img && (
             <img
               src={img}
               alt={title}
-              class="max-w-full md:max-w-[13rem] rounded-lg"
-              width="750"
-              style="aspect-ratio: 16/9;"
+              class="w-full md:w-auto md:max-w-[12rem] rounded-lg object-cover flex-shrink-0 mx-auto md:mx-0 md:mr-4"
+              style="aspect-ratio: 16/9; cursor:default;"
               loading="lazy"
+              onclick="event.stopPropagation();"
+              onpointerdown="event.stopPropagation();"
             />
-          )
+           )
         }
-        <div class="grow w-full">
-          <h1 class="text-xl font-bold">
+        <div class="flex-grow w-full">
+          <h1 class="text-sm font-semibold flex items-center gap-1 mb-0">
             {title}
             <slot />
-            {badge && <div class="badge badge-secondary mx-2">{badge}</div>}
+            {badge && <div class="badge badge-secondary ml-1">{badge}</div>}
           </h1>
-          <p class="py-1 text-1xl font-semibold">{authors}</p>
-          <p class="py-1 text-1xl">{desc}</p>
-          <div class="card-actions justify-end">
+          <p class="py-0 text-sm font-medium">{authors}</p>
+          <p class="py-0 text-sm">{desc}</p>
+          <div class="card-actions justify-start flex flex-wrap gap-1 mt-0.5">
             {
               tags &&
                 tags.map((tag) => <div class="badge badge-outline">{tag}</div>)

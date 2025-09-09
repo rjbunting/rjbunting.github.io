@@ -4,42 +4,157 @@ import HorizontalCard from "../components/HorizontalCard.astro";
 ---
 
 <BaseLayout title="Teaching Philosophy" sideBarActiveItemID="teaching">
-    <div>
-        <div class="text-3xl w-full font-bold mb-5">Teaching Philosphy</div>
-        <p class="text-lg mb-6">
-            My teaching philosophy centers on fostering curiosity, critical thinking, and practical skills in computational chemistry and catalysis. I strive to create an inclusive and engaging learning environment, encouraging students to explore, question, and apply scientific concepts to real-world challenges.
-        </p>
-    </div>
-    <div>
-        <div id="computational-chemistry" class="text-3xl w-full font-bold mb-5">Computational Chemistry</div>
-    </div>
+    <!-- Hero / summary with profile image -->
+    <section class="bg-base-200 text-base-content rounded-lg p-6 mb-8 flex flex-col md:flex-row items-center gap-6 no-hover-scale">
+        <div class="flex-1">
+            <h1 class="text-4xl w-full font-bold mb-3">Teaching Philosophy</h1>
+            <p class="text-lg mb-4 opacity-95">
+                My teaching philosophy emphasizes fostering an environment conducive of learning.
+                Teaching goes beyond course material, with a need for soft skills to be taught and developed within students.
+                My role as an educator is to spark passions and enable students to reach their full potential.
+                It is crucial for teaching to be adapted and tailored for all students on an individual basis.
+                This should be created through an environment that caters to both inclusivity and diversity.
+            </p>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                <li class="bg-base-100/60 rounded px-3 py-2">
+                    <div class="font-semibold">Direct instruction for base knowledge</div>
+                </li>
+                <li class="bg-base-100/60 rounded px-3 py-2">
+                    <div class="font-semibold">Case studies to grow intellectual curiosity</div>
+                </li>
+                <li class="bg-base-100/60 rounded px-3 py-2">
+                    <div class="font-semibold">Flipped-classroom workshops</div>
+                </li>
+                <li class="bg-base-100/60 rounded px-3 py-2">
+                    <div class="font-semibold">Open and accessible course materials</div>
+                </li>
+            </ul>
+        </div>
+    </section>
 
-    <HorizontalCard
-            title="Introduction to Computational Chemistry Workshops"
-            img="/h2.png"
-            desc="Jupyter Notebooks for the course"
-            url="https://github.com/rjbunting/introcompchemnotebooks"
-            badge="NEW"
-    />
-    <div class="divider my-0"></div>
-    <HorizontalCard
-            title="Lecture Slides"
-            img="/chemistryslides.png"
-            desc="Lecture slides for my 'An Introduction to Computational Chemistry' course"
-            url="https://1drv.ms/p/s!AgEBZympJpEbhQFu2u64HWlnLAQI"
-    />
+    <!-- Teaching highlights / metrics (animated counters) -->
+    <section class="mb-8 reveal">
+        <!--<h2 class="text-2xl font-bold mb-4">Teaching Highlights</h2>-->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-base-100 rounded-lg p-4 shadow border-l-4 border-primary cursor-pointer">
+                <div class="text-3xl font-bold"><span class="counter" data-target="6" data-duration="900">0</span></div>
+                <div class="text-sm text-muted">Years teaching experience</div>
+            </div>
+            <div class="bg-base-100 rounded-lg p-4 shadow border-l-4 border-secondary cursor-pointer">
+                <div class="text-3xl font-bold"><span class="counter" data-target="1000+" data-duration="1200">0</span></div>
+                <div class="text-sm text-muted">Students taught (lectures & workshops)</div>
+            </div>
+            <div class="bg-base-100 rounded-lg p-4 shadow border-l-4 border-accent cursor-pointer">
+                <div class="text-3xl font-bold"><span class="counter" data-target="3" data-duration="1000">0</span></div>
+                <div class="text-sm text-muted">Students supervised</div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Courses (wrapper) -->
+    <section id="courses" class="mb-8 reveal">
+        <h2 class="text-3xl font-bold mb-3">Courses:</h2>
+        <!--<p class="text-sm text-muted mb-4">A selection of courses I have designed and taught. Each course below includes materials and metadata.</p>-->
 
+        <div class="space-y-8">
+            <!-- Computational Chemistry subsection -->
+            <section id="computational-chemistry" class="reveal">
+                <h3 class="text-2xl font-bold mb-2">An Introduction to Computational Chemistry</h3>
+                <div class="text-sm text-muted mb-4">Lectures and hands-on workshop series for teaching practical computational chemistry skills.</div>
 
-    <div>
-        <div id="catalysis" class="text-3xl w-full font-bold mb-5 mt-10">Catalysis</div>
-    </div>
+                <div class="grid gap-3 mb-4 md:grid-cols-2">
+                    <div class="bg-base-100 rounded-lg p-4 shadow">
+                        <div class="font-semibold">Role</div>
+                        <div class="text-sm text-muted">Course author, lecturer, and workshop instructor</div>
+                        <div class="mt-2 font-semibold">Level</div>
+                        <div class="text-sm text-muted">Undergraduate</div>
+                        <div class="mt-2 font-semibold">Format</div>
+                        <div class="text-sm text-muted">Lectures + Jupyter-based workshops</div>
+                    </div>
+                    <div class="bg-base-100 rounded-lg p-4 shadow">
+                        <div class="font-semibold">Responsibilities</div>
+                        <ul class="list-disc pl-5 text-sm text-muted mt-1">
+                            <li>Designing syllabus, learning outcomes and assessments</li>
+                            <li>Developing Jupyter notebooks and workshop materials</li>
+                            <li>Delivering lectures and supervising students</li>
+                        </ul>
+                    </div>
+                </div>
 
-    <HorizontalCard
-            title="Lecture Slides"
-            img="/catalysisslides.png"
-            desc="Lecture slides for my 'An Introduction to Catalysis' course"
-            url="https://1drv.ms/p/s!AgEBZympJpEbhFlHNu-2NOqKiCCc"
-    />
-    <div class="divider my-0"></div>
+                <HorizontalCard
+                    title="Introduction to Computational Chemistry Workshops"
+                    img="/h2.png"
+                    desc="Jupyter Notebooks and reproducible workflows for workshops."
+                    url="https://github.com/rjbunting/introcompchemnotebooks"
+                    badge="Notebooks"
+                    disableHover={true}
+                />
+
+                <!-- Launch badges for interactive notebooks -->
+                <div class="mt-3 mb-6 flex items-center gap-3">
+                    <a href="https://colab.research.google.com/github/rjbunting/introcompchemnotebooks" target="_blank" class="btn btn-sm btn-outline">Open in Colab</a>
+                    <a href="https://github.com/rjbunting/introcompchemnotebooks" target="_blank" class="btn btn-sm">View on GitHub</a>
+                </div>
+                <!--<div class="text-xs text-muted mt-1">If you cannot open the notebooks in Colab, click "View on GitHub" to inspect the repository. If you want the page to open a specific notebook in Colab, provide the notebook path (for example: notebooks/Intro.ipynb) and I will update the link to open that file directly.</div>-->
+
+                <HorizontalCard
+                    title="Lecture Slides"
+                    img="/chemistryslides.png"
+                    desc="Lecture slides for 'An Introduction to Computational Chemistry', covering computing, emprical methods, ab initio methods, molecular modeling, and kinetics and thermodynamics."
+                    url="https://1drv.ms/p/s!AgEBZympJpEbhQFu2u64HWlnLAQI"
+                    badge="Slides"
+                    disableHover={true}
+                />
+
+                <div class="mt-4">
+                    <p class="text-sm text-muted">Materials include lecture slides and step-by-step notebooks.</p>
+                </div>
+            </section>
+
+            <!-- Catalysis subsection -->
+            <section id="catalysis" class="reveal">
+                <h3 class="text-2xl font-bold mb-2">An Introduction to Catalysis</h3>
+                <div class="text-sm text-muted mb-4">Course covers catalytic mechanisms, kinetics, and practical examples.</div>
+
+                <div class="grid gap-3 mb-4 md:grid-cols-2">
+                    <div class="bg-base-100 rounded-lg p-4 shadow">
+                        <div class="font-semibold">Role</div>
+                        <div class="text-sm text-muted">Course author and lecturer</div>
+                        <div class="mt-2 font-semibold">Level</div>
+                        <div class="text-sm text-muted">Advanced undergraduate</div>
+                        <div class="mt-2 font-semibold">Format</div>
+                        <div class="text-sm text-muted">Lectures and problem sets</div>
+                    </div>
+                    <div class="bg-base-100 rounded-lg p-4 shadow">
+                        <div class="font-semibold">Responsibilities</div>
+                        <ul class="list-disc pl-5 text-sm text-muted mt-1">
+                            <li>Writing lecture materials and practical case studies</li>
+                            <li>Designing assessments to build research-relevant skills</li>
+                            <li>Deliver lectures</li>
+                            <li>Marking and giving feedback on assignments</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <HorizontalCard
+                    title="Lecture Slides"
+                    img="/catalysisslides.png"
+                    desc="Lecture slides for 'An Introduction to Catalysis' course covering reaction mechanisms, kinetics, and computational perspectives. Developed & taught by Rhys Bunting."
+                    url="https://1drv.ms/p/s!AgEBZympJpEbhFlHNu-2NOqKiCCc"
+                    badge="Slides"
+                    disableHover={true}
+                />
+            </section>
+        </div>
+    </section>
+
+    <!-- Testimonial / student feedback -->
+    <section class="bg-base-200 p-6 rounded-lg shadow mb-8 flex flex-col md:flex-row items-center gap-6">
+        <div class="flex-1">
+            <blockquote class="italic text-lg">"The task of the modern educator is not to cut down jungles, but to irrigate deserts."</blockquote>
+            <div class="mt-3 text-sm text-muted">— C.S. Lewis</div>
+        </div>
+        <!--<img src="/classroom.png" alt="Students working" class="w-48 rounded shadow" />-->
+    </section>
+
 </BaseLayout>

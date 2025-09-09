@@ -1,12 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HorizontalCard from "../components/HorizontalCard.astro";
-import { getCollection } from "astro:content";
-
-const researchposts = (await getCollection("research")).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const researchlast_posts = researchposts.slice(0, 2);
-const newsposts = (await getCollection("news")).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const newslast_posts = newsposts.slice(0, 2);
 
 const homepageTitle = "Dr. Rhys Bunting | Computational Chemist";
 const homepageDescription = "Dr. Rhys Bunting is a computational chemist working in energy, catalysis, and C-H activation. View research, CV, publications, and teaching.";
@@ -26,60 +20,48 @@ const homepageStructuredData = `{
 ---
 
 <BaseLayout sideBarActiveItemID="home" title={homepageTitle} description={homepageDescription} structuredData={homepageStructuredData}>
-  <div class="pb-12 mt-5">
-    <div class="text-5xl font-bold">Dr. Rhys J. Bunting</div>
-    <div class="text-2xl py-3 font-style: italic">Theoretical Chemist</div>
-    <div class="py-2">
-      <text class="text-lg text-align: justify-center">
+  <div class="pb-8 mt-4">
+    <div class="text-4xl font-bold">Dr. Rhys J. Bunting</div>
+    <div class="text-xl italic py-2">Theoretical Chemist</div>
+    <div class="py-1">
+      <p class="text-base text-justify">
         I apply methods and take inspiration from interdisciplinary fields to tackle key issues within chemistry.
         I have worked and continue to work within the boundaries of chemistry, chemical engineering, physics, and data science.
         I am passionate about solving problems within the fields of energy, catalysis, and C-H activation.
         I combine a variety of methods, such as <em>ab initio</em> electronic structure methods, molecular dynamics, and machine learning to solve these issues.
-      </text>
+      </p>
     </div>
-    <div class="mt-8">
+    <div class="mt-4">
       <a class="btn" href="/cv">My Curriculum Vitae</a>
     </div>
   </div>
 
   <div>
-    <div class="text-3xl w-full font-bold mb-5 mt-10">Recent News</div>
+    <div class="text-3xl w-full font-bold mb-4 mt-6">Explore</div>
   </div>
 
-  {
-    newslast_posts.map((news) => (
-      <>
-        <HorizontalCard
-          title={news.data.title}
-          img={news.data.heroImage}
-          desc={news.data.description}
-          url={"/news/" + news.slug}
-          target="_self"
-          badge={news.data.badge}
-        />
-        <div class="divider my-0" />
-      </>
-    ))
-  }
+  <section class="mb-6 reveal">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-base-100 rounded-lg p-4 shadow flex flex-col justify-between">
+        <div>
+          <h3 class="text-xl font-bold mb-1">Research Themes</h3>
+          <p class="text-sm text-muted">Overview of my research programs, projects, and publications in computational chemistry and catalysis.</p>
+        </div>
+        <div class="mt-3">
+          <a href="/research" class="btn btn-primary">Explore Research</a>
+        </div>
+      </div>
 
-  <div>
-    <div class="text-3xl w-full font-bold mb-5 mt-10">Latest Research Themes</div>
-  </div>
-
-  {
-    researchlast_posts.map((research) => (
-        <>
-          <HorizontalCard
-              title={research.data.title}
-              img={research.data.heroImage}
-              desc={research.data.description}
-              url={"/research/" + research.slug}
-              target="_self"
-              badge={research.data.badge}
-          />
-          <div class="divider my-0" />
-        </>
-    ))
-  }
+      <div class="bg-base-100 rounded-lg p-4 shadow flex flex-col justify-between">
+        <div>
+          <h3 class="text-xl font-bold mb-1">Teaching</h3>
+          <p class="text-sm text-muted">Teaching philosophy, course materials, and workshops — open resources for students and colleagues.</p>
+        </div>
+        <div class="mt-3">
+          <a href="/teaching" class="btn btn-primary">View Teaching</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
 </BaseLayout>
