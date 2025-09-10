@@ -1,6 +1,6 @@
 ---
-title: "Ever closer to experiment"
-description: "Modelling experimentally representative catalytic systems"
+title: "Simulated Experiment"
+description: "Computational material synthesis"
 pubDate: "Aug 16 2023"
 heroImage: "/cluster.webp"
 #badge: "New"

@@ -1,6 +1,4 @@
 ---
-import type { ResearchSchema } from "../content/config";
-import type { NewsSchema } from "../content/config";
 import BaseLayout from "./BaseLayout.astro";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
@@ -9,11 +7,30 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 
 const { title, description, pubDate, updatedDate, heroImage, badge } =
   Astro.props;
+// If title contains HTML (e.g., IrO<sub>2</sub>), render it as HTML in the page
+// but pass a plain-text version to BaseLayout/BaseHead (meta tags) to avoid
+// embedding HTML into metadata.
+const rawTitle = String(title ?? '');
+// Decode common HTML entities and numeric entities so escaped HTML in frontmatter
+// (e.g. &lt;sub&gt;2&lt;/sub&gt;) becomes actual HTML before rendering.
+function decodeHtmlEntities(str) {
+  return String(str)
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(dec))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+}
+
+const rawTitleDecoded = decodeHtmlEntities(rawTitle);
+const plainTitle = rawTitleDecoded.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
 dayjs.extend(localizedFormat);
 const displayDate = dayjs(pubDate).format("ll");
 ---
 
-<BaseLayout title={title} description={description} image={heroImage}>
+<BaseLayout title={plainTitle} description={description} image={heroImage}>
   <main class="md:flex md:justify-center">
     <article class="prose prose-lg max-w-[750px] prose-img:mx-auto">
       {
@@ -21,7 +38,8 @@ const displayDate = dayjs(pubDate).format("ll");
           <img src={heroImage} alt={title} class="w-full mb-6" style="aspect-ratio:16/9; cursor:default;" onclick="event.stopPropagation();" onpointerdown="event.stopPropagation();" />
          )
       }
-      <h1 class="title my-2 text-4xl font-bold">{title}</h1>
+      <!-- Render title as HTML so subscripts and simple inline markup can be used in frontmatter -->
+      <h1 class="title my-2 text-4xl font-bold" set:html={rawTitleDecoded}></h1>
       {pubDate && <time>{displayDate}</time>}
       <br />
       {badge && <div class="badge badge-secondary my-1">{badge}</div>}

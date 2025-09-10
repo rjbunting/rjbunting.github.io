@@ -1,6 +1,6 @@
 ---
-title: "Solid-Liquid Interface and Reactions in Solution"
-description: "Beyond the gas phase"
+title: "Natural Phenomena at Scale"
+description: "Contrails from first principles"
 pubDate: "Aug 15 2023"
 heroImage: "/solidliquid.png"
 ---

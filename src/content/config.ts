@@ -7,9 +7,10 @@ const researchSchema = z.object({
     updatedDate: z.string().optional(),
     heroImage: z.string().optional(),
     badge: z.string().optional(),
+    tags: z.array(z.string()).optional(),
 });
 
-export type ResearchSchema = z.infer<typeof researchSchema>;
+// No exported type alias required here; keep schema only.
 
 const researchCollection = defineCollection({ schema: researchSchema });
 

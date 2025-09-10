@@ -6,7 +6,7 @@ const homepageDescription = "Dr. Rhys Bunting is a computational chemist working
 const homepageStructuredData = `{
   "@context": "https://schema.org",
   "@type": "Person",
-  "name": "Dr. Rhys Bunting",
+  "name": "Rhys Bunting",
   "url": "https://rjbunting.github.io/",
   "jobTitle": "Computational Chemist"
 }`;
@@ -26,13 +26,13 @@ const homepageStructuredData = `{
         </div>
 
         <div class="w-full md:w-3/4 text-center md:text-left">
-          <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">Dr. Rhys J. Bunting</h1>
-          <p class="text-lg italic text-muted mt-1">Computational & Theoretical Chemist</p>
+          <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">Rhys J. Bunting PhD</h1>
+          <p class="text-lg italic text-muted mt-1">Theoretical Chemist</p>
 
           <p class="mt-4 text-base text-justify md:text-left">
-            I apply methods and take inspiration from interdisciplinary fields to tackle key issues within chemistry. I work at the interface of chemistry,
-            chemical engineering, and data science — focusing on energy, catalysis, and C–H activation. My approach blends <em>ab initio</em> electronic structure,
-            molecular dynamics, and machine learning to solve hard problems.
+            Dr. Bunting takes inspiration and applies methods from interdisciplinary fields to tackle key issues within chemistry. He works at the interface of chemistry,
+            chemical engineering, and data science. He tackles challenges within the topics of catalysis, energy, material degradation, and nucleation & growth. He blends <em>ab initio</em> electronic structure methods,
+            machine learning, molecular dynamics, microkinetics, and kinetic Monte Carlo to bridge theory with experiment. His goal is to push the boundaries of modeling to encapsulate the complexities of experimental systems.
           </p>
 
           <div class="mt-4 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start">
@@ -41,7 +41,6 @@ const homepageStructuredData = `{
           </div>
 
           <div class="mt-4 text-sm text-muted flex gap-3 justify-center md:justify-start">
-            <!-- Social links removed per request -->
           </div>
         </div>
       </div>
@@ -53,7 +52,6 @@ const homepageStructuredData = `{
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <a href="/research" aria-label="Explore research themes" class="explore-card block rounded-lg p-6 bg-base-100 shadow transition-transform transform hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] cursor-pointer no-underline">
         <div class="flex items-start gap-4">
-          <!-- user-provided research SVG (adapted) -->
           <svg class="w-6 h-6 text-primary shrink-0" viewBox="0 0 27.363 27.363" fill="currentColor" aria-hidden="true">
             <g>
               <g id="c6_test_tube">
@@ -69,8 +67,8 @@ const homepageStructuredData = `{
             </g>
           </svg>
           <div>
-            <h3 class="text-lg font-semibold">Research Themes</h3>
-            <p class="text-sm text-muted mt-2">Projects, programs, and selected publications in catalysis, energy, and C–H activation.</p>
+            <h3 class="text-lg font-semibold">Research</h3>
+            <p class="text-sm text-muted mt-2">Topics, methods, areas on interest, and research vision.</p>
           </div>
         </div>
         <div class="mt-4 flex items-center gap-3 text-primary text-sm font-medium">
@@ -81,7 +79,6 @@ const homepageStructuredData = `{
 
       <a href="/teaching" aria-label="View teaching materials" class="explore-card block rounded-lg p-6 bg-base-100 shadow transition-transform transform hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] cursor-pointer no-underline">
         <div class="flex items-start gap-4">
-          <!-- lectern icon (from user-provided SVG), adapted to use currentColor for fill -->
           <svg class="w-6 h-6 text-primary shrink-0" viewBox="0 0 394.103 394.103" fill="currentColor" aria-hidden="true">
             <path d="M206.41,75.771c20.891,0,37.886-16.996,37.886-37.886S227.301,0,206.41,0s-37.886,16.996-37.886,37.886
                 S185.52,75.771,206.41,75.771z M206.41,20c9.862,0,17.886,8.023,17.886,17.886s-8.023,17.886-17.886,17.886
@@ -95,7 +92,7 @@ const homepageStructuredData = `{
           </svg>
           <div>
             <h3 class="text-lg font-semibold">Teaching</h3>
-            <p class="text-sm text-muted mt-2">Course materials, workshops, and open teaching resources.</p>
+            <p class="text-sm text-muted mt-2">Course information, workshops, and interactive notebooks.</p>
           </div>
         </div>
         <div class="mt-4 flex items-center gap-3 text-primary text-sm font-medium">
@@ -106,16 +103,13 @@ const homepageStructuredData = `{
     </div>
 
     <style>
-      /* Accessible focus visible outline for keyboard users */
       .explore-card:focus-visible {
-        outline: 3px solid rgba(59,130,246,0.9); /* blue-500 but semi-opaque */
+        outline: 3px solid rgba(59,130,246,0.9);
         outline-offset: 4px;
       }
-      /* Slightly increase hover elevation on touch-capable devices */
       .explore-card { will-change: transform; }
     </style>
      </section>
 
-   <!-- Recent section removed per request -->
 
  </BaseLayout>

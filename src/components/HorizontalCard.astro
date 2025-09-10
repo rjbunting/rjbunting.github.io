@@ -1,5 +1,7 @@
 ---
 const { title, img, authors, desc, url, badge, tags, target = "_blank", disableHover = false, noLink = false } = Astro.props;
+// Provide a plain-text title for alt attributes and accessibility (strip any HTML tags)
+const plainTitle = String(title ?? '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
 const hoverClass = disableHover ? '' : 'hover:scale-[102%]';
 const noHoverClass = disableHover ? 'no-hover-scale' : '';
 const searchText = `${title ?? ''} ${authors ?? ''} ${desc ?? ''} ${tags ? tags.join(' ') : ''}`.toLowerCase();
@@ -19,7 +21,7 @@ const searchText = `${title ?? ''} ${authors ?? ''} ${desc ?? ''} ${tags ? tags.
             img && (
               <img
                 src={img}
-                alt={title}
+                alt={plainTitle}
                 class="w-full md:w-auto md:max-w-[12rem] rounded-lg object-cover flex-shrink-0 mx-auto md:mx-0 md:mr-4"
                 style="aspect-ratio: 16/9; cursor:default;"
                 loading="lazy"
@@ -30,7 +32,7 @@ const searchText = `${title ?? ''} ${authors ?? ''} ${desc ?? ''} ${tags ? tags.
           }
           <div class="flex-grow w-full">
             <h1 class="text-sm font-semibold flex items-center gap-1 mb-0">
-              {title}
+              <span set:html={String(title ?? '')}></span>
               <slot />
               {badge && <div class="badge badge-secondary ml-1">{badge}</div>}
             </h1>
@@ -52,7 +54,7 @@ const searchText = `${title ?? ''} ${authors ?? ''} ${desc ?? ''} ${tags ? tags.
             img && (
               <img
                 src={img}
-                alt={title}
+                alt={plainTitle}
                 class="w-full md:w-auto md:max-w-[12rem] rounded-lg object-cover flex-shrink-0 mx-auto md:mx-0 md:mr-4"
                 style="aspect-ratio: 16/9; cursor:default;"
                 loading="lazy"
@@ -63,7 +65,7 @@ const searchText = `${title ?? ''} ${authors ?? ''} ${desc ?? ''} ${tags ? tags.
           }
           <div class="flex-grow w-full">
             <h1 class="text-sm font-semibold flex items-center gap-1 mb-0">
-              {title}
+              <span set:html={String(title ?? '')}></span>
               <slot />
               {badge && <div class="badge badge-secondary ml-1">{badge}</div>}
             </h1>

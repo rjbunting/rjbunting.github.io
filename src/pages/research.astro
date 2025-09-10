@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import HorizontalCard from "../components/HorizontalCard.astro";
 import { getCollection } from "astro:content";
 
 // Load manual scholar metrics from src/data/scholar.json
@@ -21,10 +20,10 @@ const pageIndex = Math.min(currentPage, pageCount);
 const start = (pageIndex - 1) * pageSize;
 const pageEntries = researchposts.slice(start, start + pageSize);
 
-// Render the full content for the first three posts on the current page so expanded panels can show full write-ups
-const firstThreeRendered = await Promise.all((pageEntries || []).slice(0, 3).map(async (p) => {
+// Render the full content for all posts on the current page so expanded panels can show full write-ups
+const renderedEntries = await Promise.all((pageEntries || []).map(async (p) => {
   // cast to any because the collection entry type may not expose render() in TS types here
-  const rendered = await (p as any).render();
+  const rendered = await ((p as any).render() as any);
   return { entry: p, Content: rendered?.Content };
 }));
 
@@ -82,16 +81,18 @@ const page = {
   </section>
 
   <!-- New: Models development section with interactive two-image slider -->
-  <section class="bg-base-100 rounded-lg p-6 mb-0 no-hover-scale">
+  <section id="models" class="bg-base-100 rounded-lg p-6 mb-0 no-hover-scale">
      <div class="max-w-4xl mx-auto relative">
-      <h2 class="text-2xl font-semibold mb-3">Developing and Validating Models</h2>
+      <h2 class="text-2xl font-semibold mb-3">Modeling Experiments</h2>
       <p class="text-base mb-4 text-muted">
-        I develop computational models that capture key physics and chemistry across scales, validate them against
-        experiments, and iterate to improve robustness and predictive power. Below is an example comparison showing
-        two stages/views of a modelling workflow — slide the handle to uncover one image or the other.
+          The modeling of chemical systems with ab initio techniques has remained largely unchanged since its conception
+          as a field. Models are limited to cluster or slab models, where surfaces are engineered to consider defects or
+          different stepped surfaces. These models are far from the physical systems, where several macro-scale processes
+          take place, such as grain boundary formation, Ostwald ripening, sintering, and surface evolution. With new methods,
+          machine learning acceleration, and experimental feedback, I model systems that better describe their physical counterpart.
       </p>
 
-      <div class="relative w-full overflow-hidden rounded-lg shadow-md select-none allow-hover" id="comparison-slider" style="max-height:420px" aria-label="Past vs future comparison">
+      <div class="relative w-full overflow-hidden rounded-lg shadow-md select-none allow-hover" id="comparison-slider" style="max-height:420px; background-color: #fff;" aria-label="Past vs future comparison">
 
         <!-- Past/Future buttons (overlayed on the images only) -->
         <div id="btn-past" class="absolute top-3 left-3 z-50 cursor-pointer" role="button" tabindex="0" aria-label="Show past" style="pointer-events:auto;">
@@ -101,11 +102,15 @@ const page = {
           <div class="bg-base-200 text-sm text-base-content px-3 py-1 rounded shadow-sm border border-base-300">Future ▶</div>
         </div>
 
-        <!-- Bottom image (future) - stays in place -->
-        <img src="/machinelearning.jpg" alt="Future / model prediction view" class="absolute inset-0 w-full h-full object-cover block" style="position:relative; z-index:10;" />
+        <!-- Bottom image (future) - reduced more to ensure it fits cleanly inside the frame -->
+        <div class="absolute inset-0 flex items-center justify-center" style="position:relative; z-index:10; background-color:#fff; padding:0;">
+          <img src="/realbzo.png" alt="Future / model prediction view" style="max-width:35%; max-height:74%; object-fit:contain; object-position:center center; display:block;" />
+        </div>
 
-         <!-- Past image (static) - curtain will reveal/cover it via clip-path. This image does not move. -->
-        <img id="past-img" src="/cluster.webp" alt="Past / experimental view" class="absolute inset-0 w-full h-full object-cover block" style="position:absolute; left:0; top:0; z-index:20; transform:none; object-position:left center; pointer-events:none; will-change:clip-path;" />
+         <!-- Past image (static) - curtain will reveal/cover it via clip-path. The wrapper gets the clip-path applied; inner image is centered and constrained. -->
+        <div id="past-img" class="absolute inset-0 flex items-center justify-center" style="position:absolute; left:0; top:0; z-index:20; transform:none; pointer-events:none; will-change:clip-path; background-color:#fff; padding:0;">
+          <img src="/smallbzo.png" alt="Past / experimental view" style="max-width:40%; max-height:74%; object-fit:contain; object-position:center center; display:block;" />
+        </div>
         <!-- Draggable handle (divider line and rail) -->
         <div id="handle" class="absolute top-0 h-full flex items-center justify-center z-40" style="left:50%" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-label="Reveal timeline (drag left for past, right for future)">
           <div class="relative flex items-center justify-center h-full w-full">
@@ -261,6 +266,9 @@ const page = {
         })();
       </script>
     <style>
+      /* Ensure any transparency in the comparison images renders over white */
+      #comparison-slider { background-color: #fff; }
+      #comparison-slider img { background-color: #fff; }
       /* Prevent the small overlay buttons from shifting on active/pressed states (override any framework defaults)
          and remove tap highlight on mobile so elements don't appear to jump. */
       #btn-past > div, #btn-future > div {
@@ -272,55 +280,66 @@ const page = {
       }
       /* Ensure the knob remains visually centered when inline transforms are applied */
       .divider-knob { transform-origin: center; }
+
+      /* Responsive tweak: on narrow screens allow images to be a bit larger so they remain usable */
+      @media (max-width: 640px) {
+        #comparison-slider img { max-width: 92% !important; max-height: 86% !important; }
+      }
     </style>
     </div>
-   </div>
+  </section>
 
-  <!-- Research themes: highlight the first three research posts as a separate section -->
-  <section class="mb-8 reveal">
-    <h2 class="text-2xl font-bold mb-3">Research themes</h2>
+  <!-- Research themes: highlight research posts as a separate top-level section -->
+  <section id="research-themes" class="mt-4 mb-8 reveal">
+    <!-- Title removed to reduce vertical whitespace (titles are shown in each summary) -->
 
     <!-- Panels: clicking a theme expands it into a full section on the page -->
-    <div id="themes-panels" class="space-y-4">
+    <!-- Single container box for all themes -->
+    <div class="bg-base-100 rounded-lg p-4 shadow-sm">
+      <div id="themes-panels" class="space-y-0">
       {
-        /* Use pre-rendered Content components for the first three entries so expanded panels show full write-ups */
-        firstThreeRendered.map(({ entry, Content }, i) => (
-          <details class="group rounded-lg bg-base-100 p-3" data-index={String(i)}>
+        /* Use pre-rendered Content components for every entry on the current page so expanded panels show full write-ups */
+        renderedEntries.map(({ entry, Content }, i) => (
+          <details class="group p-3 border-b border-base-200 last:border-b-0" data-index={String(i)}>
             <summary class="flex items-center gap-4 cursor-pointer list-none p-4 md:p-6 rounded-md min-h-[64px] md:min-h-[88px]">
               {
                 entry.data.heroImage && (
-                  <img src={entry.data.heroImage} alt={entry.data.title} class="w-28 h-16 md:w-32 md:h-20 rounded object-cover flex-shrink-0" style="aspect-ratio:16/9;" />
+                  // Ensure alt text is plain (strip any simple HTML tags) for accessibility
+                  <img src={entry.data.heroImage} alt={String(entry.data.title ?? '').replace(/<[^>]*>/g, '')} class="w-28 h-16 md:w-32 md:h-20 rounded object-cover flex-shrink-0" style="aspect-ratio:16/9;" />
                 )
               }
-              <div class="flex-1 text-left">
-                <div class="flex items-center justify-between gap-3">
-                  <div class="flex items-center gap-3">
-                    <span class="text-base md:text-lg font-semibold">{entry.data.title}</span>
-                    {entry.data.badge && <div class="badge badge-secondary">{entry.data.badge}</div>}
-                  </div>
-                  <div class="text-sm text-muted hidden md:block">Click to expand</div>
-                </div>
+              <span class="flex-1 text-left">
+                <span class="flex items-center justify-between gap-3">
+                  <span class="flex items-center gap-3">
+                    {/* Render title as HTML so subscripts/superscripts in the frontmatter show correctly */}
+                    <span class="text-base md:text-lg font-semibold" set:html={String(entry.data.title ?? '')}></span>
+                    {entry.data.badge && <span class="badge badge-secondary">{entry.data.badge}</span>}
+                  </span>
+                  <span class="text-sm text-muted hidden md:block">Click to expand</span>
+                </span>
                 <p class="text-sm text-muted mt-1 line-clamp-2 md:line-clamp-3">{entry.data.description}</p>
-              </div>
-              <div class="ml-4 text-2xl md:text-3xl transition-transform duration-200 group-open:rotate-90">▸</div>
+              </span>
+              <span class="ml-4 text-2xl md:text-3xl transition-transform duration-200 group-open:rotate-90">▸</span>
             </summary>
 
-            <div class="details-body mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+            <!-- Reduced top margin to tighten spacing when expanded -->
+            <div class="details-body mt-2 grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
               {
                 /* Removed hero image from expanded content per request. The summary still shows the preview image. */
-              }
+               }
                <div class="md:col-span-2">
-                 <h3 class="text-xl font-semibold mb-2">{entry.data.title}</h3>
+                 <!-- Title removed from expanded content (already displayed in the summary) -->
                  {/* Render full post content (markdown) */}
                 <div class="prose max-w-none mb-4"><Content/></div>
                 <div class="flex gap-2 items-center">
-                  {Array.isArray(entry.data.tags) ? entry.data.tags.map((t) => <div class="badge badge-outline">{t}</div>) : null}
+                  {Array.isArray((entry.data as any).tags) ? (entry.data as any).tags.map((t) => <span class="badge badge-outline">{t}</span>) : null}
                 </div>
               </div>
             </div>
           </details>
         ))
       }
+      </div>
     </div>
 
     <script>
@@ -365,34 +384,48 @@ const page = {
         outline: 2px solid rgba(59,130,246,0.6);
         outline-offset: 4px;
       }
+
+      /* Hover / focus / open visuals for research panels */
+      /* Use the .group class on details to apply hover effects to the summary */
+      details.group > summary {
+        transition: background-color .12s ease, transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+        will-change: transform, box-shadow, background-color;
+        cursor: pointer;
+      }
+
+      /* Subtle hover lift and highlight */
+      details.group:hover > summary {
+        background-color: rgba(15, 23, 42, 0.03); /* subtle tint */
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+      }
+
+      /* Stronger visible state when a panel is open */
+      details.group[open] > summary {
+        background-color: rgba(15, 23, 42, 0.04);
+        transform: none; /* leave expanded panels flush */
+        box-shadow: 0 10px 30px rgba(2,6,23,0.08);
+        border-color: rgba(59,130,246,0.08);
+      }
+
+      /* Make the summary inner chevron animate on hover a bit more smoothly */
+      details.group > summary > .group-open\:rotate-90 {
+        transition: transform .18s ease;
+      }
+
+      /* Improve tap-targets on small screens: slightly increase summary padding on hover/focus for affordance */
+      @media (hover: hover) {
+        details.group > summary:hover { padding-left: 1.05rem; padding-right: 1.05rem; }
+      }
+
+      /* Ensure the chevron remains aligned when transforms apply to the summary */
+      details.group > summary > span:last-child { display: inline-block; }
+
+      /* End hover styles */
     </style>
   </section>
 
-  <!-- Research list (paginated) -->
-    <section id="research-list" class="mb-8 reveal">
-      {
-        /* Render only the posts after the first three (they are shown in the Research themes section above) */
-        (page.data || []).slice(3).length === 0 ? null : (
-          <ul>
-            {(page.data || []).slice(3).map((researchpost) => (
-              <li>
-                <HorizontalCard
-                  title={researchpost.data.title}
-                  img={researchpost.data.heroImage}
-                  desc={researchpost.data.description}
-                  noLink={true}
-                  target="_self"
-                  badge={researchpost.data.badge}
-                  disableHover={true}
-                />
-                <div class="divider my-0" />
-              </li>
-            ))}
-          </ul>
-        )
-      }
-    </section>
-
+  <!-- All page entries are rendered above as expandable panels; no unexpandable cards are shown below. -->
     <div class="flex justify-between">
       {
         page.url.prev ? (
