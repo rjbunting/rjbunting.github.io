@@ -3,7 +3,7 @@ title: "Ever closer to experiment"
 description: "Modelling experimentally representative catalytic systems"
 pubDate: "Aug 16 2023"
 heroImage: "/cluster.webp"
-badge: "New"
+#badge: "New"
 ---
 
 <p>The modelling of surface chemistry with <em>ab initio</em> techniques has remained largely unchanged since its conception as a field.
