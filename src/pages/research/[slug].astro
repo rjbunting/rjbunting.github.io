@@ -1,30 +1,15 @@
 ---
-import { CollectionEntry, getCollection } from 'astro:content';
-import { ResearchSchema } from '../../content/config';
-import PostLayout from '../../layouts/PostLayout.astro';
-
 export async function getStaticPaths() {
-    const researchpostEntries = await getCollection('research');
-    return researchpostEntries.map(entry => ( {
-        params: { slug: entry.slug }, props: { entry },
-    } ));
+  return [];
 }
-
-interface Props {
-    entry: CollectionEntry<"research">;
-}
-
-const { entry } = Astro.props;
-const researchpost : ResearchSchema = entry.data;
-const { Content } = await entry.render();
 ---
 
-<PostLayout 
-    title={researchpost.title}
-    description={researchpost.description}
-    pubDate={researchpost.pubDate}
-    heroImage={researchpost.heroImage}
-    updatedDate={researchpost.updatedDate}
-    badge={researchpost.badge}>
-    <Content/>
-</PostLayout>
+<head>
+  <meta http-equiv="refresh" content="0;url='/research/'" />
+  <title>Research — redirect</title>
+</head>
+<body>
+  <main class="p-6">
+    <p>Redirecting to <a href="/research/">Research</a>… If your browser does not redirect automatically, click the link.</p>
+  </main>
+</body>

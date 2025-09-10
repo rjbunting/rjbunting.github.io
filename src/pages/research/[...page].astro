@@ -14,6 +14,12 @@ export async function getStaticPaths({ paginate }) {
 }
 
 const { page } = Astro.props as any;
+
+// Render the full content for the first three posts so expanded panels can show full write-ups
+const firstThreeRendered = await Promise.all((page.data || []).slice(0, 3).map(async (p:any) => {
+  const rendered = await p.render();
+  return { entry: p, Content: rendered.Content };
+}));
 ---
 
 <BaseLayout title="Research" sideBarActiveItemID="research" wide={true}>
@@ -255,21 +261,93 @@ const { page } = Astro.props as any;
   <!-- Research themes: highlight the first three research posts as a separate section -->
   <section class="mb-8 reveal">
     <h2 class="text-2xl font-bold mb-3">Research themes</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+    <!-- Panels: clicking a theme expands it into a full section on the page -->
+    <div id="themes-panels" class="space-y-4">
       {
-        (page.data || []).slice(0, 3).map((p) => (
-          <div>
-            <HorizontalCard
-              title={p.data.title}
-              img={p.data.heroImage}
-              desc={p.data.description}
-              url={"/research/" + p.slug}
-              badge={p.data.badge}
-            />
-          </div>
+        /* Use pre-rendered Content components for the first three entries so expanded panels show full write-ups */
+        firstThreeRendered.map(({ entry, Content }, i) => (
+          <details class="group rounded-lg bg-base-100 p-3" data-index={String(i)}>
+            <summary class="flex items-center gap-4 cursor-pointer list-none p-4 md:p-6 rounded-md min-h-[64px] md:min-h-[88px]">
+              {
+                entry.data.heroImage && (
+                  <img src={entry.data.heroImage} alt={entry.data.title} class="w-28 h-16 md:w-32 md:h-20 rounded object-cover flex-shrink-0" style="aspect-ratio:16/9;" />
+                )
+              }
+              <div class="flex-1 text-left">
+                <div class="flex items-center justify-between gap-3">
+                  <div class="flex items-center gap-3">
+                    <span class="text-base md:text-lg font-semibold">{entry.data.title}</span>
+                    {entry.data.badge && <div class="badge badge-secondary">{entry.data.badge}</div>}
+                  </div>
+                  <div class="text-sm text-muted hidden md:block">Click to expand</div>
+                </div>
+                <p class="text-sm text-muted mt-1 line-clamp-2 md:line-clamp-3">{entry.data.description}</p>
+              </div>
+              <div class="ml-4 text-2xl md:text-3xl transition-transform duration-200 group-open:rotate-90">▸</div>
+            </summary>
+
+            <div class="details-body mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+              {
+                /* Removed hero image from expanded content per request. The summary still shows the preview image. */
+              }
+               <div class="md:col-span-2">
+                 <h3 class="text-xl font-semibold mb-2">{entry.data.title}</h3>
+                 {/* Render full post content (markdown) */}
+                <div class="prose max-w-none mb-4"><Content/></div>
+                <div class="flex gap-2 items-center">
+                  {entry.data.tags && entry.data.tags.map((t) => <div class="badge badge-outline">{t}</div>)}
+                </div>
+              </div>
+            </div>
+          </details>
         ))
       }
     </div>
+
+    <script>
+      (function(){
+        const container = document.getElementById('themes-panels');
+        if (!container) return;
+        const details = Array.from(container.querySelectorAll('details'));
+        // ensure only one panel open at a time
+        details.forEach((d) => {
+          d.addEventListener('toggle', () => {
+            if (!d.open) return;
+            details.forEach((other) => { if (other !== d) other.open = false; });
+            // scroll expanded panel into view on small screens
+            setTimeout(() => { d.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60);
+          });
+        });
+
+        // keyboard: allow Enter/Space on summary to open (handled by browser), close on Escape
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') details.forEach((d) => d.open = false);
+        });
+      })();
+    </script>
+    <style>
+      /* Smooth open/close for <details> content */
+      /* The content wrapper (.details-body) transitions max-height + opacity. */
+      details .details-body {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height .42s cubic-bezier(.2,.9,.2,1), opacity .28s ease;
+      }
+      /* When details is open, allow the body to expand. Use a large enough max-height to cover expected content. */
+      details[open] .details-body {
+        /* Large max-height to accommodate long write-ups; adjust if you expect much longer content */
+        max-height: 2400px;
+        opacity: 1;
+      }
+
+      /* Improve summary hit area visuals when focused */
+      details summary:focus {
+        outline: 2px solid rgba(59,130,246,0.6);
+        outline-offset: 4px;
+      }
+    </style>
   </section>
 
   <!-- Research list (paginated) -->
@@ -284,7 +362,7 @@ const { page } = Astro.props as any;
                   title={researchpost.data.title}
                   img={researchpost.data.heroImage}
                   desc={researchpost.data.description}
-                  url={"/research/" + researchpost.slug}
+                  noLink={true}
                   target="_self"
                   badge={researchpost.data.badge}
                   disableHover={true}
