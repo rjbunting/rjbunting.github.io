@@ -4,9 +4,9 @@
 
 /* Typography and spacing improvements */
 :root {
-  /* System font stack to avoid external font requests */
-  --body-font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  --heading-font: Georgia, 'Times New Roman', Times, serif;
+  /* Prefer Frutiger where available (proprietary) with sensible fallbacks */
+  --body-font: 'Frutiger', 'Frutiger Next', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --heading-font: 'Frutiger', 'Frutiger Next', Georgia, 'Times New Roman', Times, serif;
   --measure: 66ch; /* optimal measure for readability */
 
   /* Default color tokens (concrete fallbacks). These ensure the stylesheet has usable values

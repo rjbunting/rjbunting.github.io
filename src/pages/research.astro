@@ -4,11 +4,42 @@ import { getCollection } from "astro:content";
 
 // Load manual scholar metrics from src/data/scholar.json
 const metricsModule = await import('../data/scholar.json');
-const metrics = metricsModule.default ?? metricsModule;
+const metricsSrc = metricsModule.default ?? metricsModule ?? {};
+// Some JSON exports may use slightly different key naming (h_index vs hIndex, lastUpdated vs lastupdated).
+// Normalize possible alternate keys in a tiny, explicit way and avoid TypeScript property errors by casting where needed.
+const rawH = metricsSrc.h_index ?? (metricsSrc as any).hIndex ?? 0;
+const rawLastUpdated = metricsSrc.lastUpdated ?? (metricsSrc as any).lastupdated ?? (metricsSrc as any).last_updated ?? '';
 
-// Fetch all research posts and sort by pubDate desc
+// Provide safe defaults for metrics so template bindings never see undefined/null
+const metrics = {
+  publications: Number(metricsSrc.publications ?? 0),
+  citations: Number(metricsSrc.citations ?? 0),
+  h_index: Number(rawH ?? 0),
+  lastUpdated: String(rawLastUpdated ?? ''),
+};
+
+// Fetch all research posts and sort by pubDate desc (defensively handle string/date/number)
 const researchposts = await getCollection("research");
-researchposts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+researchposts.sort((a, b) => {
+  const toNumber = (v) => {
+    if (!v && v !== 0) return -Infinity;
+    // If value already a number
+    if (typeof v === 'number') return v;
+    // If it's a Date-like object
+    if (v instanceof Date) return v.valueOf();
+    // If it has valueOf that returns a number (some Content types)
+    try {
+      const val = v && (typeof v.valueOf === 'function' ? v.valueOf() : v);
+      if (typeof val === 'number' && !Number.isNaN(val)) return val;
+    } catch (e) {}
+    // Fallback to Date parse for strings
+    const parsed = Date.parse(String(v));
+    if (!Number.isNaN(parsed)) return parsed;
+    // final fallback
+    return -Infinity;
+  };
+  return toNumber(b.data.pubDate) - toNumber(a.data.pubDate);
+});
 
 // Pagination via ?page=N (1-based). Page size kept at 10 to match previous behaviour.
 const url = new URL(Astro.request.url);
@@ -24,8 +55,11 @@ const pageEntries = researchposts.slice(start, start + pageSize);
 const renderedEntries = await Promise.all((pageEntries || []).map(async (p) => {
   // cast to any because the collection entry type may not expose render() in TS types here
   const rendered = await ((p as any).render?.() as any) || {};
-  // prefer html string where available to avoid using a dynamic component tag
-  return { entry: p, html: rendered?.html ?? null };
+  // Some content renderers (esp. MDX or the content API) provide a `Content` component instead of raw html.
+  // Collect both so the template can prefer `html` but fall back to rendering the `Content` component.
+  const html = rendered?.html ? String(rendered.html) : '';
+  const Content = rendered?.Content ?? null;
+  return { entry: p, html, Content };
 }));
 
 const prevUrl = pageIndex > 1 ? `/research?page=${pageIndex - 1}` : null;
@@ -274,7 +308,7 @@ const page = {
       <div id="themes-panels" class="space-y-0">
       {
         /* Use pre-rendered Content components for every entry on the current page so expanded panels show full write-ups */
-        renderedEntries.map(({ entry, html }, i) => (
+        renderedEntries.map(({ entry, html, Content }, i) => (
           <details class="group p-3 border-b border-base-200 last:border-b-0" data-index={String(i)}>
             <summary class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 cursor-pointer list-none p-4 md:p-6 rounded-md min-h-[64px] md:min-h-[88px]">
               {
@@ -305,7 +339,17 @@ const page = {
                <div class="md:col-start-3 md:col-span-8">
                  <!-- Title removed from expanded content (already displayed in the summary) -->
                  {/* Render full post content (markdown) */}
-                <div class="prose max-w-none mb-4" set:html={String(html ?? '')}></div>
+                {
+                  html ? (
+                    <div class="prose max-w-none mb-4" set:html={String(html)}></div>
+                  ) : (
+                    Content ? (
+                      <div class="prose max-w-none mb-4"><Content /></div>
+                    ) : (
+                      <div class="prose max-w-none mb-4"><em>No content available.</em></div>
+                    )
+                  )
+                }
                 <div class="flex gap-2 items-center">
                   {Array.isArray((entry.data as any).tags) ? (entry.data as any).tags.map((t) => <span class="badge badge-outline">{t}</span>) : null}
                 </div>
@@ -339,6 +383,11 @@ const page = {
       })();
     </script>
     <style>
+      /* Ensure themes panels sit above any overlapping interactive overlays from the models section */
+      #research-themes { position: relative; z-index: 60; }
+      #research-themes #themes-panels { position: relative; z-index: 61; }
+      #research-themes details.group > summary { z-index: 62; pointer-events: auto; }
+
       /* Smooth open/close for <details> content */
       details .details-body {
         max-height: 0;
