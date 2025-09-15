@@ -22,3 +22,5 @@ pnpm-debug.log*
 .astro/
 /.idea/material_theme_project_new.xml
 /.idea/workspace.xml
+/.idea/copilot.data.migration.agent.xml
+/.idea/copilot.data.migration.edit.xml
