@@ -10,7 +10,7 @@ heroImage: "/images/cluster.webp"
 <p style="margin:0 0 0.5rem 0;">Single atom alloys are unique as the only catalytically active sites are single atoms.
 This highly localized activity allows "simpler" kinetics due to the reactivity of the single atom being more
 homogeneous-like than heterogeneous in nature. Removal of surface diffusion allows the total rate equation to be
-simplified to:
+simplified to the sum of probabilities of a dopant atom being in a surface site and the reactivity of that site.
 
 With this, I sampled the active sites of the nanoparticle using a machine learning interatomic potential.
 I then classified the sites using machine learning.
