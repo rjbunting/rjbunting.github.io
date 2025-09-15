@@ -357,7 +357,7 @@ const page = {
           });
         });
 
-          if (e.key === 'Escape') details.forEach((d) => d.open = false);
+        // Close all panels on Escape (single handler)
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') details.forEach((d) => d.open = false);
         });
@@ -408,20 +408,9 @@ const page = {
         border-color: rgba(59,130,246,0.08);
       }
 
-      /* Make the summary inner chevron animate on hover a bit more smoothly */
-      details.group > summary > .group-open\:rotate-90 {
-        transition: transform .18s ease;
-      }
+      /* Keep the chevron aligned and animating */
+      details.group > summary > .group-open\:rotate-90 { transition: transform .18s ease; }
 
-      /* Improve tap-targets on small screens: slightly increase summary padding on hover/focus for affordance */
-      @media (hover: hover) {
-        details.group > summary:hover { padding-left: 1.05rem; padding-right: 1.05rem; }
-      }
-
-      /* Ensure the chevron remains aligned when transforms apply to the summary */
-      details.group > summary > span:last-child { display: inline-block; }
-
-      /* End hover styles */
     </style>
   </section>
 
