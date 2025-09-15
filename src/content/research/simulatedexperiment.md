@@ -3,7 +3,7 @@ title: "Simulated Experiment"
 description: "Computational material synthesis"
 pubDate: "Aug 30 2023"
 heroImage: "/images/realbzo.png"
-badge: "Video inside"
+badge: "Video"
 ---
 
 <div style="max-width:920px;margin:1.25rem auto;padding:1.25rem 1.5rem;line-height:1.6;color:#0f172a;font-size:1.02rem;background:linear-gradient(180deg,#ffffff,#fbfdff);border-radius:10px;box-shadow:0 8px 28px rgba(2,6,23,0.06);">

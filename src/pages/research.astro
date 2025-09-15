@@ -23,8 +23,9 @@ const pageEntries = researchposts.slice(start, start + pageSize);
 // Render the full content for all posts on the current page so expanded panels can show full write-ups
 const renderedEntries = await Promise.all((pageEntries || []).map(async (p) => {
   // cast to any because the collection entry type may not expose render() in TS types here
-  const rendered = await ((p as any).render() as any);
-  return { entry: p, Content: rendered?.Content };
+  const rendered = await ((p as any).render?.() as any) || {};
+  // prefer html string where available to avoid using a dynamic component tag
+  return { entry: p, html: rendered?.html ?? null };
 }));
 
 const prevUrl = pageIndex > 1 ? `/research?page=${pageIndex - 1}` : null;
@@ -102,12 +103,12 @@ const page = {
           <div class="bg-base-200 text-sm text-base-content px-3 py-1 rounded shadow-sm border border-base-300">Future ▶</div>
         </div>
 
-        <!-- Bottom image (future) - reduced more to ensure it fits cleanly inside the frame -->
+        <!-- Bottom image (future) -->
         <div class="absolute inset-0 flex items-center justify-center" style="position:relative; z-index:10; background-color:#fff; padding:0;">
           <img src="/images/realbzo.png" alt="Future / model prediction view" style="max-width:35%; max-height:74%; object-fit:contain; object-position:center center; display:block;" />
         </div>
 
-         <!-- Past image (static) - curtain will reveal/cover it via clip-path. The wrapper gets the clip-path applied; inner image is centered and constrained. -->
+         <!-- Past image (static) -->
         <div id="past-img" class="absolute inset-0 flex items-center justify-center" style="position:absolute; left:0; top:0; z-index:20; transform:none; pointer-events:none; will-change:clip-path; background-color:#fff; padding:0;">
           <img src="/images/smallbzo.png" alt="Past / experimental view" style="max-width:40%; max-height:74%; object-fit:contain; object-position:center center; display:block;" />
         </div>
@@ -125,6 +126,8 @@ const page = {
           </div>
          </div>
 
+      </div>
+
       <script>
         (function(){
           const slider = document.getElementById('comparison-slider');
@@ -133,22 +136,16 @@ const page = {
 
           if (!slider || !pastImg || !handleEl) return;
 
-          /** @type {HTMLElement} */
-          const past = /** @type {HTMLElement} */ (pastImg);
-          /** @type {HTMLElement} */
-          const handle = /** @type {HTMLElement} */ (handleEl);
-          // knob element inside the handle (decorative and draggable via the handle)
-          const knob = /** @type {HTMLElement | null} */ (handle.querySelector('.divider-knob'));
+          const past = pastImg;
+          const handle = handleEl;
+          const knob = handle.querySelector('.divider-knob');
 
-          // internal current position (0..100). Start at 50 (50% of past visible)
           let currentPos = 50;
           let dragging = false;
 
           const setPosition = (percent, { animate = false } = {}) => {
             const clamped = Math.max(0, Math.min(100, percent));
-
-            // clamped represents how much of the past image remains visible from the left (0..100)
-            const clipRight = 100 - clamped; // percent of the right side to inset (hidden)
+            const clipRight = 100 - clamped;
 
             if (animate) {
               past.style.transition = 'clip-path .25s ease, transform 0s';
@@ -158,9 +155,7 @@ const page = {
               handle.style.transition = 'none';
             }
 
-            // Use clip-path to hide the right portion of the static past image (curtain effect)
             past.style.clipPath = `inset(0 ${clipRight}% 0 0)`;
-            // Ensure the image itself has no transform applied
             past.style.transform = 'none';
             handle.style.left = clamped + '%';
 
@@ -173,15 +168,11 @@ const page = {
             return ((clientX - rect.left) / rect.width) * 100;
           };
 
-          // Pointer handlers (support mouse & touch)
           const onPointerDown = (e) => {
             dragging = true;
             try { e.target.setPointerCapture && e.target.setPointerCapture(e.pointerId); } catch (err) {}
-
-            // update position immediately
             const rel = resolvePositionFromX(e.clientX);
             setPosition(rel);
-
             e.preventDefault();
           };
 
@@ -198,41 +189,31 @@ const page = {
             setPosition(currentPos, { animate: true });
           };
 
-          // Start drag from the handle or the knob. Do not start drag from clicks on the slider background.
           handle.addEventListener('pointerdown', onPointerDown);
-           window.addEventListener('pointermove', onPointerMove);
-           window.addEventListener('pointerup', onPointerUp);
+          window.addEventListener('pointermove', onPointerMove);
+          window.addEventListener('pointerup', onPointerUp);
 
-           // Improve UX: prevent text selection while dragging
-           const setDraggingUi = (isDragging) => {
-             document.body.style.userSelect = isDragging ? 'none' : '';
-            // change handle cursor while dragging
+          const setDraggingUi = (isDragging) => {
+            document.body.style.userSelect = isDragging ? 'none' : '';
             handle.style.cursor = isDragging ? 'grabbing' : 'grab';
-            // scale the knob slightly while dragging to give feedback
             if (knob instanceof HTMLElement) {
               knob.style.transition = 'transform .18s ease, box-shadow .18s ease';
-              // Preserve the centering transform (translate -50%,-50%) used by Tailwind so the knob
-              // stays perfectly centered while applying a small vertical offset and scale.
               knob.style.transform = isDragging
                 ? 'translate(-50%, -50%) translateY(-2px) scale(1.03)'
                 : 'translate(-50%, -50%) scale(1)';
              knob.style.boxShadow = isDragging ? '0 8px 20px rgba(0,0,0,0.18)' : '0 6px 14px rgba(0,0,0,0.12)';
            }
-           };
-           // Wrap onPointerDown / onPointerUp to update UI
+          };
+
           const _onPointerDown = (e) => { setDraggingUi(true); onPointerDown(e); };
           const _onPointerUp = (e) => { setDraggingUi(false); onPointerUp(e); };
-          // Rebind handle to wrapped handlers
           handle.removeEventListener('pointerdown', onPointerDown);
           handle.addEventListener('pointerdown', _onPointerDown);
-          // use wrapped up handler
           window.removeEventListener('pointerup', onPointerUp);
           window.addEventListener('pointerup', _onPointerUp);
 
-          // Prevent default touch-action scrolling for the handle to make dragging smoother
           try { handle.style.touchAction = 'none'; } catch (err) {}
 
-          // keyboard accessibility
           slider.tabIndex = 0;
           slider.addEventListener('keydown', (e) => {
             const step = e.shiftKey ? 10 : 5;
@@ -243,23 +224,19 @@ const page = {
             if (e.key === 'End') { setPosition(100, { animate: true }); e.preventDefault(); }
           });
 
-          // Past/Future label buttons (make clickable and keyboard accessible).
           const btnPast = document.getElementById('btn-past');
           const btnFuture = document.getElementById('btn-future');
           if (btnPast) {
-            // Ensure pointerdown on the button takes priority (useful on touch and to stop the handle from intercepting)
             btnPast.addEventListener('pointerdown', (ev) => { ev.stopPropagation(); ev.preventDefault(); setPosition(80, { animate: true }); });
             btnPast.addEventListener('click', (ev) => { ev.stopPropagation(); setPosition(80, { animate: true }); });
             btnPast.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); ev.stopPropagation(); setPosition(80, { animate: true }); } });
           }
           if (btnFuture) {
-            // Ensure pointerdown on the button takes priority
             btnFuture.addEventListener('pointerdown', (ev) => { ev.stopPropagation(); ev.preventDefault(); setPosition(20, { animate: true }); });
             btnFuture.addEventListener('click', (ev) => { ev.stopPropagation(); setPosition(20, { animate: true }); });
             btnFuture.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); ev.stopPropagation(); setPosition(20, { animate: true }); } });
           }
 
-          // initialize
           setPosition(currentPos);
 
           window.addEventListener('resize', () => { /* noop */ });
@@ -291,21 +268,19 @@ const page = {
 
   <!-- Research themes: highlight research posts as a separate top-level section -->
   <section id="research-themes" class="mt-4 mb-8 reveal">
-    <!-- Title removed to reduce vertical whitespace (titles are shown in each summary) -->
 
     <!-- Panels: clicking a theme expands it into a full section on the page -->
-    <!-- Single container box for all themes -->
     <div class="bg-base-100 rounded-lg p-4 shadow-sm">
       <div id="themes-panels" class="space-y-0">
       {
         /* Use pre-rendered Content components for every entry on the current page so expanded panels show full write-ups */
-        renderedEntries.map(({ entry, Content }, i) => (
+        renderedEntries.map(({ entry, html }, i) => (
           <details class="group p-3 border-b border-base-200 last:border-b-0" data-index={String(i)}>
-            <summary class="flex items-center gap-4 cursor-pointer list-none p-4 md:p-6 rounded-md min-h-[64px] md:min-h-[88px]">
+            <summary class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 cursor-pointer list-none p-4 md:p-6 rounded-md min-h-[64px] md:min-h-[88px]">
               {
                 entry.data.heroImage && (
                   // Ensure alt text is plain (strip any simple HTML tags) for accessibility
-                  <img src={entry.data.heroImage} alt={String(entry.data.title ?? '').replace(/<[^>]*>/g, '')} class="w-28 h-16 md:w-32 md:h-20 rounded object-cover flex-shrink-0" style="aspect-ratio:16/9;" />
+                  <img src={entry.data.heroImage} alt={String(entry.data.title ?? '').replace(/<[^>]*>/g, '')} class="w-full h-40 sm:w-28 sm:h-16 md:w-32 md:h-20 rounded object-cover flex-shrink-0 mb-3 sm:mb-0" style="aspect-ratio:16/9; object-fit:cover;" />
                 )
               }
               <span class="flex-1 text-left">
@@ -317,9 +292,9 @@ const page = {
                   </span>
                   <span class="text-sm text-muted hidden md:block">Click to expand</span>
                 </span>
-                <span class="text-sm text-muted mt-1 line-clamp-2 md:line-clamp-3">{entry.data.description}</span>
+                <span class="text-sm text-muted mt-1">{entry.data.description}</span>
               </span>
-              <span class="ml-4 text-2xl md:text-3xl transition-transform duration-200 group-open:rotate-90">▸</span>
+              <span class="mt-2 sm:mt-0 sm:ml-4 text-2xl md:text-3xl transition-transform duration-200 group-open:rotate-90">▸</span>
             </summary>
 
             <!-- Reduced top margin to tighten spacing when expanded -->
@@ -330,7 +305,7 @@ const page = {
                <div class="md:col-start-3 md:col-span-8">
                  <!-- Title removed from expanded content (already displayed in the summary) -->
                  {/* Render full post content (markdown) */}
-                <div class="prose max-w-none mb-4"><Content/></div>
+                <div class="prose max-w-none mb-4" set:html={String(html ?? '')}></div>
                 <div class="flex gap-2 items-center">
                   {Array.isArray((entry.data as any).tags) ? (entry.data as any).tags.map((t) => <span class="badge badge-outline">{t}</span>) : null}
                 </div>
@@ -365,51 +340,83 @@ const page = {
     </script>
     <style>
       /* Smooth open/close for <details> content */
-      /* The content wrapper (.details-body) transitions max-height + opacity. */
       details .details-body {
         max-height: 0;
         overflow: hidden;
         opacity: 0;
         transition: max-height .42s cubic-bezier(.2,.9,.2,1), opacity .28s ease;
       }
-      /* When details is open, allow the body to expand. Use a large enough max-height to cover expected content. */
       details[open] .details-body {
-        /* Large max-height to accommodate long write-ups; adjust if you expect much longer content */
         max-height: 2400px;
         opacity: 1;
       }
 
-      /* Improve summary hit area visuals when focused */
       details summary:focus {
         outline: 2px solid rgba(59,130,246,0.6);
         outline-offset: 4px;
       }
 
-      /* Hover / focus / open visuals for research panels */
-      /* Use the .group class on details to apply hover effects to the summary */
       details.group > summary {
         transition: background-color .12s ease, transform .12s ease, box-shadow .12s ease, border-color .12s ease;
         will-change: transform, box-shadow, background-color;
         cursor: pointer;
       }
 
-      /* Subtle hover lift and highlight */
       details.group:hover > summary {
-        background-color: rgba(15, 23, 42, 0.03); /* subtle tint */
+        background-color: rgba(15, 23, 42, 0.03);
         transform: translateY(-2px);
         box-shadow: 0 6px 18px rgba(2,6,23,0.06);
       }
 
-      /* Stronger visible state when a panel is open */
       details.group[open] > summary {
         background-color: rgba(15, 23, 42, 0.04);
-        transform: none; /* leave expanded panels flush */
+        transform: none;
         box-shadow: 0 10px 30px rgba(2,6,23,0.08);
         border-color: rgba(59,130,246,0.08);
       }
 
-      /* Keep the chevron aligned and animating */
       details.group > summary > .group-open\:rotate-90 { transition: transform .18s ease; }
+
+      #themes-panels,
+      #themes-panels .group,
+      #themes-panels .group > summary,
+      details.group {
+        overflow: visible;
+      }
+
+      details.group > summary {
+        position: relative;
+        z-index: 1;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        will-change: transform, box-shadow;
+      }
+
+      details.group[open] > summary { z-index: 3; }
+
+      @media (max-width: 640px) {
+        details.group > summary { min-height: 56px; padding: 0.7rem 0.9rem; }
+        details summary .line-clamp-2, details summary .line-clamp-3 { -webkit-line-clamp: unset !important; overflow: visible !important; display: block !important; }
+
+        #themes-panels details > summary {
+          flex-direction: column !important;
+          align-items: center !important;
+          text-align: center;
+        }
+        #themes-panels details > summary img {
+          width: 64px !important;
+          height: 64px !important;
+          object-fit: cover !important;
+          margin-bottom: 0.5rem !important;
+          border-radius: 0.5rem !important;
+        }
+        #themes-panels details > summary .flex-1 { text-align: center; }
+        #themes-panels details > summary > .group-open\:rotate-90,
+        #themes-panels details > summary > div:last-child {
+          margin-top: 0.5rem !important;
+          margin-left: 0 !important;
+        }
+      }
 
     </style>
   </section>
@@ -453,5 +460,4 @@ const page = {
         )
       }
     </div>
-  </section>
 </BaseLayout>
