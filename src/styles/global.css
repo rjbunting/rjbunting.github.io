@@ -158,3 +158,35 @@ a {
 :focus { outline: 3px solid rgba(59,130,246,0.15); outline-offset: 2px; }
 
 .card:focus-within, .rounded-lg:focus-within { box-shadow: 0 8px 24px rgba(16,24,40,0.06); transform: translateY(-4px) scale(1.01); }
+
+/* Research post hero: centered responsive video with caption */
+.post-hero {
+  max-width: 900px;
+  margin: 1.25rem auto 1.75rem;
+  display: block;
+  text-align: center;
+}
+
+.post-hero video {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(16,24,40,0.08);
+  background: var(--base-100, #fff);
+  display: block;
+  margin: 0 auto;
+  object-fit: contain; /* changed from cover to contain to avoid clipping */
+  object-position: center center; /* center the video inside the container */
+  aspect-ratio: 16 / 9;
+}
+
+.post-hero figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: color-mix(in srgb, var(--base-content, #111827) 65%, transparent);
+}
+
+@media (max-width: 640px) {
+  .post-hero { margin: 1rem 0 1.25rem; }
+  .post-hero video { border-radius: 8px; aspect-ratio: 4 / 3; object-fit: contain; }
+}

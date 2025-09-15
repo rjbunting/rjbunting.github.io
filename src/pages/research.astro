@@ -104,12 +104,12 @@ const page = {
 
         <!-- Bottom image (future) - reduced more to ensure it fits cleanly inside the frame -->
         <div class="absolute inset-0 flex items-center justify-center" style="position:relative; z-index:10; background-color:#fff; padding:0;">
-          <img src="/realbzo.png" alt="Future / model prediction view" style="max-width:35%; max-height:74%; object-fit:contain; object-position:center center; display:block;" />
+          <img src="/images/realbzo.png" alt="Future / model prediction view" style="max-width:35%; max-height:74%; object-fit:contain; object-position:center center; display:block;" />
         </div>
 
          <!-- Past image (static) - curtain will reveal/cover it via clip-path. The wrapper gets the clip-path applied; inner image is centered and constrained. -->
         <div id="past-img" class="absolute inset-0 flex items-center justify-center" style="position:absolute; left:0; top:0; z-index:20; transform:none; pointer-events:none; will-change:clip-path; background-color:#fff; padding:0;">
-          <img src="/smallbzo.png" alt="Past / experimental view" style="max-width:40%; max-height:74%; object-fit:contain; object-position:center center; display:block;" />
+          <img src="/images/smallbzo.png" alt="Past / experimental view" style="max-width:40%; max-height:74%; object-fit:contain; object-position:center center; display:block;" />
         </div>
         <!-- Draggable handle (divider line and rail) -->
         <div id="handle" class="absolute top-0 h-full flex items-center justify-center z-40" style="left:50%" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-label="Reveal timeline (drag left for past, right for future)">
@@ -317,17 +317,17 @@ const page = {
                   </span>
                   <span class="text-sm text-muted hidden md:block">Click to expand</span>
                 </span>
-                <p class="text-sm text-muted mt-1 line-clamp-2 md:line-clamp-3">{entry.data.description}</p>
+                <span class="text-sm text-muted mt-1 line-clamp-2 md:line-clamp-3">{entry.data.description}</span>
               </span>
               <span class="ml-4 text-2xl md:text-3xl transition-transform duration-200 group-open:rotate-90">▸</span>
             </summary>
 
             <!-- Reduced top margin to tighten spacing when expanded -->
-            <div class="details-body mt-2 grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
-              {
-                /* Removed hero image from expanded content per request. The summary still shows the preview image. */
+            <div class="details-body mt-2 grid grid-cols-1 md:grid-cols-12 gap-4 items-start justify-center">
+               {
+                 /* Removed hero image from expanded content per request. The summary still shows the preview image. */
                }
-               <div class="md:col-span-2">
+               <div class="md:col-start-3 md:col-span-8">
                  <!-- Title removed from expanded content (already displayed in the summary) -->
                  {/* Render full post content (markdown) */}
                 <div class="prose max-w-none mb-4"><Content/></div>
@@ -357,7 +357,7 @@ const page = {
           });
         });
 
-        // keyboard: allow Enter/Space on summary to open (handled by browser), close on Escape
+          if (e.key === 'Escape') details.forEach((d) => d.open = false);
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') details.forEach((d) => d.open = false);
         });
@@ -442,7 +442,7 @@ const page = {
             Recent posts
           </a>
         ) : (
-          <div />
+          <div></div>
         )
       }
       {
@@ -460,7 +460,7 @@ const page = {
             </svg>
           </a>
         ) : (
-          <div />
+          <div></div>
         )
       }
     </div>
