@@ -4,7 +4,7 @@ const { title, img, authors, desc, url, badge, tags, target = "_blank", disableH
 const plainTitle = String(title ?? '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
 const hoverClass = disableHover ? '' : 'hover:scale-[102%]';
 const noHoverClass = disableHover ? 'no-hover-scale' : '';
-const searchText = `${title ?? ''} ${authors ?? ''} ${desc ?? ''} ${tags ? tags.join(' ') : ''}`.toLowerCase();
+const searchText = `${plainTitle} ${authors ?? ''} ${desc ?? ''} ${tags ? tags.join(' ') : ''}`.toLowerCase();
 ---
 
 <div class="reveal transition-opacity duration-700 ease-out opacity-0 mb-0.5" data-search={searchText}>
@@ -31,11 +31,11 @@ const searchText = `${title ?? ''} ${authors ?? ''} ${desc ?? ''} ${tags ? tags.
              )
           }
           <div class="flex-grow w-full">
-            <h1 class="text-sm font-semibold flex items-center gap-1 mb-0">
+            <h3 class="text-sm font-semibold flex items-center gap-1 mb-0">
               <span set:html={String(title ?? '')}></span>
               <slot />
               {badge && <div class="badge badge-secondary ml-1">{badge}</div>}
-            </h1>
+            </h3>
             <p class="py-0 text-sm font-medium">{authors}</p>
             <p class="py-0 text-sm">{desc}</p>
             <div class="card-actions justify-start flex flex-wrap gap-1 mt-0.5">
@@ -64,11 +64,11 @@ const searchText = `${title ?? ''} ${authors ?? ''} ${desc ?? ''} ${tags ? tags.
              )
           }
           <div class="flex-grow w-full">
-            <h1 class="text-sm font-semibold flex items-center gap-1 mb-0">
+            <h3 class="text-sm font-semibold flex items-center gap-1 mb-0">
               <span set:html={String(title ?? '')}></span>
               <slot />
               {badge && <div class="badge badge-secondary ml-1">{badge}</div>}
-            </h1>
+            </h3>
             <p class="py-0 text-sm font-medium">{authors}</p>
             <p class="py-0 text-sm">{desc}</p>
             <div class="card-actions justify-start flex flex-wrap gap-1 mt-0.5">

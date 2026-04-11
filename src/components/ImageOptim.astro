@@ -18,7 +18,7 @@ try {
 }
 if (imgType === 'module') {
   try {
-    const image = getImage({ src: src, widths: [400, 800, 1200], formats: ['webp','avif','png'] });
+    const image = await getImage({ src: src, widths: [400, 800, 1200], formats: ['webp','avif','png'] });
     imgSrc = image?.src ?? src;
     // build simple srcset from returned sources if available
     if (image && image.sources && image.sources.length) {

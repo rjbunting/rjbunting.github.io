@@ -6,13 +6,13 @@ import SideBar from "../components/SideBar.astro";
 
 import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
 
-const { image, title = SITE_TITLE, description = SITE_DESCRIPTION, includeSidebar = true, sideBarActiveItemID } = Astro.props;
+const { image, title = SITE_TITLE, description = SITE_DESCRIPTION, includeSidebar = true, sideBarActiveItemID, structuredData } = Astro.props;
 ---
 
 <!DOCTYPE html>
 <html lang="en" data-theme="cupcake">
   <head>
-    <BaseHead title={title} description={description} image={image} />
+    <BaseHead title={title} description={description} image={image} structuredData={structuredData} />
   </head>
   <body>
     <!-- Skip link for accessibility -->
@@ -20,9 +20,9 @@ const { image, title = SITE_TITLE, description = SITE_DESCRIPTION, includeSideba
 
     <div class="bg-base-100 drawer lg:drawer-open">
       <input id="my-drawer" type="checkbox" class="drawer-toggle" aria-label="Toggle sidebar" />
-      <div class="drawer-content bg-base-100">
+      <div class="drawer-content bg-base-100 flex flex-col min-h-screen">
         <Header title={SITE_TITLE} />
-        <div class="md:flex md:justify-center">
+        <div class="md:flex md:justify-center flex-1">
           <main id="main-content" tabindex="-1" class="p-6 pt-10 lg:max-w-[900px] max-w-[100vw]">
             <slot />
           </main>

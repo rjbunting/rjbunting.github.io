@@ -8,7 +8,7 @@ const { title, subtitle } = Astro.props;
     <span class="education__line bg-primary block h-full w-[2px] translate-x-[7px]"></span>
   </div>
   <div class="experience__data bd-grid px-5">
-    <h3 class="font-semibold mb-1">{title}</h3>
+    <h3 class="font-semibold mb-1 !mt-0">{title}</h3>
     <span class="font-light text-sm">{subtitle}</span>
     <!-- optional small meta subtext slot (e.g. supervisor, group, location) -->
     <div class="text-xs text-muted mt-1"><slot name="meta" /></div>

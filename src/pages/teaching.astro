@@ -7,7 +7,7 @@ import HorizontalCard from "../components/HorizontalCard.astro";
     <!-- Hero / summary with profile image -->
     <section class="bg-base-200 text-base-content rounded-lg p-6 mb-8 flex flex-col md:flex-row items-center gap-6 no-hover-scale">
         <div class="flex-1">
-            <h1 class="text-4xl w-full font-bold mb-3">Teaching Philosophy</h1>
+            <h1 class="text-3xl w-full font-bold mb-3">Teaching Philosophy</h1>
             <p class="text-lg mb-4 opacity-95">
                 My teaching philosophy emphasizes fostering an environment conducive of learning.
                 Teaching goes beyond course material, with a need for soft skills to be taught and developed within students.
@@ -33,7 +33,7 @@ import HorizontalCard from "../components/HorizontalCard.astro";
     </section>
 
     <!-- Teaching highlights / metrics (animated counters) -->
-    <section class="mb-8 reveal">
+    <section class="mb-8 reveal px-6">
         <!--<h2 class="text-2xl font-bold mb-4">Teaching Highlights</h2>-->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="bg-base-100 rounded-lg p-4 shadow border-l-4 border-primary cursor-pointer">
@@ -52,14 +52,14 @@ import HorizontalCard from "../components/HorizontalCard.astro";
     </section>
 
     <!-- Courses (wrapper) -->
-    <section id="courses" class="mb-8 reveal">
-        <h2 class="text-3xl font-bold mb-3">Courses:</h2>
+    <section id="courses" class="mb-8 reveal px-6">
+        <h2 class="text-2xl font-bold mb-3">Courses:</h2>
         <!--<p class="text-sm text-muted mb-4">A selection of courses I have designed and taught. Each course below includes materials and metadata.</p>-->
 
         <div class="space-y-8">
             <!-- Computational Chemistry subsection -->
             <section id="computational-chemistry" class="reveal">
-                <h3 class="text-2xl font-bold mb-2">An Introduction to Computational Chemistry</h3>
+                <h3 class="text-xl font-semibold mb-2">An Introduction to Computational Chemistry</h3>
                 <div class="text-sm text-muted mb-4">Lectures and hands-on workshop series for teaching practical computational chemistry skills.</div>
 
                 <div class="grid gap-3 mb-4 md:grid-cols-2">
@@ -100,20 +100,20 @@ import HorizontalCard from "../components/HorizontalCard.astro";
                 <HorizontalCard
                     title="Lecture Slides"
                     img="/images/chemistryslides.png"
-                    desc="Lecture slides for 'An Introduction to Computational Chemistry', covering computing, emprical methods, ab initio methods, molecular modeling, and kinetics and thermodynamics."
+                     desc="Lecture slides for 'An Introduction to Computational Chemistry', covering computing, empirical methods, ab initio methods, molecular modeling, and kinetics and thermodynamics."
                     url="https://1drv.ms/p/s!AgEBZympJpEbhQFu2u64HWlnLAQI"
                     badge="Slides"
                     disableHover={true}
                 />
 
-                <div class="mt-4">
-                    <p class="text-sm text-muted">Materials include lecture slides and step-by-step notebooks.</p>
-                </div>
+                <!--<div class="mt-4">-->
+                <!--    <p class="text-sm text-muted">Materials include lecture slides and step-by-step notebooks.</p>-->
+                <!--</div>-->
             </section>
 
             <!-- Catalysis subsection -->
             <section id="catalysis" class="reveal">
-                <h3 class="text-2xl font-bold mb-2">An Introduction to Catalysis</h3>
+                <h3 class="text-xl font-semibold mb-2">An Introduction to Catalysis</h3>
                 <div class="text-sm text-muted mb-4">Course covers catalytic mechanisms, kinetics, and practical examples.</div>
 
                 <div class="grid gap-3 mb-4 md:grid-cols-2">

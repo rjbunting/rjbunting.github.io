@@ -31,7 +31,7 @@ const displayDate = dayjs(pubDate).format("ll");
 ---
 
 <BaseLayout title={plainTitle} description={description} image={heroImage}>
-  <main class="md:flex md:justify-center">
+  <div class="md:flex md:justify-center">
     <article class="prose prose-lg max-w-[750px] prose-img:mx-auto">
       {
         heroImage && (
@@ -54,5 +54,5 @@ const displayDate = dayjs(pubDate).format("ll");
       <div class="divider my-2"></div>
       <slot />
     </article>
-  </main>
+  </div>
 </BaseLayout>
