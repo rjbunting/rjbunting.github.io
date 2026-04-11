@@ -8,7 +8,7 @@
     };
   }
 
-  const THEMES = { light: 'cupcake', dark: 'synthwave' };
+  const THEMES = { light: 'cupcake', dark: 'night' };
 
   function applyTheme(theme) {
     try {

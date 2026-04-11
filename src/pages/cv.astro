@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import TimeLineElement from "../components/cv/TimeLine.astro";
 ---
 
-<BaseLayout title="CV" sideBarActiveItemID="cv">
+<BaseLayout title="Curriculum Vitae | Rhys Bunting" sideBarActiveItemID="cv">
   <div class="mb-4 flex items-center gap-3">
     <a
       href="https://1drv.ms/b/c/1b9126a929670101/EeH5WR0wonZAnZuWl_CPOyEBLjbBQDPTg2JH5Ax6-4yL0A?e=cJ9cpf"
@@ -11,7 +11,7 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
       rel="noopener noreferrer"
       class="btn btn-primary inline-flex items-center px-3 py-1.5 rounded shadow transition-colors font-semibold text-base"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" stroke="currentColor">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
       </svg>
       Download Full CV (PDF)
@@ -19,12 +19,12 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
   </div>
 
   <div class="mb-4">
-    <h2 class="text-3xl w-full font-bold">Professional Appointments</h2>
+    <h2 class="text-2xl w-full font-bold">Professional Appointments</h2>
   </div>
 
   <div class="time-line-container grid gap-2 mb-6">
     <TimeLineElement
-      title="Lawrence Livermore National Lab | Mar24-*"
+      title="Lawrence Livermore National Lab | Mar 2024 – Present"
       subtitle="Postdoctoral Researcher | Under the supervision of Quantum Simulations Group Leader Tuan Anh Pham"
     >
       <span slot="meta">I implement machine learning methods to bridge the scales of simulations from the
@@ -32,7 +32,7 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
       couple surface reactivity and degradation.</span>
     </TimeLineElement>
     <TimeLineElement
-      title="Insitute of Science and Technology Austria | Nov21-Feb24"
+      title="Institute of Science and Technology Austria | Nov 2021 – Feb 2024"
       subtitle="Postdoctoral Researcher | Under the supervision of Asst. Prof. Bingqing Cheng and Asst. Prof. Maria Ibáñez"
     >
       <span slot="meta">I simulated single atom alloy nanoparticles with molecular dynamics to sample the population of
@@ -40,7 +40,7 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
       experimental-theoretical projects considering the thermoelectric properties of materials.</span>
     </TimeLineElement>
     <TimeLineElement
-      title="University College Dublin | Sep20-Aug21"
+      title="University College Dublin | Sep 2020 – Aug 2021"
       subtitle="Postdoctoral Researcher | Under the supervision of Asst. Prof. Nuala Caffrey"
     >
       <span slot="meta">I used Density Functional Theory to calculate the catalytic properties of molybdenum
@@ -49,24 +49,24 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
   </div>
 
   <div class="mb-4">
-    <h2 class="text-3xl w-full font-bold">Education</h2>
+    <h2 class="text-2xl w-full font-bold">Education</h2>
   </div>
 
   <div class="time-line-container mb-6">
     <TimeLineElement
-      title="Queen's University Belfast | Oct17-Aug20"
+      title="Queen's University Belfast | Oct 2017 – Aug 2020"
       subtitle="Doctor of Philosophy | Under the supervision of Prof. Peijun Hu and Assoc. Prof. Jillian Thompson"
     >
       <span slot="meta">I performed electronic structure methods, kinetic modeling, and global optimisation algorithms to describe the reactivity of surfaces.</span>
     </TimeLineElement>
     <TimeLineElement
-      title="Queen's University Belfast | Oct13-Jul17"
+      title="Queen's University Belfast | Oct 2013 – Jul 2017"
       subtitle="MSci Chemistry | School of Chemistry and Chemical Engineering"
     />
   </div>
 
     <div class="mb-4">
-        <h2 class="text-3xl w-full font-bold">Teaching</h2>
+        <h2 class="text-2xl w-full font-bold">Teaching</h2>
     </div>
 
     <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
@@ -91,7 +91,7 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
     </ul>
 
     <div class="mb-4">
-        <div class="text-3xl w-full font-bold">Refereeing</div>
+        <h2 class="text-2xl w-full font-bold">Refereeing</h2>
     </div>
 
     <ul class="list-disc md:columns-1 columns-1 mx-6 text-base mb-2 gap-1">
@@ -103,7 +103,7 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
     </ul>
 
     <div class="mb-4">
-        <h2 class="text-3xl w-full font-bold">Invited Talks</h2>
+        <h2 class="text-2xl w-full font-bold">Invited Talks</h2>
     </div>
 
     <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
@@ -113,7 +113,7 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
     </ul>
 
   <div class="mb-4">
-    <h2 class="text-3xl w-full font-bold">Conferences</h2>
+    <h2 class="text-2xl w-full font-bold">Conferences</h2>
   </div>
     <div class="mb-1 text-xl font-semibold">Chair</div>
     <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
@@ -133,20 +133,17 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
   <!--</ul>-->
 
     <div class="mb-4">
-        <h2 class="text-3xl w-full font-bold">Grants</h2>
+        <h2 class="text-2xl w-full font-bold">Grants</h2>
     </div>
 
     <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
         <li>Noxfuel - NREL Compute Allocation - 1,596,000 compute hours - Oct25</li>
-    </ul>
-
-    <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
         <li>Snowflake - NREL Compute Allocation - 1,670,160 compute hours - Oct24</li>
     </ul>
 
-  <div class="mb-4">
-    <h2 class="text-3xl w-full font-bold">Memberships</h2>
-  </div>
+    <div class="mb-4">
+        <h2 class="text-2xl w-full font-bold">Memberships</h2>
+    </div>
 
   <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
     <li>Royal Society of Chemistry</li>

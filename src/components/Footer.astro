@@ -2,14 +2,63 @@
 const today = new Date();
 ---
 
-<footer class="footer footer-center block mb-5 pt-10">
-  <div class="pb-2">
-   </div>
-   <div class="inline opacity-75">
-     <!-- Thanks for using this template. You can keep this line to support my work :) -->
-    <a href="mailto:rhys.j.bunting@gmail.com" target="_blank" class="font-bold">Contact me &#128231;</a>
+<footer class="footer footer-center block mb-6 pt-0 px-4">
+  <div class="w-full max-w-md mx-auto">
+
+    <!-- Contact card -->
+    <div class="contact-card bg-base-200 rounded-2xl px-6 py-1 shadow-md text-center">
+
+      <!-- Title -->
+      <div class="relative flex items-center justify-center mb-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0 text-primary absolute left-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+        </svg>
+        <span class="text-xl font-bold">Get in Touch</span>
+      </div>
+
+      <p class="text-sm text-muted mb-2 max-w-xs mx-auto leading-snug">
+        Open to collaborations, discussions, <br>
+          and opportunities
+      </p>
+
+      <!-- Email CTA -->
+      <a
+        href="mailto:bunting4@llnl.gov"
+        class="btn btn-primary btn-sm gap-2"
+        aria-label="Email Rhys Bunting"
+      >
+        <!--<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">-->
+        <!--  <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>-->
+        <!--</svg>-->
+        bunting4@llnl.gov
+      </a>
+
+      <!-- Divider + social row -->
+      <div class="divider text-xs my-1">or let's connect on</div>
+
+      <div class="contact-social flex items-center justify-center gap-5">
+
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com/in/rhys-bunting-ab87a1217/"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="LinkedIn" title="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="28" height="28">
+            <path fill="#0288D1" d="M42 37c0 2.762-2.238 5-5 5H11c-2.761 0-5-2.238-5-5V11c0-2.762 2.239-5 5-5h26c2.762 0 5 2.238 5 5v26z"/>
+            <path fill="#FFF" d="M12 19H17V36H12zM14.485 17h-.028C12.965 17 12 15.888 12 14.499 12 13.08 12.995 12 14.514 12c1.521 0 2.458 1.08 2.486 2.499C17 15.887 16.035 17 14.485 17zM36 36h-5v-9.099c0-2.198-1.225-3.698-3.192-3.698-1.501 0-2.313 1.012-2.707 1.99C24.957 25.543 25 26.511 25 27v9h-5V19h5v2.616C25.721 20.5 26.85 19 29.738 19c3.578 0 6.261 2.25 6.261 7.274L36 36z"/>
+          </svg>
+        </a>
+
+      </div>
+    </div>
+
   </div>
 </footer>
-<style>
 
+<style>
+  .contact-card { transition: box-shadow 240ms ease; }
+  .contact-social a {
+    transition: transform 200ms ease, opacity 200ms ease;
+    opacity: 0.82;
+  }
+  .contact-social a:hover { transform: translateY(-3px) scale(1.08); opacity: 1; }
 </style>

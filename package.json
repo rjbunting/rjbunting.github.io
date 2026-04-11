@@ -12,13 +12,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.6",
+    "@astrojs/mdx": "^4.3.14",
     "@astrojs/sitemap": "^1.4.0",
     "@astrojs/tailwind": "^6.0.2",
-    "astro": "^5.14.1",
+    "astro": "^5.18.1",
     "daisyui": "^3.9.4",
-    "sharp": "^0.32.6",
-    "dayjs": "^1.11.9"
+    "sharp": "^0.34.5",
+    "dayjs": "^1.11.20"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.19"

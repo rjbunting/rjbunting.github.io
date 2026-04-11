@@ -3,10 +3,10 @@ title: "Simulated Experiment"
 description: "Computational material synthesis"
 pubDate: "Aug 30 2023"
 heroImage: "/images/realbzo.png"
-badge: "Video"
+#badge: "Video"
 ---
 
-<div style="max-width:920px;margin:1.25rem auto;padding:1.25rem 1.5rem;line-height:1.6;color:#0f172a;font-size:1.02rem;background:linear-gradient(180deg,#ffffff,#fbfdff);border-radius:10px;box-shadow:0 8px 28px rgba(2,6,23,0.06);">
+<div style="max-width:920px;margin:1.25rem auto;padding:1.25rem 1.5rem;line-height:1.6;font-size:1.02rem;border-radius:10px;box-shadow:0 8px 28px rgba(2,6,23,0.06);">
 
   <p style="margin:0 0 0.75rem 0;">Efficient proton transport is essential for advancing solid-state fuel cells and electrolyzers, yet the mechanisms 
 governing proton diffusion in polycrystalline barium zirconate (BaZrO<sub>3</sub>) remain incompletely understood.
@@ -21,7 +21,7 @@ polycrystalline barium zirconate.
       <source src="/videos/crush.webm" type="video/webm">
       Your browser does not support the video tag.
     </video>
-    <figcaption style="margin-top:0.5rem;color:#64748b;font-size:0.95rem;">Simulated hot press of Barium Zirconate powder</figcaption>
+    <figcaption style="margin-top:0.5rem;font-size:0.95rem;">Simulated hot press of Barium Zirconate powder</figcaption>
   </figure>
 
   <p style="margin:0 0 0.5rem 0;">I simulated a barium zirconate powder under high pressure and temperature to simulate pellet formation via hot press.

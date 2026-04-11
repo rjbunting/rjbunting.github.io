@@ -5,25 +5,12 @@
 /* Typography and spacing improvements */
 :root {
   /* Prefer Frutiger where available (proprietary) with sensible fallbacks */
-  --body-font: 'Frutiger', 'Frutiger Next', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --heading-font: 'Frutiger', 'Frutiger Next', Georgia, 'Times New Roman', Times, serif;
+  --body-font: 'Open Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --heading-font: 'Open Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   --measure: 66ch; /* optimal measure for readability */
-
-  /* Default color tokens (concrete fallbacks). These ensure the stylesheet has usable values
-     before DaisyUI injects theme tokens like --bc and --b1. */
-  --base-content: rgb(17 24 39 / 0.95);
-  --base-100: #ffffff;
-  --primary: #2563EB;
-  --code-color: #111827;
-}
-
-/* If DaisyUI provides its theme tokens (e.g. --bc, --b1, --p, --nc), prefer those values.
-   The var(..., fallback) usage ensures a concrete fallback remains for static analysis. */
-:root, [data-theme] {
-  --base-content: hsl(var(--bc, 215 28% 17%) / 1);
-  --base-100: hsl(var(--b1, 0 0% 100%) / 1);
-  --primary: hsl(var(--p, 259 96% 91%) / 1);
-  --code-color: hsl(var(--nc, 212 19% 87%) / 1);
+  /* Color tokens are now sourced directly from DaisyUI's --bc, --b1, --p etc.
+     No custom property aliases needed – this prevents the dark fallback bug where
+     a hard-coded dark value made text invisible in dark themes. */
 }
 
 html {
@@ -31,29 +18,27 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Enable smooth scrolling for in-page anchors; honored by prefers-reduced-motion rule below */
   scroll-behavior: smooth;
 }
 
 body {
   line-height: 1.68;
-  /* Use theme-aware text color so text remains visible in light and dark themes */
-  color: var(--base-content, rgb(17 24 39 / 0.95));
-  background-color: var(--base-100, #ffffff);
+  color: hsl(var(--bc) / 1);
+  background-color: hsl(var(--b1) / 1);
 }
 
 h1,h2,h3,h4,h5,h6 {
   font-family: var(--heading-font);
-  color: inherit;
+  color: hsl(var(--bc) / 1);
   line-height: 1.15;
   letter-spacing: -0.02em;
   margin-top: 0.85em;
   margin-bottom: 0.35em;
 }
 
-h1 { font-size: clamp(1.8rem, 2.4vw, 2.8rem); }
-h2 { font-size: clamp(1.4rem, 1.8vw, 1.8rem); }
-h3 { font-size: clamp(1.125rem, 1.2vw, 1.25rem); }
+h1 { font-size: 1.875rem; } /* text-3xl */
+h2 { font-size: 1.5rem; }   /* text-2xl */
+h3 { font-size: 1.25rem; }  /* text-xl  */
 
 /* Prose/content area: comfortable measure and spacing */
 .prose, article, .article, .post-content {
@@ -83,33 +68,26 @@ main > * + * { margin-top: 0.5rem; }
 /* Sidebar adjustments for spacing */
 .drawer-side aside { padding-left: 0.5rem; padding-right: 0.5rem; }
 
-/* Ensure UI text elements use theme-aware content color for contrast */
+/* Base text color: use DaisyUI's --bc directly so dark themes get light text */
 .btn, .badge, .menu a, .navbar a, .social-icons a, .card-title, .prose, .post-content, main, aside {
-  color: var(--base-content, rgb(17 24 39 / 0.95));
+  color: hsl(var(--bc) / 1);
 }
 
-/* Ensure core text elements follow the active DaisyUI theme color */
-:where(body, main, aside, header, footer, article, .prose, .post-content, .card-body, .card-title, h1, h2, h3, h4, h5, h6, p, li, a, .menu a, .btn, .badge, .navbar, .footer) {
-  color: var(--base-content, rgb(17 24 39 / 0.95));
+:where(body, main, aside, header, footer, article, .prose, .post-content, .card-body, .card-title, h1, h2, h3, h4, h5, h6, p, li, .menu a, .btn, .badge, .navbar, .footer) {
+  color: hsl(var(--bc) / 1);
 }
-
-/* Preserve contrast for headings explicitly if some themes set different scales */
-h1, h2, h3, h4, h5, h6 { color: var(--base-content, inherit); }
 
 /* Ensure code blocks and inline code remain readable */
-code, pre, .code { color: var(--code-color, var(--base-content, #111827)); }
+code, pre, .code { color: hsl(var(--bc) / 1); }
 
-/* Avoid overriding SVG brand colors; allow icons to keep original fills unless they use currentColor */
-/* If you want icons to adapt to the theme, add `fill="currentColor"` to their SVG paths. */
-
-/* Links: use theme primary color but ensure sufficient contrast */
+/* Links: use DaisyUI primary color */
 a {
-  color: var(--primary, #2563EB);
+  color: hsl(var(--p) / 1);
 }
 
-/* Make sure small muted text uses base-content with reduced opacity for readability */
+/* Muted text: sufficient opacity for readability (WCAG AA) */
 .text-muted, .muted {
-  color: color-mix(in srgb, var(--base-content, #111827) 70%, transparent);
+  color: hsl(var(--bc) / 0.72);
 }
 
 /* Keep earlier micro-interaction CSS */
@@ -126,19 +104,17 @@ a {
 }
 
 .card, .rounded-lg { transition: transform 240ms cubic-bezier(.2,.9,.2,1), box-shadow 240ms ease; }
-.card:hover, .rounded-lg:hover { transform: translateY(-4px) scale(1.02); }
+/* Only lift interactive elements — not every container that happens to use rounded-lg */
+a.rounded-lg:hover, button.rounded-lg:hover, .card:hover { transform: translateY(-4px) scale(1.02); }
 
 /* Opt-out class: disable all hover lift/scale effects for elements that opt out */
 .no-hover-scale:hover,
 .no-hover-scale:focus-within,
 .no-hover-scale :where(.rounded-lg:hover, .card:hover, img:hover, .avatar:hover),
 .no-hover-scale :where(.rounded-lg:focus-within, .card:focus-within, img:focus-within) {
-  /* Remove any transform applied by the global hover rules */
   transform: none !important;
 }
 
-/* Allow elements inside a .no-hover-scale container to opt back into the global hover transform
-   by adding the `allow-hover` class to them. This restores the same lift+scale used site-wide. */
 .no-hover-scale :where(.allow-hover:hover, .allow-hover:focus-within) {
   transform: translateY(-4px) scale(1.02) !important;
 }
@@ -155,9 +131,8 @@ a {
 .menu a { transition: transform 160ms ease, background-color 160ms ease; }
 .menu a:hover { transform: translateX(4px); }
 
-:focus { outline: 3px solid rgba(59,130,246,0.15); outline-offset: 2px; }
-
-.card:focus-within, .rounded-lg:focus-within { box-shadow: 0 8px 24px rgba(16,24,40,0.06); transform: translateY(-4px) scale(1.01); }
+:focus-visible { outline: 3px solid rgba(59,130,246,0.75); outline-offset: 3px; }
+:focus:not(:focus-visible) { outline: none; }
 
 /* Research post hero: centered responsive video with caption */
 .post-hero {
@@ -172,21 +147,75 @@ a {
   height: auto;
   border-radius: 12px;
   box-shadow: 0 12px 30px rgba(16,24,40,0.08);
-  background: var(--base-100, #fff);
+  background: hsl(var(--b1) / 1);
   display: block;
   margin: 0 auto;
-  object-fit: contain; /* changed from cover to contain to avoid clipping */
-  object-position: center center; /* center the video inside the container */
+  object-fit: contain;
+  object-position: center center;
   aspect-ratio: 16 / 9;
 }
 
 .post-hero figcaption {
   margin-top: 0.5rem;
   font-size: 0.95rem;
-  color: color-mix(in srgb, var(--base-content, #111827) 65%, transparent);
+  color: hsl(var(--bc) / 0.68);
 }
 
 @media (max-width: 640px) {
   .post-hero { margin: 1rem 0 1.25rem; }
   .post-hero video { border-radius: 8px; aspect-ratio: 4 / 3; object-fit: contain; }
+}
+
+/* =========================================================
+   Dark-mode contrast improvements — synthwave theme
+   =========================================================
+   Key issues addressed:
+   1. Cards are invisible against bg-base-100 background — add outline
+   2. Inline links use primary pink (~5:1) — switch to secondary cyan (~7:1)
+   3. Muted text and figcaptions need a bit more opacity
+   4. Hero gradient invisible — add a ring instead
+   ========================================================= */
+
+/* Card visual separation in dark mode */
+[data-theme="night"] .card,
+[data-theme="night"] .explore-card {
+  outline: 1px solid hsl(var(--bc) / 0.12);
+}
+
+/* Hero / base-200 panels also get a subtle ring */
+[data-theme="night"] .bg-gradient-to-r.rounded-lg,
+[data-theme="night"] .bg-base-200.rounded-2xl,
+[data-theme="night"] .bg-base-200.rounded-xl,
+[data-theme="night"] .contact-card {
+  outline: 1px solid hsl(var(--bc) / 0.12);
+}
+
+/* Inline links: switch to secondary cyan (58c7f3 ≈ 7:1 contrast vs dark purple bg)
+   Primary pink (e779c1 ≈ 5:1) technically passes WCAG AA but cyan is clearly
+   more legible in practice against the dark background. */
+[data-theme="night"] a:not(.btn):not([class*="btn-"]):not(.explore-card) {
+  color: hsl(var(--s) / 1);
+}
+
+/* Keep sidebar nav links as base-content (near-white) — they don't need the cyan treatment */
+[data-theme="night"] .menu a,
+[data-theme="night"] .navbar a {
+  color: hsl(var(--bc) / 1);
+}
+
+/* Muted text: boost opacity for dark background readability */
+[data-theme="night"] .text-muted,
+[data-theme="night"] .muted {
+  color: hsl(var(--bc) / 0.82);
+}
+
+[data-theme="night"] .post-hero figcaption {
+  color: hsl(var(--bc) / 0.78);
+}
+
+/* Code/pre: fully opaque base-content on dark */
+[data-theme="night"] code,
+[data-theme="night"] pre,
+[data-theme="night"] .code {
+  color: hsl(var(--bc) / 1);
 }

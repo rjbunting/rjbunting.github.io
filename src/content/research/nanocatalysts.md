@@ -2,10 +2,11 @@
 title: "Calculating the Activity of a Single Atom Alloy Nanoparticle"
 description: "Combining active site sampling and microkinetics to get nanoparticle activity"
 pubDate: "Aug 17 2023"
-heroImage: "/images/cluster.webp"
+heroImage: "/images/classification.jpeg"
+heroImageAlt:
 ---
 
-<div style="max-width:920px;margin:1.25rem auto;padding:1.25rem 1.5rem;line-height:1.6;color:#0f172a;font-size:1.02rem;background:linear-gradient(180deg,#ffffff,#fbfdff);border-radius:10px;box-shadow:0 8px 28px rgba(2,6,23,0.06);">
+<div style="max-width:920px;margin:1.25rem auto;padding:1.25rem 1.5rem;line-height:1.6;font-size:1.02rem;border-radius:10px;box-shadow:0 8px 28px rgba(2,6,23,0.06);">
 
 <p style="margin:0 0 0.5rem 0;">Single atom alloys are unique as the only catalytically active sites are single atoms.
 This highly localized activity allows "simpler" kinetics due to the reactivity of the single atom being more
@@ -19,8 +20,11 @@ This gave a total reaction rate for the whole nanoparticle catalyst.
 </p>
 
   <figure style="margin:0 auto 1rem auto;max-width:820px;text-align:center;">
-    <img src="/images/classification.jpeg" alt="Reaction Network" style="width:100%;height:auto;border-radius:8px;box-shadow:0 10px 30px rgba(2,6,23,0.08);border:1px solid rgba(15,23,42,0.04);" />
-    <figcaption style="margin-top:0.6rem;font-style:italic;color:#64748b;font-size:0.95rem;">Classification of active sites from molecular dynamics trajectories using pairwise similarity kernels</figcaption>
+    <video controls playsinline muted loop style="width:100%;height:auto;border-radius:8px;box-shadow:0 10px 30px rgba(2,6,23,0.08);border:1px solid rgba(15,23,42,0.04);">
+      <source src="/videos/saa.webm" type="video/webm">
+      Your browser does not support the video tag.
+    </video>
+    <figcaption style="margin-top:0.5rem;font-size:0.95rem;">Site sampling for total reactivity</figcaption>
   </figure>
 
 </div>
