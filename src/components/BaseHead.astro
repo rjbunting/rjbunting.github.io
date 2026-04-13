@@ -50,4 +50,4 @@ const { title, description, image = '/social_img.png', structuredData } = Astro.
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
-{structuredData && <script type="application/ld+json">{structuredData}</script>}
+{structuredData && <script type="application/ld+json" set:html={structuredData} />}
