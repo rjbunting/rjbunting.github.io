@@ -11,6 +11,23 @@ import HorizontalCard from "../components/HorizontalCard.astro";
     "@graph": [
       {
         "@type": "ScholarlyArticle",
+        "headline": "Direct Ab Initio Simulation of the Synthesis of BaZrO3 and the Microstructure Impacts on Proton Transport",
+        "author": [
+          {"@type":"Person","name":"RJ Bunting"},
+          {"@type":"Person","name":"R Paul"},
+          {"@type":"Person","name":"N Rampal"},
+          {"@type":"Person","name":"BC Wood"},
+          {"@type":"Person","name":"T Ogitsu"},
+          {"@type":"Person","name":"JB Varley"},
+          {"@type":"Person","name":"TA Pham"}
+        ],
+        "publisher": {"@type":"Organization","name":"ACS Nano"},
+        "url": "https://pubs.acs.org/doi/10.1021/acsnano.6c00561",
+        "image": "/images/realbzo.png",
+        "description": "Direct ab initio simulation of BaZrO3 synthesis and microstructure impacts on proton transport"
+      },
+      {
+        "@type": "ScholarlyArticle",
         "headline": "Nuclear Quantum Effects of Metal Surface-Mediated C–H Activation",
         "author": [
           {"@type":"Person","name":"RJ Bunting"},
@@ -151,11 +168,19 @@ import HorizontalCard from "../components/HorizontalCard.astro";
   <div class="bg-base-100 rounded-lg p-4 shadow-sm">
     <div class="flex flex-col gap-1">
     <HorizontalCard
+            title="Direct Ab Initio Simulation of the Synthesis of BaZrO<sub>3</sub> and the Microstructure Impacts on Proton Transport"
+            img="/images/realbzo.png"
+            authors="RJ Bunting, R Paul, N Rampal, BC Wood, T Ogitsu, JB Varley, and TA Pham"
+            desc="ACS Nano"
+            badge="New"
+            url="https://pubs.acs.org/doi/10.1021/acsnano.6c00561"
+    />
+
+    <HorizontalCard
             title="Nuclear Quantum Effects of Metal Surface-Mediated C–H Activation"
             img="/images/nqe.gif"
             authors="RJ Bunting, S Shepherd, N Rampal, S Akhade, DM Wilkins*, and TA Pham*"
             desc="Physical Chemistry Chemical Physics"
-            badge="New"
             url="https://pubs.rsc.org/en/content/articlehtml/2025/cp/d5cp01527h"
     />
 

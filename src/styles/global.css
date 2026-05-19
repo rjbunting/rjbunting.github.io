@@ -1,3 +1,11 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@plugin "daisyui" {
+  themes: all;
+  logs: false;
+}
+@source "../../public/js/ui.js";
+
 .time-line-container>div:last-child .education__time>.education__line {
     display: none;
 }
@@ -23,13 +31,13 @@ html {
 
 body {
   line-height: 1.68;
-  color: hsl(var(--bc) / 1);
-  background-color: hsl(var(--b1) / 1);
+  color: var(--color-base-content);
+  background-color: var(--color-base-100);
 }
 
 h1,h2,h3,h4,h5,h6 {
   font-family: var(--heading-font);
-  color: hsl(var(--bc) / 1);
+  color: var(--color-base-content);
   line-height: 1.15;
   letter-spacing: -0.02em;
   margin-top: 0.85em;
@@ -70,24 +78,24 @@ main > * + * { margin-top: 0.5rem; }
 
 /* Base text color: use DaisyUI's --bc directly so dark themes get light text */
 .btn, .badge, .menu a, .navbar a, .social-icons a, .card-title, .prose, .post-content, main, aside {
-  color: hsl(var(--bc) / 1);
+  color: var(--color-base-content);
 }
 
 :where(body, main, aside, header, footer, article, .prose, .post-content, .card-body, .card-title, h1, h2, h3, h4, h5, h6, p, li, .menu a, .btn, .badge, .navbar, .footer) {
-  color: hsl(var(--bc) / 1);
+  color: var(--color-base-content);
 }
 
 /* Ensure code blocks and inline code remain readable */
-code, pre, .code { color: hsl(var(--bc) / 1); }
+code, pre, .code { color: var(--color-base-content); }
 
 /* Links: use DaisyUI primary color */
 a {
-  color: hsl(var(--p) / 1);
+  color: var(--color-primary);
 }
 
 /* Muted text: sufficient opacity for readability (WCAG AA) */
 .text-muted, .muted {
-  color: hsl(var(--bc) / 0.72);
+  color: color-mix(in oklab, var(--color-base-content) 72%, transparent);
 }
 
 /* Keep earlier micro-interaction CSS */
@@ -147,7 +155,7 @@ a.rounded-lg:hover, button.rounded-lg:hover, .card:hover { transform: translateY
   height: auto;
   border-radius: 12px;
   box-shadow: 0 12px 30px rgba(16,24,40,0.08);
-  background: hsl(var(--b1) / 1);
+  background: var(--color-base-100);
   display: block;
   margin: 0 auto;
   object-fit: contain;
@@ -158,7 +166,7 @@ a.rounded-lg:hover, button.rounded-lg:hover, .card:hover { transform: translateY
 .post-hero figcaption {
   margin-top: 0.5rem;
   font-size: 0.95rem;
-  color: hsl(var(--bc) / 0.68);
+  color: color-mix(in oklab, var(--color-base-content) 68%, transparent);
 }
 
 @media (max-width: 640px) {
@@ -179,7 +187,7 @@ a.rounded-lg:hover, button.rounded-lg:hover, .card:hover { transform: translateY
 /* Card visual separation in dark mode */
 [data-theme="night"] .card,
 [data-theme="night"] .explore-card {
-  outline: 1px solid hsl(var(--bc) / 0.12);
+  outline: 1px solid color-mix(in oklab, var(--color-base-content) 12%, transparent);
 }
 
 /* Hero / base-200 panels also get a subtle ring */
@@ -187,35 +195,35 @@ a.rounded-lg:hover, button.rounded-lg:hover, .card:hover { transform: translateY
 [data-theme="night"] .bg-base-200.rounded-2xl,
 [data-theme="night"] .bg-base-200.rounded-xl,
 [data-theme="night"] .contact-card {
-  outline: 1px solid hsl(var(--bc) / 0.12);
+  outline: 1px solid color-mix(in oklab, var(--color-base-content) 12%, transparent);
 }
 
 /* Inline links: switch to secondary cyan (58c7f3 ≈ 7:1 contrast vs dark purple bg)
    Primary pink (e779c1 ≈ 5:1) technically passes WCAG AA but cyan is clearly
    more legible in practice against the dark background. */
 [data-theme="night"] a:not(.btn):not([class*="btn-"]):not(.explore-card) {
-  color: hsl(var(--s) / 1);
+  color: var(--color-secondary);
 }
 
 /* Keep sidebar nav links as base-content (near-white) — they don't need the cyan treatment */
 [data-theme="night"] .menu a,
 [data-theme="night"] .navbar a {
-  color: hsl(var(--bc) / 1);
+  color: var(--color-base-content);
 }
 
 /* Muted text: boost opacity for dark background readability */
 [data-theme="night"] .text-muted,
 [data-theme="night"] .muted {
-  color: hsl(var(--bc) / 0.82);
+  color: color-mix(in oklab, var(--color-base-content) 82%, transparent);
 }
 
 [data-theme="night"] .post-hero figcaption {
-  color: hsl(var(--bc) / 0.78);
+  color: color-mix(in oklab, var(--color-base-content) 78%, transparent);
 }
 
 /* Code/pre: fully opaque base-content on dark */
 [data-theme="night"] code,
 [data-theme="night"] pre,
 [data-theme="night"] .code {
-  color: hsl(var(--bc) / 1);
+  color: var(--color-base-content);
 }

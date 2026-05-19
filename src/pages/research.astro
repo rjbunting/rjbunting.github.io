@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 
 // Load manual scholar metrics from src/data/scholar.json
 const metricsModule = await import('../data/scholar.json');
@@ -53,8 +53,7 @@ const pageEntries = researchposts.slice(start, start + pageSize);
 
 // Render the full content for all posts on the current page so expanded panels can show full write-ups
 const renderedEntries = await Promise.all((pageEntries || []).map(async (p) => {
-  // cast to any because the collection entry type may not expose render() in TS types here
-  const rendered = await ((p as any).render?.() as any) || {};
+  const rendered = await render(p);
   // Some content renderers (esp. MDX or the content API) provide a `Content` component instead of raw html.
   // Collect both so the template can prefer `html` but fall back to rendering the `Content` component.
   const html = rendered?.html ? String(rendered.html) : '';

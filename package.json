@@ -12,15 +12,17 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.14",
-    "@astrojs/sitemap": "^1.4.0",
-    "@astrojs/tailwind": "^6.0.2",
-    "astro": "^5.18.1",
-    "daisyui": "^3.9.4",
+    "@astrojs/mdx": "^5.0.6",
+    "@astrojs/sitemap": "^3.7.2",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.3.5",
+    "daisyui": "^5.5.20",
+    "dayjs": "^1.11.20",
     "sharp": "^0.34.5",
-    "dayjs": "^1.11.20"
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.19"
+    "@tailwindcss/typography": "^0.5.19",
+    "vite": "^7.3.3"
   }
 }
