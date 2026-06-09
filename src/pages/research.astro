@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
 
 // Load manual scholar metrics from src/data/scholar.json
 const metricsModule = await import('../data/scholar.json');
@@ -18,6 +18,8 @@ const metrics = {
   lastUpdated: String(rawLastUpdated ?? ''),
 };
 
+const stripHtml = (value) => String(value ?? '').replace(/<[^>]*>/g, '');
+
 // Fetch all research posts and sort by pubDate desc (defensively handle string/date/number)
 const researchposts = await getCollection("research");
 researchposts.sort((a, b) => {
@@ -27,7 +29,7 @@ researchposts.sort((a, b) => {
     if (typeof v === 'number') return v;
     // If it's a Date-like object
     if (v instanceof Date) return v.valueOf();
-    // If it has valueOf that returns a number (some Content types)
+    // If it has valueOf that returns a number
     try {
       const val = v && (typeof v.valueOf === 'function' ? v.valueOf() : v);
       if (typeof val === 'number' && !Number.isNaN(val)) return val;
@@ -41,36 +43,18 @@ researchposts.sort((a, b) => {
   return toNumber(b.data.pubDate) - toNumber(a.data.pubDate);
 });
 
-// Pagination via ?page=N (1-based). Page size kept at 10 to match previous behaviour.
-const url = new URL(Astro.request.url);
-const pageSize = 10;
-const currentPage = Math.max(1, parseInt(url.searchParams.get('page') || '1', 10) || 1);
-const total = researchposts.length;
-const pageCount = Math.max(1, Math.ceil(total / pageSize));
-const pageIndex = Math.min(currentPage, pageCount);
-const start = (pageIndex - 1) * pageSize;
-const pageEntries = researchposts.slice(start, start + pageSize);
-
-// Render the full content for all posts on the current page so expanded panels can show full write-ups
-const renderedEntries = await Promise.all((pageEntries || []).map(async (p) => {
-  const rendered = await render(p);
-  // Some content renderers (esp. MDX or the content API) provide a `Content` component instead of raw html.
-  // Collect both so the template can prefer `html` but fall back to rendering the `Content` component.
-  const html = rendered?.html ? String(rendered.html) : '';
-  const Content = rendered?.Content ?? null;
-  return { entry: p, html, Content };
-}));
-
-const prevUrl = pageIndex > 1 ? `/research?page=${pageIndex - 1}` : null;
-const nextUrl = pageIndex < pageCount ? `/research?page=${pageIndex + 1}` : null;
-
-const page = {
-  data: pageEntries,
-  url: {
-    prev: prevUrl,
-    next: nextUrl,
-  }
-};
+// Render the full content for all research entries so the tab panels can show complete write-ups.
+const renderedEntries = (researchposts || []).map((p, index) => {
+  const html = typeof (p as any).body === 'string' ? (p as any).body : '';
+  const rawId = String(p.id ?? `research-${index}`).replace(/\.[^.]+$/, '');
+  const safeId = rawId.replace(/[^A-Za-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '') || `research-${index}`;
+  return {
+    entry: p,
+    html,
+    tabId: `research-tab-${safeId}`,
+    panelId: `research-panel-${safeId}`,
+  };
+});
 ---
 
 <BaseLayout title="Research" sideBarActiveItemID="research" wide={true}>
@@ -89,7 +73,7 @@ const page = {
     </div>
 
     <!-- Inline metrics column inside the hero (compact and visible on md+) -->
-    <div class="w-full md:w-56 flex-shrink-0 grid grid-cols-3 md:grid-cols-1 gap-3">
+    <div class="w-full md:w-56 shrink-0 grid grid-cols-3 md:grid-cols-1 gap-3">
       <div class="bg-base-100 rounded-lg p-3 text-center shadow-sm cursor-pointer allow-hover border-l-4 border-primary">
         <div class="text-2xl font-bold"><span class="counter" data-target={String(metrics.publications)} data-duration="900">0</span></div>
         <div class="text-xs text-muted">Publications</div>
@@ -117,7 +101,7 @@ const page = {
   <!-- New: Models development section with interactive two-image slider -->
   <section id="models" class="bg-base-100 rounded-lg p-6 mb-0 no-hover-scale">
      <div class="max-w-4xl mx-auto relative">
-      <h2 class="text-2xl font-semibold mb-3">Modeling Experiments</h2>
+      <h2 class="text-2xl font-semibold mb-3">The future of modeling experiments</h2>
       <p class="text-base mb-4 text-muted">
           The modeling of chemical systems with ab initio techniques has remained largely unchanged since its conception
           as a field. Models are limited to cluster or slab models, where surfaces are engineered to consider defects or
@@ -126,7 +110,7 @@ const page = {
           machine learning acceleration, and experimental feedback, I model systems that better describe their physical counterpart.
       </p>
 
-      <div class="relative w-full overflow-hidden rounded-lg shadow-md select-none allow-hover" id="comparison-slider" style="max-height:420px; background-color: #fff;" aria-label="Past vs future comparison">
+      <div class="relative w-full overflow-hidden rounded-lg shadow-md select-none" id="comparison-slider" style="max-height:420px; background-color: #fff;" aria-label="Past vs future comparison">
 
         <!-- Past/Future buttons (overlayed on the images only) -->
         <div id="btn-past" class="absolute top-3 left-3 z-50 cursor-pointer" role="button" tabindex="0" aria-label="Show past" style="pointer-events:auto;">
@@ -146,13 +130,13 @@ const page = {
           <img src="/images/smallbzo.png" alt="Past / experimental view" style="max-width:40%; max-height:74%; object-fit:contain; object-position:center center; display:block;" />
         </div>
         <!-- Draggable handle (divider line and rail) -->
-        <div id="handle" class="absolute top-0 h-full flex items-center justify-center z-40" style="left:50%" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-label="Reveal timeline (drag left for past, right for future)">
+        <div id="handle" class="absolute top-0 h-full flex items-center justify-center z-40" style="left:50%; touch-action:none; cursor:grab;" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-label="Reveal timeline (drag left for past, right for future)">
           <div class="relative flex items-center justify-center h-full w-full">
             <div class="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-black/60 shadow-md" style="filter:drop-shadow(0 1px 4px rgba(0,0,0,0.35)); opacity:0.85;"></div>
             <div class="absolute left-1/2 -translate-x-1/2 h-full w-6 rounded bg-black/10 pointer-events-none" style="opacity:0.6;"></div>
 
             <!-- Circular knob (visible, draggable) -->
-            <div class="divider-knob absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-base-100 border-2 border-black/10 shadow-lg flex items-center justify-center z-50 pointer-events-auto" style="touch-action:none;">
+            <div class="divider-knob absolute left-1/2 top-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-base-100 border-2 border-black/10 shadow-lg flex items-center justify-center z-50 pointer-events-auto" style="touch-action:none;">
               <!-- decorative inner indicator -->
               <div class="opacity-70 text-sm md:text-base">‹ ›</div>
             </div>
@@ -175,6 +159,7 @@ const page = {
 
           let currentPos = 50;
           let dragging = false;
+          let dragOffsetX = 0;
 
           const setPosition = (percent, { animate = false } = {}) => {
             const clamped = Math.max(0, Math.min(100, percent));
@@ -198,14 +183,16 @@ const page = {
 
           const resolvePositionFromX = (clientX) => {
             const rect = slider.getBoundingClientRect();
-            return ((clientX - rect.left) / rect.width) * 100;
+            return ((clientX - dragOffsetX - rect.left) / rect.width) * 100;
           };
 
           const onPointerDown = (e) => {
             dragging = true;
-            try { e.target.setPointerCapture && e.target.setPointerCapture(e.pointerId); } catch (err) {}
-            const rel = resolvePositionFromX(e.clientX);
-            setPosition(rel);
+            const rect = slider.getBoundingClientRect();
+            const handleCenterX = rect.left + (currentPos / 100) * rect.width;
+            dragOffsetX = e.clientX - handleCenterX;
+            try { handle.setPointerCapture && handle.setPointerCapture(e.pointerId); } catch (err) {}
+            setDraggingUi(true);
             e.preventDefault();
           };
 
@@ -218,7 +205,9 @@ const page = {
           const onPointerUp = (e) => {
             if (!dragging) return;
             dragging = false;
-            try { e.target.releasePointerCapture && e.target.releasePointerCapture(e.pointerId); } catch (err) {}
+            dragOffsetX = 0;
+            try { handle.releasePointerCapture && handle.releasePointerCapture(e.pointerId); } catch (err) {}
+            setDraggingUi(false);
             setPosition(currentPos, { animate: true });
           };
 
@@ -230,22 +219,11 @@ const page = {
             document.body.style.userSelect = isDragging ? 'none' : '';
             handle.style.cursor = isDragging ? 'grabbing' : 'grab';
             if (knob instanceof HTMLElement) {
-              knob.style.transition = 'transform .18s ease, box-shadow .18s ease';
-              knob.style.transform = isDragging
-                ? 'translate(-50%, -50%) translateY(-2px) scale(1.03)'
-                : 'translate(-50%, -50%) scale(1)';
-             knob.style.boxShadow = isDragging ? '0 8px 20px rgba(0,0,0,0.18)' : '0 6px 14px rgba(0,0,0,0.12)';
+              knob.classList.toggle('is-dragging', isDragging);
+              knob.style.boxShadow = isDragging ? '0 8px 20px rgba(0,0,0,0.18)' : '0 6px 14px rgba(0,0,0,0.12)';
            }
           };
 
-          const _onPointerDown = (e) => { setDraggingUi(true); onPointerDown(e); };
-          const _onPointerUp = (e) => { setDraggingUi(false); onPointerUp(e); };
-          handle.removeEventListener('pointerdown', onPointerDown);
-          handle.addEventListener('pointerdown', _onPointerDown);
-          window.removeEventListener('pointerup', onPointerUp);
-          window.addEventListener('pointerup', _onPointerUp);
-
-          try { handle.style.touchAction = 'none'; } catch (err) {}
 
           slider.tabIndex = 0;
           slider.addEventListener('keydown', (e) => {
@@ -288,8 +266,16 @@ const page = {
       #btn-past > div:active, #btn-future > div:active {
         transform: none !important;
       }
-      /* Ensure the knob remains visually centered when inline transforms are applied */
-      .divider-knob { transform-origin: center; }
+      /* Keep the knob centered at the divider line; pressed state scales from center without translating. */
+      .divider-knob {
+        --divider-knob-scale: 1;
+        transform: translate(-50%, -50%) scale(var(--divider-knob-scale));
+        transform-origin: center;
+        transition: transform .18s ease, box-shadow .18s ease;
+      }
+      .divider-knob.is-dragging {
+        --divider-knob-scale: 1.03;
+      }
 
       /* Responsive tweak: on narrow screens allow images to be a bit larger so they remain usable */
       @media (max-width: 640px) {
@@ -299,212 +285,305 @@ const page = {
     </div>
   </section>
 
-  <!-- Research themes: highlight research posts as a separate top-level section -->
+  <!-- Research highlights: card-style tabs backed by the research content collection -->
   <section id="research-themes" class="mt-4 mb-8 reveal">
+    <div class="research-highlights-shell bg-base-100 rounded-lg p-4 md:p-5 shadow-sm">
+      <div class="research-highlights-heading">
+        <div>
+          <h2>Research Highlights</h2>
+        </div>
+        <span class="research-count">{renderedEntries.length} highlights</span>
+      </div>
 
-    <!-- Panels: clicking a theme expands it into a full section on the page -->
-    <div class="bg-base-100 rounded-lg p-4 shadow-sm">
-      <div id="themes-panels" class="space-y-0">
-      {
-        /* Use pre-rendered Content components for every entry on the current page so expanded panels show full write-ups */
-        renderedEntries.map(({ entry, html, Content }, i) => (
-          <details class="group p-3 border-b border-base-200 last:border-b-0" data-index={String(i)}>
-            <summary class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 cursor-pointer list-none p-4 md:p-6 rounded-md min-h-[64px] md:min-h-[88px]">
+      <div class="research-highlight-grid" role="tablist" aria-label="Research highlights" data-research-tabs>
+        {
+          renderedEntries.map(({ entry, tabId, panelId }, i) => (
+            <button
+              id={tabId}
+              class={`research-highlight-card ${i === 0 ? 'is-active' : ''}`}
+              type="button"
+              role="tab"
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={panelId}
+              tabindex={i === 0 ? '0' : '-1'}
+              data-tab-target={panelId}
+            >
               {
                 entry.data.heroImage && (
-                  // Ensure alt text is plain (strip any simple HTML tags) for accessibility
-                  <img src={entry.data.heroImage} alt={String(entry.data.title ?? '').replace(/<[^>]*>/g, '')} class="w-full h-40 sm:w-28 sm:h-16 md:w-32 md:h-20 rounded object-cover flex-shrink-0 mb-3 sm:mb-0" style="aspect-ratio:16/9; object-fit:cover;" />
+                  <img src={entry.data.heroImage} alt="" aria-hidden="true" />
                 )
               }
-              <span class="flex-1 text-left">
-                  <span class="flex items-center justify-between gap-3">
-                    <span class="flex items-center gap-3">
-                      {/* Render title as HTML so subscripts/superscripts in the frontmatter show correctly */}
-                      <span class="text-base md:text-lg font-semibold" set:html={String(entry.data.title ?? '')}></span>
-                      {entry.data.badge && <span class="badge badge-secondary">{entry.data.badge}</span>}
-                    </span>
-                  </span>
-                <span class="text-sm text-muted mt-1">{entry.data.description}</span>
+              <span class="research-highlight-copy">
+                <span class="research-highlight-title" set:html={String(entry.data.title ?? '')}></span>
+                <span class="research-highlight-description">{entry.data.description}</span>
               </span>
-              <span class="mt-2 sm:mt-0 sm:ml-4 text-2xl md:text-3xl transition-transform duration-200 group-open:rotate-90">▸</span>
-            </summary>
+              {entry.data.badge && <span class="badge badge-secondary">{entry.data.badge}</span>}
+            </button>
+          ))
+        }
+      </div>
 
-            <!-- Reduced top margin to tighten spacing when expanded -->
-            <div class="details-body mt-2 grid grid-cols-1 md:grid-cols-12 gap-4 items-start justify-center">
-               {
-                 /* Removed hero image from expanded content per request. The summary still shows the preview image. */
-               }
-               <div class="md:col-start-3 md:col-span-8">
-                 <!-- Title removed from expanded content (already displayed in the summary) -->
-                 {/* Render full post content (markdown) */}
+      <div id="research-tabpanels" class="mt-4">
+        {
+          renderedEntries.map(({ entry, html, tabId, panelId }, i) => (
+            <section
+              id={panelId}
+              class="research-panel"
+              role="tabpanel"
+              aria-labelledby={tabId}
+              hidden={i !== 0}
+            >
+              <header class="research-panel-header">
                 {
-                  html ? (
-                    <div class="prose max-w-none mb-4" set:html={String(html)}></div>
-                  ) : (
-                    Content ? (
-                      <div class="prose max-w-none mb-4"><Content /></div>
-                    ) : (
-                      <div class="prose max-w-none mb-4"><em>No content available.</em></div>
-                    )
+                  entry.data.heroImage && (
+                    <img src={entry.data.heroImage} alt={stripHtml(entry.data.title)} />
                   )
                 }
-                <div class="flex gap-2 items-center">
-                  {Array.isArray((entry.data as any).tags) ? (entry.data as any).tags.map((t) => <span class="badge badge-outline">{t}</span>) : null}
+                <div>
+                  <h3 set:html={String(entry.data.title ?? '')}></h3>
+                  <p>{entry.data.description}</p>
                 </div>
+              </header>
+
+              {
+                html ? (
+                  <div class="prose max-w-none mb-4" set:html={String(html)}></div>
+                ) : (
+                  <div class="prose max-w-none mb-4"><em>No content available.</em></div>
+                )
+              }
+              <div class="flex gap-2 items-center">
+                {Array.isArray((entry.data as any).tags) ? (entry.data as any).tags.map((t) => <span class="badge badge-outline">{t}</span>) : null}
               </div>
-            </div>
-          </details>
-        ))
-      }
+            </section>
+          ))
+        }
       </div>
     </div>
 
     <script>
       (function(){
-        const container = document.getElementById('themes-panels');
-        if (!container) return;
-        const details = Array.from(container.querySelectorAll('details'));
-        // ensure only one panel open at a time
-        details.forEach((d) => {
-          d.addEventListener('toggle', () => {
-            if (!d.open) return;
-            details.forEach((other) => { if (other !== d) other.open = false; });
-            // scroll expanded panel into view on small screens
-            setTimeout(() => { d.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60);
-          });
-        });
+        const tablist = document.querySelector('[data-research-tabs]');
+        const panelsRoot = document.getElementById('research-tabpanels');
+        if (!tablist || !panelsRoot) return;
 
-        // Close all panels on Escape (single handler)
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') details.forEach((d) => d.open = false);
+        const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+        const panels = Array.from(panelsRoot.querySelectorAll('[role="tabpanel"]'));
+
+        const activateTab = (tab, shouldFocus = false) => {
+          const targetId = tab.getAttribute('data-tab-target');
+          tabs.forEach((item) => {
+            const isActive = item === tab;
+            item.classList.toggle('is-active', isActive);
+            item.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            item.setAttribute('tabindex', isActive ? '0' : '-1');
+          });
+          panels.forEach((panel) => {
+            panel.hidden = panel.id !== targetId;
+          });
+          if (shouldFocus) tab.focus();
+        };
+
+        tabs.forEach((tab, index) => {
+          tab.addEventListener('click', () => activateTab(tab));
+          tab.addEventListener('keydown', (event) => {
+            let nextIndex = index;
+            if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (index + 1) % tabs.length;
+            else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') nextIndex = (index - 1 + tabs.length) % tabs.length;
+            else if (event.key === 'Home') nextIndex = 0;
+            else if (event.key === 'End') nextIndex = tabs.length - 1;
+            else return;
+
+            event.preventDefault();
+            activateTab(tabs[nextIndex], true);
+          });
         });
       })();
     </script>
     <style>
-      /* Ensure themes panels sit above any overlapping interactive overlays from the models section */
-      #research-themes { position: relative; z-index: 60; }
-      #research-themes #themes-panels { position: relative; z-index: 61; }
-      #research-themes details.group > summary { z-index: 62; pointer-events: auto; }
-
-      /* Smooth open/close for <details> content */
-      details .details-body {
-        max-height: 0;
-        overflow: hidden;
-        opacity: 0;
-        transition: max-height .42s cubic-bezier(.2,.9,.2,1), opacity .28s ease;
-      }
-      details[open] .details-body {
-        max-height: 2400px;
-        opacity: 1;
-      }
-
-      details summary:focus {
-        outline: 2px solid rgba(59,130,246,0.6);
-        outline-offset: 4px;
-      }
-
-      details.group > summary {
-        transition: background-color .12s ease, transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-        will-change: transform, box-shadow, background-color;
-        cursor: pointer;
-      }
-
-      details.group:hover > summary {
-        background-color: rgba(15, 23, 42, 0.03);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(2,6,23,0.06);
-      }
-
-      details.group[open] > summary {
-        background-color: rgba(15, 23, 42, 0.04);
-        transform: none;
-        box-shadow: 0 10px 30px rgba(2,6,23,0.08);
-        border-color: rgba(59,130,246,0.08);
-      }
-
-      details.group > summary > .group-open\:rotate-90 { transition: transform .18s ease; }
-
-      #themes-panels,
-      #themes-panels .group,
-      #themes-panels .group > summary,
-      details.group {
-        overflow: visible;
-      }
-
-      details.group > summary {
+      #research-themes {
         position: relative;
-        z-index: 1;
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        will-change: transform, box-shadow;
+        z-index: 60;
       }
 
-      details.group[open] > summary { z-index: 3; }
+      .research-highlights-shell {
+        position: relative;
+        z-index: 61;
+      }
+
+      .research-highlights-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .research-highlights-heading h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      .research-count {
+        flex: none;
+        padding: 0.25rem 0.55rem;
+        border: 1px solid rgba(15, 23, 42, 0.12);
+        border-radius: 999px;
+        color: var(--color-base-content);
+        font-size: 0.78rem;
+        font-weight: 700;
+        line-height: 1.2;
+        opacity: 0.76;
+      }
+
+      .research-highlight-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+      }
+
+      .research-highlight-card {
+        display: grid;
+        grid-template-columns: 5rem minmax(0, 1fr);
+        align-items: stretch;
+        gap: 0.85rem;
+        min-height: 7rem;
+        padding: 0.75rem;
+        text-align: left;
+        border: 1px solid rgba(15, 23, 42, 0.12);
+        border-radius: 0.5rem;
+        background: var(--color-base-100);
+        color: var(--color-base-content);
+        box-shadow: 0 5px 16px rgba(2, 6, 23, 0.04);
+        transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+      }
+
+      .research-highlight-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(2, 6, 23, 0.09);
+      }
+
+      .research-highlight-card.is-active {
+        background: var(--color-base-200);
+        border-color: var(--color-primary);
+        box-shadow: inset 4px 0 0 var(--color-primary), 0 10px 24px rgba(2, 6, 23, 0.09);
+      }
+
+      .research-highlight-card:focus-visible {
+        outline: 3px solid rgba(59, 130, 246, 0.75);
+        outline-offset: 3px;
+      }
+
+      .research-highlight-card img {
+        width: 100%;
+        height: 100%;
+        min-height: 5.5rem;
+        border-radius: 0.375rem;
+        object-fit: cover;
+      }
+
+      .research-highlight-copy {
+        min-width: 0;
+      }
+
+      .research-highlight-title {
+        display: block;
+        font-weight: 700;
+        font-size: 0.98rem;
+        line-height: 1.25;
+      }
+
+      .research-highlight-description {
+        display: -webkit-box;
+        margin-top: 0.35rem;
+        overflow: hidden;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        color: var(--color-base-content);
+        font-size: 0.84rem;
+        line-height: 1.4;
+        opacity: 0.74;
+      }
+
+      .research-panel {
+        padding: 1rem;
+        border: 1px solid rgba(15, 23, 42, 0.1);
+        border-radius: 0.5rem;
+        background: var(--color-base-100);
+      }
+
+      .research-panel[hidden] {
+        display: none;
+      }
+
+      .research-panel-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+      }
+
+      .research-panel-header img {
+        width: 7.5rem;
+        aspect-ratio: 16 / 9;
+        border-radius: 0.5rem;
+        object-fit: cover;
+        flex: none;
+      }
+
+      .research-panel-header h3 {
+        margin: 0 0 0.35rem;
+        font-size: 1.35rem;
+        line-height: 1.2;
+        font-weight: 700;
+      }
+
+      .research-panel-header p {
+        margin: 0;
+        color: var(--color-base-content);
+        opacity: 0.75;
+      }
+
+      @media (max-width: 820px) {
+        .research-highlight-grid {
+          grid-template-columns: 1fr;
+        }
+      }
 
       @media (max-width: 640px) {
-        details.group > summary { min-height: 56px; padding: 0.7rem 0.9rem; }
-        details summary .line-clamp-2, details summary .line-clamp-3 { -webkit-line-clamp: unset !important; overflow: visible !important; display: block !important; }
+        .research-highlights-heading {
+          align-items: flex-start;
+          flex-direction: column;
+        }
 
-        #themes-panels details > summary {
-          flex-direction: column !important;
-          align-items: center !important;
-          text-align: center;
+        .research-highlight-card {
+          grid-template-columns: 4.25rem minmax(0, 1fr);
+          min-height: 6.25rem;
         }
-        #themes-panels details > summary img {
-          width: 64px !important;
-          height: 64px !important;
-          object-fit: cover !important;
-          margin-bottom: 0.5rem !important;
-          border-radius: 0.5rem !important;
+
+        .research-highlight-description {
+          -webkit-line-clamp: 2;
         }
-        #themes-panels details > summary .flex-1 { text-align: center; }
-        #themes-panels details > summary > .group-open\:rotate-90,
-        #themes-panels details > summary > div:last-child {
-          margin-top: 0.5rem !important;
-          margin-left: 0 !important;
+
+        .research-panel {
+          padding: 0.85rem;
+        }
+
+        .research-panel-header {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .research-panel-header img {
+          width: 100%;
+          max-height: 12rem;
         }
       }
-
     </style>
   </section>
 
-  <!-- All page entries are rendered above as expandable panels; no unexpandable cards are shown below. -->
-    <div class="flex justify-between">
-      {
-        page.url.prev ? (
-          <a href={page.url.prev} class="btn btn-ghost my-10 mx-5">
-            <svg
-              class="h-6 w-6 fill-current md:h-8 md:w-8"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
-            </svg>
-            Recent posts
-          </a>
-        ) : (
-          <div></div>
-        )
-      }
-      {
-        page.url.next ? (
-          <a href={page.url.next} class="btn btn-ghost my-10 mx-5">
-            Older Posts
-            <svg
-              class="h-6 w-6 fill-current md:h-8 md:w-8"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-            </svg>
-          </a>
-        ) : (
-          <div></div>
-        )
-      }
-    </div>
 </BaseLayout>
