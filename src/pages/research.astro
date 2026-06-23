@@ -59,7 +59,7 @@ const renderedEntries = (researchposts || []).map((p, index) => {
 
 <BaseLayout title="Research" sideBarActiveItemID="research" wide={true}>
   <!-- Hero / summary with research focus and compact metrics column -->
-  <section class="bg-base-200 text-base-content rounded-lg p-6 mb-0 flex flex-col md:flex-row items-start gap-6 no-hover-scale">
+  <section class="site-section bg-base-200 text-base-content rounded-lg p-6 flex flex-col md:flex-row items-start gap-6 no-hover-scale">
     <div class="flex-1">
       <h1 class="text-3xl w-full font-bold mb-3">Bridging Theory and Experiment</h1>
       <p class="text-lg mb-4 opacity-95">
@@ -99,7 +99,7 @@ const renderedEntries = (researchposts || []).map((p, index) => {
   </section>
 
   <!-- New: Models development section with interactive two-image slider -->
-  <section id="models" class="bg-base-100 rounded-lg p-6 mb-0 no-hover-scale">
+  <section id="models" class="site-section bg-base-100 rounded-lg p-6 no-hover-scale">
      <div class="max-w-4xl mx-auto relative">
       <h2 class="text-2xl font-semibold mb-3">The future of modeling experiments</h2>
       <p class="text-base mb-4 text-muted">
@@ -286,8 +286,7 @@ const renderedEntries = (researchposts || []).map((p, index) => {
   </section>
 
   <!-- Research highlights: card-style tabs backed by the research content collection -->
-  <section id="research-themes" class="mt-4 mb-8 reveal">
-    <div class="research-highlights-shell bg-base-100 rounded-lg p-4 md:p-5 shadow-sm">
+  <section id="research-themes" class="site-section">
       <div class="research-highlights-heading">
         <div>
           <h2>Research Highlights</h2>
@@ -359,8 +358,6 @@ const renderedEntries = (researchposts || []).map((p, index) => {
           ))
         }
       </div>
-    </div>
-
     <script>
       (function(){
         const tablist = document.querySelector('[data-research-tabs]');
@@ -404,11 +401,6 @@ const renderedEntries = (researchposts || []).map((p, index) => {
       #research-themes {
         position: relative;
         z-index: 60;
-      }
-
-      .research-highlights-shell {
-        position: relative;
-        z-index: 61;
       }
 
       .research-highlights-heading {

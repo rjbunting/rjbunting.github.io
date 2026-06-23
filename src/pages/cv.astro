@@ -4,7 +4,7 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
 ---
 
 <BaseLayout title="Curriculum Vitae | Rhys Bunting" sideBarActiveItemID="cv">
-  <div class="mb-4 flex items-center gap-3">
+  <div class="cv-section-body flex items-center gap-3">
     <a
       href="https://1drv.ms/b/c/1b9126a929670101/EeH5WR0wonZAnZuWl_CPOyEBLjbBQDPTg2JH5Ax6-4yL0A?e=cJ9cpf"
       target="_blank"
@@ -18,11 +18,11 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
     </a>
   </div>
 
-  <div class="mb-4">
+  <div class="cv-section-title">
     <h2 class="text-2xl w-full font-bold">Professional Appointments</h2>
   </div>
 
-  <div class="time-line-container grid gap-2 mb-6">
+  <div class="time-line-container grid gap-2 cv-section-body">
     <TimeLineElement
       title="Lawrence Livermore National Lab | Mar 2024 – Present"
       subtitle="Postdoctoral Researcher | Under the supervision of Quantum Simulations Group Leader Tuan Anh Pham"
@@ -48,11 +48,11 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
     </TimeLineElement>
   </div>
 
-  <div class="mb-4">
+  <div class="cv-section-title">
     <h2 class="text-2xl w-full font-bold">Education</h2>
   </div>
 
-  <div class="time-line-container mb-6">
+  <div class="time-line-container cv-section-body">
     <TimeLineElement
       title="Queen's University Belfast | Oct 2017 – Aug 2020"
       subtitle="Doctor of Philosophy | Under the supervision of Prof. Peijun Hu and Assoc. Prof. Jillian Thompson"
@@ -65,11 +65,11 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
     />
   </div>
 
-    <div class="mb-4">
+    <div class="cv-section-title">
         <h2 class="text-2xl w-full font-bold">Teaching</h2>
     </div>
 
-    <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
+    <ul class="list-disc mx-6 cv-section-body grid gap-1 text-base">
         <li>
             <div class="flex justify-between items-center w-full">
                 <span>Course Lead - An Introduction to Computational Chemistry</span>
@@ -90,11 +90,11 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
         <li>Summer School Lecturer - QUB Chinese Exchange Chemistry Summer School</li>
     </ul>
 
-    <div class="mb-4">
+    <div class="cv-section-title">
         <h2 class="text-2xl w-full font-bold">Refereeing</h2>
     </div>
 
-    <ul class="list-disc md:columns-1 columns-1 mx-6 text-base mb-2 gap-1">
+    <ul class="list-disc md:columns-1 columns-1 mx-6 text-base cv-section-body gap-1">
         <li>Journal of the American Chemical Society</li>
         <li>Physical Review Letters</li>
         <li>Journal of Physical Chemistry Letters</li>
@@ -102,11 +102,11 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
         <li>Journal of Applied Physics</li>
     </ul>
 
-    <div class="mb-4">
+    <div class="cv-section-title">
         <h2 class="text-2xl w-full font-bold">Invited Talks</h2>
     </div>
 
-    <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
+    <ul class="list-disc mx-6 cv-section-body grid gap-1 text-base">
         <li>Meta FAIR</li>
         <li>
             <div class="flex justify-between items-center w-full">
@@ -127,16 +127,17 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
         <li>Dublin Universities Condensed Matter Group</li>
     </ul>
 
-  <div class="mb-4">
+  <div class="cv-section-title">
     <h2 class="text-2xl w-full font-bold">Conferences</h2>
   </div>
+  <div class="cv-section-body">
     <div class="mb-1 text-xl font-semibold">Chair</div>
     <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
         <li>24th American Conference on Crystal Growth and Epitaxy</li>
     </ul>
 
     <div class="mb-1 mt-4 text-xl font-semibold">Speaker</div>
-    <ul class="list-disc mx-6 mb-3 grid gap-1 text-base">
+    <ul class="list-disc mx-6 mb-0 grid gap-1 text-base">
         <li>2026 AIChE Annual Meeting</li>
         <li>ACS Fall 2026</li>
         <li>29th AACG Western Section Conference on Crystal Growth & Epitaxy</li>
@@ -145,25 +146,26 @@ import TimeLineElement from "../components/cv/TimeLine.astro";
         <li>6th UK Catalysis Conference</li>
 
     </ul>
+  </div>
 
   <!--<ul class="list-disc mx-6 mb-3 grid gap-1 text-base">-->
   <!--  <li>70th Irish Universities Chemistry Research Colloquium</li>-->
   <!--</ul>-->
 
-    <div class="mb-4">
+    <div class="cv-section-title">
         <h2 class="text-2xl w-full font-bold">Grants</h2>
     </div>
 
-    <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
+    <ul class="list-disc mx-6 cv-section-body grid gap-1 text-base">
         <li>Noxfuel - NREL Compute Allocation - 1,596,000 compute hours - Oct25</li>
         <li>Snowflake - NREL Compute Allocation - 1,670,160 compute hours - Oct24</li>
     </ul>
 
-    <div class="mb-4">
+    <div class="cv-section-title">
         <h2 class="text-2xl w-full font-bold">Memberships</h2>
     </div>
 
-  <ul class="list-disc mx-6 mb-4 grid gap-1 text-base">
+  <ul class="list-disc mx-6 cv-section-body grid gap-1 text-base">
     <li>Royal Society of Chemistry</li>
   </ul>
 

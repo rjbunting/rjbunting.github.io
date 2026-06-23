@@ -159,13 +159,13 @@ import HorizontalCard from "../components/HorizontalCard.astro";
   }
   </script>
 
-  <section class="bg-base-200 text-base-content rounded-lg p-6 mb-6 no-hover-scale !mt-0">
+  <section class="site-section bg-base-200 text-base-content rounded-lg p-6 no-hover-scale">
     <h1 class="text-3xl w-full font-bold mb-3">Publications</h1>
     <input id="search-input" class="input input-bordered w-full max-w-md" type="search" placeholder="Search publications (title, authors, tag...)" aria-label="Search publications" />
   </section>
 
   <!-- Compact publications list -->
-  <div class="bg-base-100 rounded-lg p-4 shadow-sm">
+  <section class="site-section bg-base-100 rounded-lg p-4 shadow-sm">
     <div class="flex flex-col gap-1">
     <HorizontalCard
             title="Direct Ab Initio Simulation of the Synthesis of BaZrO<sub>3</sub> and the Microstructure Impacts on Proton Transport"
@@ -250,6 +250,6 @@ import HorizontalCard from "../components/HorizontalCard.astro";
   />
 
   </div>
-  </div>
+  </section>
 
 </BaseLayout>

@@ -12,7 +12,7 @@ const { title, subtitle } = Astro.props;
     <span class="font-light text-sm">{subtitle}</span>
     <!-- optional small meta subtext slot (e.g. supervisor, group, location) -->
     <div class="text-xs text-muted mt-1"><slot name="meta" /></div>
-    <p class="my-2 text-justify">
+    <p class="my-2 text-left md:text-justify">
       <slot />
     </p>
   </div>

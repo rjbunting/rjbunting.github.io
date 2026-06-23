@@ -16,6 +16,8 @@
   --body-font: 'Open Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --heading-font: 'Open Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   --measure: 66ch; /* optimal measure for readability */
+  --section-gap: 2rem;
+  --section-gap-mobile: 1.5rem;
   /* Color tokens are now sourced directly from DaisyUI's --bc, --b1, --p etc.
      No custom property aliases needed – this prevents the dark fallback bug where
      a hard-coded dark value made text invisible in dark themes. */
@@ -62,9 +64,33 @@ h3 { font-size: 1.25rem; }  /* text-xl  */
 .prose p { margin-bottom: 1rem; }
 .prose ul, .prose ol { margin-left: 1.25rem; margin-bottom: 1rem; }
 
-/* Increase space around major sections */
-main > * + * { margin-top: 0.5rem; }
-.section { margin-top: 2rem; margin-bottom: 2rem; }
+/* Consistent rhythm for page-level sections */
+.site-section {
+  margin-block: 0 var(--section-gap);
+}
+
+.site-section + .site-section {
+  margin-top: 0 !important;
+}
+
+.section {
+  margin-block: var(--section-gap);
+}
+
+.cv-section-title {
+  margin-bottom: 0.75rem;
+}
+
+.cv-section-body {
+  margin-bottom: var(--section-gap);
+}
+
+@media (max-width: 640px) {
+  .site-section,
+  .cv-section-body {
+    margin-bottom: var(--section-gap-mobile);
+  }
+}
 
 /* Tighter CV and lists spacing */
 .list-compact li { margin-bottom: 0.25rem; }
@@ -286,10 +312,63 @@ a.rounded-lg:hover, button.rounded-lg:hover, .card:hover { transform: translateY
     var(--color-base-100);
 }
 
-.home-card-utility {
+.home-cv-button {
   grid-column: 1 / -1;
-  background:
-    linear-gradient(135deg, color-mix(in oklab, var(--color-primary) 12%, var(--color-base-100)), var(--color-base-100) 56%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4.75rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid color-mix(in oklab, var(--color-primary) 52%, transparent);
+  border-radius: 8px;
+  background: var(--color-base-content);
+  color: var(--color-base-100);
+  text-decoration: none;
+  box-shadow: 0 12px 28px color-mix(in oklab, var(--color-base-content) 18%, transparent);
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+.home-cv-button:hover,
+.home-cv-button:focus-visible {
+  color: var(--color-base-100);
+  transform: translateY(-2px);
+  filter: saturate(1.08);
+  box-shadow: 0 16px 34px color-mix(in oklab, var(--color-base-content) 24%, transparent);
+}
+
+.home-cv-button:focus-visible {
+  outline: 3px solid rgba(59,130,246,0.9);
+  outline-offset: 4px;
+}
+
+.home-cv-button-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.home-cv-button-title {
+  font-size: 1.12rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.home-cv-button-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  flex: none;
+  min-height: 2.4rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--color-base-100) 14%, transparent);
+  color: var(--color-base-100);
+  font-size: 0.92rem;
+  font-weight: 800;
+  line-height: 1;
 }
 
 @media (min-width: 768px) {
@@ -317,21 +396,6 @@ a.rounded-lg:hover, button.rounded-lg:hover, .card:hover { transform: translateY
     font-size: 1.55rem;
   }
 
-  .home-card-utility .home-card-body {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.15rem 1.35rem;
-  }
-
-  .home-card-utility h3,
-  .home-card-utility p,
-  .home-card-utility .home-card-action,
-  .home-card-utility .home-card-kicker-inline {
-    margin: 0;
-    padding-top: 0;
-  }
 }
 
 @media (max-width: 640px) {
@@ -345,6 +409,15 @@ a.rounded-lg:hover, button.rounded-lg:hover, .card:hover { transform: translateY
 
   .home-card h3 {
     font-size: 1.12rem;
+  }
+
+  .home-cv-button {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .home-cv-button-action {
+    width: 100%;
   }
 }
 
@@ -408,7 +481,7 @@ a.rounded-lg:hover, button.rounded-lg:hover, .card:hover { transform: translateY
 /* Inline links: switch to secondary cyan (58c7f3 ≈ 7:1 contrast vs dark purple bg)
    Primary pink (e779c1 ≈ 5:1) technically passes WCAG AA but cyan is clearly
    more legible in practice against the dark background. */
-[data-theme="night"] a:not(.btn):not([class*="btn-"]):not(.explore-card):not(.home-card) {
+[data-theme="night"] a:not(.btn):not([class*="btn-"]):not(.explore-card):not(.home-card):not(.home-cv-button) {
   color: var(--color-secondary);
 }
 
